@@ -3,256 +3,267 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>My Restaurant</title>
+<title>My Restaurant</title>
 
-    <style>
+<style>
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #f6f6f6;
-            color: #222;
-            padding-bottom: 90px;
-        }
+body{
+font-family:Arial,sans-serif;
+background:#f6f6f6;
+color:#222;
+padding-bottom:90px;
+}
 
-        .header {
-            background: #111;
-            color: white;
-            text-align: center;
-            padding: 22px 15px;
-        }
+.header{
+background:#111;
+color:white;
+text-align:center;
+padding:22px 15px;
+}
 
-        .restaurant-name {
-            font-size: 26px;
-            font-weight: bold;
-        }
+.restaurant-name{
+font-size:26px;
+font-weight:bold;
+}
 
-        .table-number {
-            margin-top: 6px;
-            color: #ccc;
-            font-size: 14px;
-        }
+.table-number{
+margin-top:6px;
+color:#ccc;
+font-size:14px;
+}
 
-        .container {
-            padding: 15px;
-        }
+.container{
+padding:15px;
+}
 
-        .search {
-            width: 100%;
-            padding: 14px;
-            border: 1px solid #ddd;
-            border-radius: 12px;
-            font-size: 16px;
-            outline: none;
-            margin-bottom: 16px;
-        }
+.search{
+width:100%;
+padding:14px;
+border:1px solid #ddd;
+border-radius:12px;
+font-size:16px;
+outline:none;
+margin-bottom:16px;
+}
 
-        .categories {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            margin-bottom: 20px;
-            padding-bottom: 5px;
-        }
+.categories{
+display:flex;
+gap:10px;
+overflow-x:auto;
+margin-bottom:20px;
+padding-bottom:5px;
+}
 
-        .categories::-webkit-scrollbar {
-            display: none;
-        }
+.categories::-webkit-scrollbar{
+display:none;
+}
 
-        .category {
-            white-space: nowrap;
-            padding: 10px 17px;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 25px;
-            font-size: 14px;
-            cursor: pointer;
-        }
+.category{
+white-space:nowrap;
+padding:10px 17px;
+background:white;
+border:1px solid #ddd;
+border-radius:25px;
+font-size:14px;
+cursor:pointer;
+}
 
-        .category.active {
-            background: #111;
-            color: white;
-            border-color: #111;
-        }
+.category.active{
+background:#111;
+color:white;
+border-color:#111;
+}
 
-        .food-card {
-            background: white;
-            border-radius: 15px;
-            margin-bottom: 16px;
-            overflow: hidden;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-        }
+.food-card{
+background:white;
+border-radius:15px;
+margin-bottom:16px;
+overflow:hidden;
+box-shadow:0 3px 12px rgba(0,0,0,0.08);
+}
 
-        .food-image {
-            width: 100%;
-            height: 190px;
-            object-fit: cover;
-            display: block;
-        }
+.food-image{
+width:100%;
+height:190px;
+object-fit:cover;
+display:block;
+}
 
-        .food-content {
-            padding: 15px;
-        }
+.food-content{
+padding:15px;
+}
 
-        .food-title-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 10px;
-        }
+.food-title-row{
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+gap:10px;
+}
 
-        .food-name {
-            font-size: 19px;
-            font-weight: bold;
-        }
+.food-name{
+font-size:19px;
+font-weight:bold;
+}
 
-        .food-description {
-            color: #777;
-            font-size: 14px;
-            line-height: 1.4;
-            margin-top: 7px;
-        }
+.food-description{
+color:#777;
+font-size:14px;
+line-height:1.4;
+margin-top:7px;
+}
 
-        .food-bottom {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 14px;
-        }
+.food-bottom{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-top:14px;
+}
 
-        .price {
-            font-size: 19px;
-            font-weight: bold;
-        }
+.price{
+font-size:19px;
+font-weight:bold;
+}
 
-        .add-btn {
-            background: #111;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 9px;
-            font-size: 14px;
-            cursor: pointer;
-        }
+.add-btn{
+background:#111;
+color:white;
+border:none;
+padding:10px 20px;
+border-radius:9px;
+font-size:14px;
+cursor:pointer;
+}
 
-        .cart {
-            position: fixed;
-            bottom: 15px;
-            left: 15px;
-            right: 15px;
-            background: #111;
-            color: white;
-            padding: 16px;
-            border-radius: 13px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.25);
-            z-index: 1000;
-        }
+.add-btn:active{
+transform:scale(0.96);
+}
 
-        .cart-items {
-            display: none;
-            position: fixed;
-            bottom: 82px;
-            left: 15px;
-            right: 15px;
-            background: white;
-            border-radius: 15px;
-            padding: 18px;
-            max-height: 60vh;
-            overflow-y: auto;
-            box-shadow: 0 0 25px rgba(0,0,0,0.25);
-            z-index: 999;
-        }
+.cart{
+position:fixed;
+bottom:15px;
+left:15px;
+right:15px;
+background:#111;
+color:white;
+padding:16px;
+border-radius:13px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+cursor:pointer;
+box-shadow:0 5px 20px rgba(0,0,0,0.25);
+z-index:1000;
+}
 
-        .cart-items h2 {
-            margin-bottom: 15px;
-        }
+.cart-left{
+font-weight:bold;
+}
 
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 0;
-            border-bottom: 1px solid #eee;
-        }
+.cart-total{
+font-weight:bold;
+}
 
-        .cart-item-name {
-            font-weight: bold;
-        }
+.cart-items{
+display:none;
+position:fixed;
+bottom:82px;
+left:15px;
+right:15px;
+background:white;
+border-radius:15px;
+padding:18px;
+max-height:60vh;
+overflow-y:auto;
+box-shadow:0 0 25px rgba(0,0,0,0.25);
+z-index:999;
+}
 
-        .cart-item-price {
-            color: #666;
-            font-size: 13px;
-            margin-top: 4px;
-        }
+.cart-items h2{
+margin-bottom:15px;
+}
 
-        .quantity {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-        }
+.cart-item{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+padding:12px 0;
+border-bottom:1px solid #eee;
+}
 
-        .quantity button {
-            width: 30px;
-            height: 30px;
-            border: none;
-            border-radius: 7px;
-            background: #111;
-            color: white;
-            font-size: 18px;
-        }
+.cart-item-name{
+font-weight:bold;
+}
 
-        .empty-cart {
-            text-align: center;
-            color: #777;
-            padding: 20px 0;
-        }
+.cart-item-price{
+color:#666;
+font-size:13px;
+margin-top:4px;
+}
 
-        .no-result {
-            text-align: center;
-            color: #777;
-            padding: 30px 10px;
-            display: none;
-        }
+.quantity{
+display:flex;
+align-items:center;
+gap:9px;
+}
 
-        .loading {
-            text-align: center;
-            color: #777;
-            padding: 40px 10px;
-        }
+.quantity button{
+width:30px;
+height:30px;
+border:none;
+border-radius:7px;
+background:#111;
+color:white;
+font-size:18px;
+cursor:pointer;
+}
 
-        .debug-box {
-            background: #fff3cd;
-            color: #664d03;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            font-size: 13px;
-            line-height: 1.5;
-        }
+.empty-cart{
+text-align:center;
+color:#777;
+padding:20px 0;
+}
 
-        .error-box {
-            background: #f8d7da;
-            color: #842029;
-            padding: 15px;
-            border-radius: 10px;
-            line-height: 1.5;
-        }
+.no-result{
+text-align:center;
+color:#777;
+padding:30px 10px;
+display:none;
+}
 
-    </style>
+.loading{
+text-align:center;
+color:#777;
+padding:40px 10px;
+}
+
+.status{
+text-align:center;
+padding:10px;
+font-size:13px;
+color:#777;
+}
+
+.error-box{
+background:#f8d7da;
+color:#842029;
+padding:15px;
+border-radius:10px;
+margin-bottom:15px;
+line-height:1.5;
+}
+
+</style>
 
 </head>
 
@@ -260,714 +271,918 @@
 <body>
 
 
-    <div class="header">
+<div class="header">
 
-        <div class="restaurant-name">
-            🍽️ My Restaurant
-        </div>
+<div class="restaurant-name">
+🍽️ My Restaurant
+</div>
 
-        <div
-            class="table-number"
-            id="tableNumber"
-        >
-            Table No. 5
-        </div>
+<div
+class="table-number"
+id="tableNumber"
+>
+Table No. 5
+</div>
 
-    </div>
+</div>
 
 
-    <div class="container">
+<div class="container">
 
 
-        <div
-            class="debug-box"
-            id="debugStatus"
-        >
-            🔄 Starting website...
-        </div>
+<div
+class="status"
+id="status"
+>
+Connecting to menu...
+</div>
 
 
-        <input
-            type="text"
-            class="search"
-            id="searchInput"
-            placeholder="🔍 Search food..."
-        >
+<input
+type="text"
+class="search"
+id="searchInput"
+placeholder="🔍 Search food..."
+>
 
 
-        <div
-            class="categories"
-            id="categories"
-        >
+<div
+class="categories"
+id="categories"
+>
 
-            <div class="category active">
-                All
-            </div>
+<div class="category active">
+All
+</div>
 
-        </div>
+</div>
 
 
-        <div id="foodList">
+<div id="foodList">
 
-            <div class="loading">
-                Loading menu... 🍽️
-            </div>
+<div class="loading">
+Loading menu... 🍽️
+</div>
 
-        </div>
+</div>
 
 
-        <div
-            class="no-result"
-            id="noResult"
-        >
-            No food found 😕
-        </div>
+<div
+class="no-result"
+id="noResult"
+>
+No food found 😕
+</div>
 
-    </div>
 
+</div>
 
-    <div
-        class="cart-items"
-        id="cartItems"
-    >
 
-        <h2>🛒 Your Cart</h2>
+<div
+class="cart-items"
+id="cartItems"
+>
 
-        <div id="cartList"></div>
+<h2>🛒 Your Cart</h2>
 
-    </div>
+<div id="cartList"></div>
 
+</div>
 
-    <div
-        class="cart"
-        id="cartButton"
-    >
 
-        <div id="cartCount">
-            🛒 Cart (0)
-        </div>
+<div
+class="cart"
+id="cartButton"
+>
 
-        <div id="cartTotal">
-            ₹0
-        </div>
+<div
+class="cart-left"
+id="cartCount"
+>
+🛒 Cart (0)
+</div>
 
-    </div>
+<div
+class="cart-total"
+id="cartTotal"
+>
+₹0
+</div>
 
+</div>
 
-    <!-- SUPABASE -->
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- SUPABASE -->
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <script>
 
-        console.log("STEP 1: JavaScript started");
+<script>
 
 
-        /* =========================================
-           SUPABASE
-        ========================================= */
+/* =========================================
+   SUPABASE CONNECTION
+========================================= */
 
-        const SUPABASE_URL =
-            "https://jxjrcjmrkhknltwvzzvr.supabase.co";
+const SUPABASE_URL =
+"https://jxjrcjmrkhknltwvzzvr.supabase.co";
 
-        const SUPABASE_KEY =
-            "sb_publishable__Pg5UNoizrSpSpZB3fRvbARw_fNhHGjvl";
+const SUPABASE_KEY =
+"sb_publishable__Pg5UNoizrSpZB3fRvbARw_fNhHGjvl";
 
 
-        const statusBox =
-            document.getElementById(
-                "debugStatus"
-            );
+const db =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
 
 
-        function setStatus(message) {
+/* =========================================
+   VARIABLES
+========================================= */
 
-            statusBox.innerText =
-                message;
+let menuItems = [];
 
-        }
+let cart = [];
 
+let selectedCategory = "All";
 
-        /* =========================================
-           CHECK SUPABASE LIBRARY
-        ========================================= */
 
-        if (
-            typeof window.supabase ===
-            "undefined"
-        ) {
+/* =========================================
+   STATUS
+========================================= */
 
-            setStatus(
-                "❌ Supabase library load nahi hui."
-            );
+function setStatus(message){
 
-            console.error(
-                "Supabase library missing"
-            );
+document
+.getElementById("status")
+.innerText = message;
 
-        }
+}
 
-        else {
 
-            console.log(
-                "STEP 2: Supabase library loaded"
-            );
+/* =========================================
+   TABLE NUMBER
+========================================= */
 
-            setStatus(
-                "✅ Supabase library loaded"
-            );
+function loadTableNumber(){
 
-        }
+const params =
+new URLSearchParams(
+window.location.search
+);
 
+const table =
+params.get("table");
 
-        /* =========================================
-           CREATE SUPABASE CLIENT
-        ========================================= */
+if(table){
 
-        let db = null;
+document
+.getElementById("tableNumber")
+.innerText =
+"Table No. " + table;
 
+}
 
-        if (
-            typeof window.supabase !==
-            "undefined"
-        ) {
+}
 
-            db =
-                window.supabase.createClient(
-                    SUPABASE_URL,
-                    SUPABASE_KEY
-                );
 
-            console.log(
-                "STEP 3: Supabase client created"
-            );
+/* =========================================
+   LOAD MENU FROM SUPABASE
+========================================= */
 
-        }
+async function loadMenu(){
 
+setStatus(
+"🔄 Loading menu..."
+);
 
-        /* =========================================
-           VARIABLES
-        ========================================= */
+const foodList =
+document.getElementById(
+"foodList"
+);
 
-        let menuItems = [];
+try{
 
-        let cart = [];
+const result =
+await db
+.from("menu_items")
+.select("*")
+.order(
+"id",
+{
+ascending:true
+}
+);
 
-        let selectedCategory = "All";
 
+if(result.error){
 
-        /* =========================================
-           TABLE NUMBER
-        ========================================= */
+console.error(
+"Supabase Error:",
+result.error
+);
 
-        function loadTableNumber() {
+setStatus(
+"❌ Menu load failed"
+);
 
-            const params =
-                new URLSearchParams(
-                    window.location.search
-                );
+foodList.innerHTML = `
 
-            const table =
-                params.get("table");
+<div class="error-box">
 
+❌ Menu load nahi hua.
 
-            if (table) {
+<br><br>
 
-                document
-                    .getElementById(
-                        "tableNumber"
-                    )
-                    .innerText =
-                    "Table No. " +
-                    table;
+${result.error.message}
 
-            }
+</div>
 
-        }
+`;
 
+return;
 
-        /* =========================================
-           LOAD MENU
-        ========================================= */
+}
 
-        async function loadMenu() {
 
+const data =
+result.data || [];
 
-            console.log(
-                "STEP 4: loadMenu started"
-            );
 
+console.log(
+"Menu Data:",
+data
+);
 
-            setStatus(
-                "🔄 Connecting to menu database..."
-            );
 
+if(data.length === 0){
 
-            if (!db) {
+setStatus(
+"⚠️ Menu table empty hai"
+);
 
-                setStatus(
-                    "❌ Supabase connection create nahi hua."
-                );
+foodList.innerHTML = `
 
-                return;
+<div class="error-box">
 
-            }
+⚠️ Abhi menu_items table mein koi item nahi hai.
 
+</div>
 
-            try {
+`;
 
+return;
 
-                const response =
-                    await db
-                    .from("menu_items")
-                    .select("*")
-                    .order(
-                        "id",
-                        {
-                            ascending: true
-                        }
-                    );
+}
 
 
-                console.log(
-                    "STEP 5: Supabase response",
-                    response
-                );
+menuItems =
+data.map(
+item => ({
 
+id:item.id,
 
-                if (
-                    response.error
-                ) {
+name:item.name,
 
-                    console.error(
-                        "SUPABASE ERROR:",
-                        response.error
-                    );
+price:Number(
+item.price
+),
 
+category:
+item.category ||
+"Other",
 
-                    setStatus(
-                        "❌ Database error: " +
-                        response.error.message
-                    );
+description:
+item.description ||
+"",
 
+image:
+item.image_url ||
+"https://via.placeholder.com/800x500?text=Food"
 
-                    document
-                        .getElementById(
-                            "foodList"
-                        )
-                        .innerHTML = `
+})
+);
 
-                            <div class="error-box">
 
-                                ❌ Menu load nahi hua.
+createCategories();
 
-                                <br><br>
+displayMenu(
+menuItems
+);
 
-                                ${response.error.message}
 
-                            </div>
+setStatus(
+"✅ Menu loaded — " +
+menuItems.length +
+" item(s)"
+);
 
-                        `;
+}
 
+catch(error){
 
-                    return;
+console.error(
+error
+);
 
-                }
+setStatus(
+"❌ Connection error"
+);
 
+foodList.innerHTML = `
 
-                const data =
-                    response.data || [];
+<div class="error-box">
 
+❌ Something went wrong.
 
-                console.log(
-                    "STEP 6: Menu data",
-                    data
-                );
+<br><br>
 
+${error.message}
 
-                if (
-                    data.length === 0
-                ) {
+</div>
 
-                    setStatus(
-                        "⚠️ Database connected hai, lekin menu_items table empty hai."
-                    );
+`;
 
+}
 
-                    displayMenu([]);
+}
 
-                    return;
 
-                }
+/* =========================================
+   CREATE CATEGORIES
+========================================= */
 
+function createCategories(){
 
-                menuItems =
-                    data.map(
-                        item => ({
+const box =
+document.getElementById(
+"categories"
+);
 
-                            id:
-                                item.id,
+box.innerHTML = "";
 
-                            name:
-                                item.name,
 
-                            price:
-                                Number(
-                                    item.price
-                                ),
+const all =
+document.createElement(
+"div"
+);
 
-                            category:
-                                item.category ||
-                                "Other",
+all.className =
+"category active";
 
-                            description:
-                                item.description ||
-                                "",
+all.innerText =
+"All";
 
-                            image:
-                                item.image_url ||
-                                "https://via.placeholder.com/800x500?text=Food"
+all.onclick =
+function(){
 
-                        })
-                    );
+filterCategory(
+"All",
+this
+);
 
+};
 
-                console.log(
-                    "STEP 7: Converted menu",
-                    menuItems
-                );
+box.appendChild(
+all
+);
 
 
-                createCategories();
+const categories =
+[
+...new Set(
+menuItems
+.map(
+item =>
+item.category
+)
+.filter(Boolean)
+)
+];
 
-                displayMenu(
-                    menuItems
-                );
 
+categories.forEach(
+category => {
 
-                setStatus(
-                    "✅ Menu loaded successfully — " +
-                    menuItems.length +
-                    " item(s)"
-                );
+const button =
+document.createElement(
+"div"
+);
 
-            }
+button.className =
+"category";
 
-            catch (error) {
+button.innerText =
+category;
 
-                console.error(
-                    "CATCH ERROR:",
-                    error
-                );
+button.onclick =
+function(){
 
+filterCategory(
+category,
+this
+);
 
-                setStatus(
-                    "❌ Error: " +
-                    error.message
-                );
+};
 
+box.appendChild(
+button
+);
 
-                document
-                    .getElementById(
-                        "foodList"
-                    )
-                    .innerHTML = `
+});
 
-                        <div class="error-box">
+}
 
-                            ❌ Something went wrong.
 
-                            <br><br>
+/* =========================================
+   DISPLAY MENU
+========================================= */
 
-                            ${error.message}
+function displayMenu(
+items
+){
 
-                        </div>
+const foodList =
+document.getElementById(
+"foodList"
+);
 
-                    `;
+const noResult =
+document.getElementById(
+"noResult"
+);
 
-            }
 
-        }
+foodList.innerHTML = "";
 
 
-        /* =========================================
-           CREATE CATEGORIES
-        ========================================= */
+if(
+!items ||
+items.length === 0
+){
 
-        function createCategories() {
+noResult.style.display =
+"block";
 
+return;
 
-            const box =
-                document.getElementById(
-                    "categories"
-                );
+}
 
 
-            box.innerHTML = "";
+noResult.style.display =
+"none";
 
 
-            const allButton =
-                document.createElement(
-                    "div"
-                );
+items.forEach(
+item => {
 
+const card =
+document.createElement(
+"div"
+);
 
-            allButton.className =
-                "category active";
+card.className =
+"food-card";
 
 
-            allButton.innerText =
-                "All";
+card.innerHTML = `
 
+<img
+src="${item.image}"
+class="food-image"
+alt="${item.name}"
+onerror="this.src='https://via.placeholder.com/800x500?text=Food'"
+>
 
-            allButton.onclick =
-                function() {
+<div class="food-content">
 
-                    filterCategory(
-                        "All",
-                        this
-                    );
+<div class="food-title-row">
 
-                };
+<div class="food-name">
+${item.name}
+</div>
 
+</div>
 
-            box.appendChild(
-                allButton
-            );
 
+<div class="food-description">
+${item.description}
+</div>
 
-            const categories =
-                [
-                    ...new Set(
-                        menuItems.map(
-                            item =>
-                                item.category
-                        )
-                    )
-                ];
 
+<div class="food-bottom">
 
-            categories.forEach(
-                category => {
+<div class="price">
+₹${item.price}
+</div>
 
 
-                    const button =
-                        document.createElement(
-                            "div"
-                        );
+<button
+class="add-btn"
+onclick="addToCart(${item.id})"
+>
++ Add
+</button>
 
+</div>
 
-                    button.className =
-                        "category";
+</div>
 
+`;
 
-                    button.innerText =
-                        category;
 
+foodList.appendChild(
+card
+);
 
-                    button.onclick =
-                        function() {
+});
 
-                            filterCategory(
-                                category,
-                                this
-                            );
+}
 
-                        };
 
+/* =========================================
+   SEARCH
+========================================= */
 
-                    box.appendChild(
-                        button
-                    );
+function searchFood(){
 
-                }
-            );
+const text =
+document
+.getElementById(
+"searchInput"
+)
+.value
+.toLowerCase()
+.trim();
 
-        }
 
+let filtered =
+menuItems.filter(
+item =>
+item.name
+.toLowerCase()
+.includes(text)
+);
 
-        /* =========================================
-           DISPLAY MENU
-        ========================================= */
 
-        function displayMenu(
-            items
-        ) {
+if(
+selectedCategory !==
+"All"
+){
 
+filtered =
+filtered.filter(
+item =>
+item.category ===
+selectedCategory
+);
 
-            const foodList =
-                document.getElementById(
-                    "foodList"
-                );
+}
 
 
-            const noResult =
-                document.getElementById(
-                    "noResult"
-                );
+displayMenu(
+filtered
+);
 
+}
 
-            foodList.innerHTML = "";
 
+/* =========================================
+   CATEGORY FILTER
+========================================= */
 
-            if (
-                !items ||
-                items.length === 0
-            ) {
+function filterCategory(
+category,
+button
+){
 
-                noResult.style.display =
-                    "block";
+selectedCategory =
+category;
 
-                return;
 
-            }
+document
+.querySelectorAll(
+".category"
+)
+.forEach(
+btn =>
+btn.classList.remove(
+"active"
+)
+);
 
 
-            noResult.style.display =
-                "none";
+button.classList.add(
+"active"
+);
 
 
-            items.forEach(
-                item => {
+searchFood();
 
+}
 
-                    const card =
-                        document.createElement(
-                            "div"
-                        );
 
+/* =========================================
+   ADD TO CART
+========================================= */
 
-                    card.className =
-                        "food-card";
+function addToCart(
+id
+){
 
+const item =
+menuItems.find(
+food =>
+food.id === id
+);
 
-                    card.innerHTML = `
 
-                        <img
-                            src="${item.image}"
-                            class="food-image"
-                            alt="${item.name}"
-                            onerror="this.src='https://via.placeholder.com/800x500?text=Food'"
-                        >
+if(!item){
 
-                        <div class="food-content">
+return;
 
-                            <div class="food-title-row">
+}
 
-                                <div class="food-name">
-                                    ${item.name}
-                                </div>
 
-                            </div>
+const existing =
+cart.find(
+food =>
+food.id === id
+);
 
-                            <div class="food-description">
-                                ${item.description}
-                            </div>
 
-                            <div class="food-bottom">
+if(existing){
 
-                                <div class="price">
-                                    ₹${item.price}
-                                </div>
+existing.quantity++;
 
-                                <button
-                                    class="add-btn"
-                                    onclick="addToCart(${item.id})"
-                                >
-                                    + Add
-                                </button>
+}
 
-                            </div>
+else{
 
-                        </div>
+cart.push({
 
-                    `;
+id:item.id,
 
+name:item.name,
 
-                    foodList.appendChild(
-                        card
-                    );
+price:item.price,
 
-                }
-            );
+quantity:1
 
-        }
+});
 
+}
 
-        /* =========================================
-           SEARCH
-        ========================================= */
 
-        function searchFood() {
+updateCart();
 
+}
 
-            const text =
-                document
-                .getElementById(
-                    "searchInput"
-                )
-                .value
-                .toLowerCase()
-                .trim();
 
+/* =========================================
+   INCREASE
+========================================= */
 
-            let filtered =
-                menuItems.filter(
-                    item =>
-                        item.name
-                        .toLowerCase()
-                        .includes(text)
-                );
+function increaseQuantity(
+index
+){
 
+if(cart[index]){
 
-            if (
-                selectedCategory !==
-                "All"
-            ) {
+cart[index].quantity++;
 
-                filtered =
-                    filtered.filter(
-                        item =>
-                            item.category ===
-                            selectedCategory
-                    );
+}
 
-            }
+updateCart();
 
+}
 
-            displayMenu(
-                filtered
-            );
 
-        }
+/* =========================================
+   DECREASE
+========================================= */
 
+function decreaseQuantity(
+index
+){
 
-        /* =========================================
-           CATEGORY
-        ========================================= */
+if(!cart[index]){
 
-        function filterCategory(
-            category,
-            button
-        ) {
+return;
 
+}
 
-            selectedCategory =
-                category;
 
+cart[index].quantity--;
 
-            document
-                .querySelectorAll(
-                    ".category"
-                )
-                .forEach(
-                    btn =>
-                        btn.classList.remove(
-                            "active"
-                        )
-                );
 
+if(
+cart[index].quantity <= 0
+){
 
-            button.classList.add(
-                "active
+cart.splice(
+index,
+1
+);
+
+}
+
+
+updateCart();
+
+}
+
+
+/* =========================================
+   UPDATE CART
+========================================= */
+
+function updateCart(){
+
+let totalItems = 0;
+
+let totalPrice = 0;
+
+
+cart.forEach(
+item => {
+
+totalItems +=
+item.quantity;
+
+totalPrice +=
+item.price *
+item.quantity;
+
+}
+);
+
+
+document
+.getElementById(
+"cartCount"
+)
+.innerText =
+"🛒 Cart (" +
+totalItems +
+")";
+
+
+document
+.getElementById(
+"cartTotal"
+)
+.innerText =
+"₹" +
+totalPrice;
+
+
+const cartList =
+document.getElementById(
+"cartList"
+);
+
+
+if(
+cart.length === 0
+){
+
+cartList.innerHTML =
+'<div class="empty-cart">Your cart is empty</div>';
+
+return;
+
+}
+
+
+cartList.innerHTML = "";
+
+
+cart.forEach(
+(item,index) => {
+
+const total =
+item.price *
+item.quantity;
+
+
+cartList.innerHTML += `
+
+<div class="cart-item">
+
+<div>
+
+<div class="cart-item-name">
+${item.name}
+</div>
+
+<div class="cart-item-price">
+₹${total}
+</div>
+
+</div>
+
+
+<div class="quantity">
+
+<button
+onclick="decreaseQuantity(${index})"
+>
+−
+</button>
+
+<span>
+${item.quantity}
+</span>
+
+<button
+onclick="increaseQuantity(${index})"
+>
++
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+
+/* =========================================
+   TOGGLE CART
+========================================= */
+
+function toggleCart(){
+
+const cartBox =
+document.getElementById(
+"cartItems"
+);
+
+
+if(
+cartBox.style.display ===
+"block"
+){
+
+cartBox.style.display =
+"none";
+
+}
+
+else{
+
+cartBox.style.display =
+"block";
+
+}
+
+}
+
+
+/* =========================================
+   EVENTS
+========================================= */
+
+document
+.getElementById(
+"searchInput"
+)
+.addEventListener(
+"input",
+searchFood
+);
+
+
+document
+.getElementById(
+"cartButton"
+)
+.addEventListener(
+"click",
+toggleCart
+);
+
+
+/* =========================================
+   START
+========================================= */
+
+loadTableNumber();
+
+updateCart();
+
+loadMenu();
+
+
+</script>
+
+</body>
+
+</html>
