@@ -1,1188 +1,325 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>My Restaurant</title>
-
 <style>
-
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
-}
-
-body{
-font-family:Arial,sans-serif;
-background:#f6f6f6;
-color:#222;
-padding-bottom:90px;
-}
-
-.header{
-background:#111;
-color:white;
-text-align:center;
-padding:22px 15px;
-}
-
-.restaurant-name{
-font-size:26px;
-font-weight:bold;
-}
-
-.table-number{
-margin-top:6px;
-color:#ccc;
-font-size:14px;
-}
-
-.container{
-padding:15px;
-}
-
-.search{
-width:100%;
-padding:14px;
-border:1px solid #ddd;
-border-radius:12px;
-font-size:16px;
-outline:none;
-margin-bottom:16px;
-}
-
-.categories{
-display:flex;
-gap:10px;
-overflow-x:auto;
-margin-bottom:20px;
-padding-bottom:5px;
-}
-
-.categories::-webkit-scrollbar{
-display:none;
-}
-
-.category{
-white-space:nowrap;
-padding:10px 17px;
-background:white;
-border:1px solid #ddd;
-border-radius:25px;
-font-size:14px;
-cursor:pointer;
-}
-
-.category.active{
-background:#111;
-color:white;
-border-color:#111;
-}
-
-.food-card{
-background:white;
-border-radius:15px;
-margin-bottom:16px;
-overflow:hidden;
-box-shadow:0 3px 12px rgba(0,0,0,0.08);
-}
-
-.food-image{
-width:100%;
-height:190px;
-object-fit:cover;
-display:block;
-}
-
-.food-content{
-padding:15px;
-}
-
-.food-title-row{
-display:flex;
-justify-content:space-between;
-align-items:flex-start;
-gap:10px;
-}
-
-.food-name{
-font-size:19px;
-font-weight:bold;
-}
-
-.food-description{
-color:#777;
-font-size:14px;
-line-height:1.4;
-margin-top:7px;
-}
-
-.food-bottom{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-top:14px;
-}
-
-.price{
-font-size:19px;
-font-weight:bold;
-}
-
-.add-btn{
-background:#111;
-color:white;
-border:none;
-padding:10px 20px;
-border-radius:9px;
-font-size:14px;
-cursor:pointer;
-}
-
-.add-btn:active{
-transform:scale(0.96);
-}
-
-.cart{
-position:fixed;
-bottom:15px;
-left:15px;
-right:15px;
-background:#111;
-color:white;
-padding:16px;
-border-radius:13px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-cursor:pointer;
-box-shadow:0 5px 20px rgba(0,0,0,0.25);
-z-index:1000;
-}
-
-.cart-left{
-font-weight:bold;
-}
-
-.cart-total{
-font-weight:bold;
-}
-
-.cart-items{
-display:none;
-position:fixed;
-bottom:82px;
-left:15px;
-right:15px;
-background:white;
-border-radius:15px;
-padding:18px;
-max-height:60vh;
-overflow-y:auto;
-box-shadow:0 0 25px rgba(0,0,0,0.25);
-z-index:999;
-}
-
-.cart-items h2{
-margin-bottom:15px;
-}
-
-.cart-item{
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:10px;
-padding:12px 0;
-border-bottom:1px solid #eee;
-}
-
-.cart-item-name{
-font-weight:bold;
-}
-
-.cart-item-price{
-color:#666;
-font-size:13px;
-margin-top:4px;
-}
-
-.quantity{
-display:flex;
-align-items:center;
-gap:9px;
-}
-
-.quantity button{
-width:30px;
-height:30px;
-border:none;
-border-radius:7px;
-background:#111;
-color:white;
-font-size:18px;
-cursor:pointer;
-}
-
-.empty-cart{
-text-align:center;
-color:#777;
-padding:20px 0;
-}
-
-.no-result{
-text-align:center;
-color:#777;
-padding:30px 10px;
-display:none;
-}
-
-.loading{
-text-align:center;
-color:#777;
-padding:40px 10px;
-}
-
-.status{
-text-align:center;
-padding:10px;
-font-size:13px;
-color:#777;
-}
-
-.error-box{
-background:#f8d7da;
-color:#842029;
-padding:15px;
-border-radius:10px;
-margin-bottom:15px;
-line-height:1.5;
-}
-
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f6f6f6;color:#222;padding-bottom:90px}
+.header{background:#111;color:white;text-align:center;padding:22px 15px}
+.restaurant-name{font-size:26px;font-weight:bold}
+.table-number{margin-top:6px;color:#ccc;font-size:14px}
+.container{padding:15px}
+.status{text-align:center;color:#777;font-size:13px;margin-bottom:12px}
+.search{width:100%;padding:14px;border:1px solid #ddd;border-radius:12px;font-size:16px;outline:none;margin-bottom:16px}
+.categories{display:flex;gap:10px;overflow-x:auto;margin-bottom:20px;padding-bottom:5px}
+.categories::-webkit-scrollbar{display:none}
+.category{white-space:nowrap;padding:10px 17px;background:white;border:1px solid #ddd;border-radius:25px;font-size:14px;cursor:pointer}
+.category.active{background:#111;color:white;border-color:#111}
+.food-card{background:white;border-radius:15px;margin-bottom:16px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.08)}
+.food-image{width:100%;height:190px;object-fit:cover;display:block}
+.food-content{padding:15px}
+.food-name{font-size:19px;font-weight:bold}
+.food-description{color:#777;font-size:14px;line-height:1.4;margin-top:7px}
+.food-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+.price{font-size:19px;font-weight:bold}
+.add-btn{background:#111;color:white;border:none;padding:10px 20px;border-radius:9px;font-size:14px;cursor:pointer}
+.cart{position:fixed;bottom:15px;left:15px;right:15px;background:#111;color:white;padding:16px;border-radius:13px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;box-shadow:0 5px 20px rgba(0,0,0,.25);z-index:1000}
+.cart-left{font-weight:bold}
+.cart-items{display:none;position:fixed;bottom:82px;left:15px;right:15px;background:white;border-radius:15px;padding:18px;max-height:60vh;overflow-y:auto;box-shadow:0 0 25px rgba(0,0,0,.25);z-index:999}
+.cart-items h2{margin-bottom:15px}
+.cart-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #eee}
+.cart-item-name{font-weight:bold}
+.cart-item-price{color:#666;font-size:13px;margin-top:4px}
+.quantity{display:flex;align-items:center;gap:9px}
+.quantity button{width:30px;height:30px;border:none;border-radius:7px;background:#111;color:white;font-size:18px;cursor:pointer}
+.empty-cart{text-align:center;color:#777;padding:20px 0}
+.no-result{text-align:center;color:#777;padding:30px 10px;display:none}
+.loading{text-align:center;color:#777;padding:40px 10px}
+.error-box{background:#f8d7da;color:#842029;padding:15px;border-radius:10px;line-height:1.5}
 </style>
-
 </head>
-
-
 <body>
 
-
 <div class="header">
-
-<div class="restaurant-name">
-🍽️ My Restaurant
+<div class="restaurant-name">🍽️ My Restaurant</div>
+<div class="table-number" id="tableNumber">Table No. 5</div>
 </div>
-
-<div
-class="table-number"
-id="tableNumber"
->
-Table No. 5
-</div>
-
-</div>
-
 
 <div class="container">
+<div class="status" id="status">🔄 Starting website...</div>
 
+<input type="text" class="search" id="searchInput" placeholder="🔍 Search food...">
 
-<div
-class="status"
-id="status"
->
-Connecting to menu...
+<div class="categories" id="categories">
+<div class="category active">All</div>
 </div>
-
-
-<input
-type="text"
-class="search"
-id="searchInput"
-placeholder="🔍 Search food..."
->
-
-
-<div
-class="categories"
-id="categories"
->
-
-<div class="category active">
-All
-</div>
-
-</div>
-
 
 <div id="foodList">
-
-<div class="loading">
-Loading menu... 🍽️
+<div class="loading">Loading menu... 🍽️</div>
 </div>
 
+<div class="no-result" id="noResult">No food found 😕</div>
 </div>
 
-
-<div
-class="no-result"
-id="noResult"
->
-No food found 😕
-</div>
-
-
-</div>
-
-
-<div
-class="cart-items"
-id="cartItems"
->
-
+<div class="cart-items" id="cartItems">
 <h2>🛒 Your Cart</h2>
-
 <div id="cartList"></div>
-
 </div>
 
-
-<div
-class="cart"
-id="cartButton"
->
-
-<div
-class="cart-left"
-id="cartCount"
->
-🛒 Cart (0)
+<div class="cart" id="cartButton">
+<div class="cart-left" id="cartCount">🛒 Cart (0)</div>
+<div id="cartTotal">₹0</div>
 </div>
-
-<div
-class="cart-total"
-id="cartTotal"
->
-₹0
-</div>
-
-</div>
-
-
-<!-- SUPABASE -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
 <script>
+const SUPABASE_URL="https://jxjrcjmrkhknltwvzzvr.supabase.co";
+const SUPABASE_KEY="sb_publishable__Pg5UNoizrSpZB3fRvbARw_fNhHGjvl";
 
+let db=null;
+let menuItems=[];
+let cart=[];
+let selectedCategory="All";
 
-/* =========================================
-   SUPABASE CONNECTION
-========================================= */
+const statusBox=document.getElementById("status");
 
-const SUPABASE_URL =
-"https://jxjrcjmrkhknltwvzzvr.supabase.co";
-
-const SUPABASE_KEY =
-"sb_publishable__Pg5UNoizrSpZB3fRvbARw_fNhHGjvl";
-
-
-const db =
-window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
-);
-
-
-/* =========================================
-   VARIABLES
-========================================= */
-
-let menuItems = [];
-
-let cart = [];
-
-let selectedCategory = "All";
-
-
-/* =========================================
-   STATUS
-========================================= */
-
-function setStatus(message){
-
-document
-.getElementById("status")
-.innerText = message;
-
+function setStatus(text){
+statusBox.innerText=text;
 }
-
-
-/* =========================================
-   TABLE NUMBER
-========================================= */
 
 function loadTableNumber(){
-
-const params =
-new URLSearchParams(
-window.location.search
-);
-
-const table =
-params.get("table");
-
-if(table){
-
-document
-.getElementById("tableNumber")
-.innerText =
-"Table No. " + table;
-
+const params=new URLSearchParams(window.location.search);
+const table=params.get("table");
+if(table)document.getElementById("tableNumber").innerText="Table No. "+table;
 }
 
-}
+function displayMenu(items){
+const foodList=document.getElementById("foodList");
+const noResult=document.getElementById("noResult");
+foodList.innerHTML="";
 
-
-/* =========================================
-   LOAD MENU FROM SUPABASE
-========================================= */
-
-async function loadMenu(){
-
-setStatus(
-"🔄 Loading menu..."
-);
-
-const foodList =
-document.getElementById(
-"foodList"
-);
-
-try{
-
-const result =
-await db
-.from("menu_items")
-.select("*")
-.order(
-"id",
-{
-ascending:true
-}
-);
-
-
-if(result.error){
-
-console.error(
-"Supabase Error:",
-result.error
-);
-
-setStatus(
-"❌ Menu load failed"
-);
-
-foodList.innerHTML = `
-
-<div class="error-box">
-
-❌ Menu load nahi hua.
-
-<br><br>
-
-${result.error.message}
-
-</div>
-
-`;
-
+if(!items||items.length===0){
+noResult.style.display="block";
 return;
-
 }
 
+noResult.style.display="none";
 
-const data =
-result.data || [];
+items.forEach(item=>{
+const card=document.createElement("div");
+card.className="food-card";
 
-
-console.log(
-"Menu Data:",
-data
-);
-
-
-if(data.length === 0){
-
-setStatus(
-"⚠️ Menu table empty hai"
-);
-
-foodList.innerHTML = `
-
-<div class="error-box">
-
-⚠️ Abhi menu_items table mein koi item nahi hai.
-
+card.innerHTML=`
+<img src="${item.image}" class="food-image" alt="${item.name}" onerror="this.style.display='none'">
+<div class="food-content">
+<div class="food-name">${item.name}</div>
+<div class="food-description">${item.description}</div>
+<div class="food-bottom">
+<div class="price">₹${item.price}</div>
+<button class="add-btn" onclick="addToCart(${item.id})">+ Add</button>
 </div>
+</div>`;
 
-`;
-
-return;
-
+foodList.appendChild(card);
+});
 }
-
-
-menuItems =
-data.map(
-item => ({
-
-id:item.id,
-
-name:item.name,
-
-price:Number(
-item.price
-),
-
-category:
-item.category ||
-"Other",
-
-description:
-item.description ||
-"",
-
-image:
-item.image_url ||
-"https://via.placeholder.com/800x500?text=Food"
-
-})
-);
-
-
-createCategories();
-
-displayMenu(
-menuItems
-);
-
-
-setStatus(
-"✅ Menu loaded — " +
-menuItems.length +
-" item(s)"
-);
-
-}
-
-catch(error){
-
-console.error(
-error
-);
-
-setStatus(
-"❌ Connection error"
-);
-
-foodList.innerHTML = `
-
-<div class="error-box">
-
-❌ Something went wrong.
-
-<br><br>
-
-${error.message}
-
-</div>
-
-`;
-
-}
-
-}
-
-
-/* =========================================
-   CREATE CATEGORIES
-========================================= */
 
 function createCategories(){
+const box=document.getElementById("categories");
+box.innerHTML="";
 
-const box =
-document.getElementById(
-"categories"
-);
+const all=document.createElement("div");
+all.className="category active";
+all.innerText="All";
+all.onclick=function(){filterCategory("All",this)};
+box.appendChild(all);
 
-box.innerHTML = "";
+const categories=[...new Set(menuItems.map(item=>item.category).filter(Boolean))];
 
-
-const all =
-document.createElement(
-"div"
-);
-
-all.className =
-"category active";
-
-all.innerText =
-"All";
-
-all.onclick =
-function(){
-
-filterCategory(
-"All",
-this
-);
-
-};
-
-box.appendChild(
-all
-);
-
-
-const categories =
-[
-...new Set(
-menuItems
-.map(
-item =>
-item.category
-)
-.filter(Boolean)
-)
-];
-
-
-categories.forEach(
-category => {
-
-const button =
-document.createElement(
-"div"
-);
-
-button.className =
-"category";
-
-button.innerText =
-category;
-
-button.onclick =
-function(){
-
-filterCategory(
-category,
-this
-);
-
-};
-
-box.appendChild(
-button
-);
-
+categories.forEach(category=>{
+const button=document.createElement("div");
+button.className="category";
+button.innerText=category;
+button.onclick=function(){filterCategory(category,this)};
+box.appendChild(button);
 });
-
 }
 
+async function loadMenu(){
+setStatus("🔄 Connecting to menu database...");
 
-/* =========================================
-   DISPLAY MENU
-========================================= */
-
-function displayMenu(
-items
-){
-
-const foodList =
-document.getElementById(
-"foodList"
-);
-
-const noResult =
-document.getElementById(
-"noResult"
-);
-
-
-foodList.innerHTML = "";
-
-
-if(
-!items ||
-items.length === 0
-){
-
-noResult.style.display =
-"block";
-
+if(!window.supabase){
+setStatus("❌ Supabase library load nahi hui.");
 return;
-
 }
 
+try{
+db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-noResult.style.display =
-"none";
+const result=await db.from("menu_items").select("*").order("id",{ascending:true});
 
+console.log("Supabase result:",result);
 
-items.forEach(
-item => {
-
-const card =
-document.createElement(
-"div"
-);
-
-card.className =
-"food-card";
-
-
-card.innerHTML = `
-
-<img
-src="${item.image}"
-class="food-image"
-alt="${item.name}"
-onerror="this.src='https://via.placeholder.com/800x500?text=Food'"
->
-
-<div class="food-content">
-
-<div class="food-title-row">
-
-<div class="food-name">
-${item.name}
-</div>
-
-</div>
-
-
-<div class="food-description">
-${item.description}
-</div>
-
-
-<div class="food-bottom">
-
-<div class="price">
-₹${item.price}
-</div>
-
-
-<button
-class="add-btn"
-onclick="addToCart(${item.id})"
->
-+ Add
-</button>
-
-</div>
-
-</div>
-
-`;
-
-
-foodList.appendChild(
-card
-);
-
-});
-
+if(result.error){
+console.error(result.error);
+setStatus("❌ Database error");
+document.getElementById("foodList").innerHTML=`
+<div class="error-box">
+❌ Menu load nahi hua.<br><br>${result.error.message}
+</div>`;
+return;
 }
 
+const data=result.data||[];
 
-/* =========================================
-   SEARCH
-========================================= */
+if(data.length===0){
+setStatus("⚠️ Database connected hai, lekin menu empty hai.");
+document.getElementById("foodList").innerHTML=`
+<div class="error-box">
+⚠️ menu_items table mein abhi koi item nahi mila.
+</div>`;
+return;
+}
+
+menuItems=data.map(item=>({
+id:item.id,
+name:item.name,
+price:Number(item.price),
+category:item.category||"Other",
+description:item.description||"",
+image:item.image_url||""
+}));
+
+createCategories();
+displayMenu(menuItems);
+setStatus("✅ Menu loaded — "+menuItems.length+" item(s)");
+
+}catch(error){
+console.error("ERROR:",error);
+setStatus("❌ Connection error");
+document.getElementById("foodList").innerHTML=`
+<div class="error-box">
+❌ Something went wrong.<br><br>${error.message}
+</div>`;
+}
+}
 
 function searchFood(){
+const text=document.getElementById("searchInput").value.toLowerCase().trim();
 
-const text =
-document
-.getElementById(
-"searchInput"
-)
-.value
-.toLowerCase()
-.trim();
-
-
-let filtered =
-menuItems.filter(
-item =>
-item.name
-.toLowerCase()
-.includes(text)
+let filtered=menuItems.filter(item=>
+item.name.toLowerCase().includes(text)
 );
 
-
-if(
-selectedCategory !==
-"All"
-){
-
-filtered =
-filtered.filter(
-item =>
-item.category ===
-selectedCategory
-);
-
+if(selectedCategory!=="All"){
+filtered=filtered.filter(item=>item.category===selectedCategory);
 }
 
-
-displayMenu(
-filtered
-);
-
+displayMenu(filtered);
 }
 
+function filterCategory(category,button){
+selectedCategory=category;
 
-/* =========================================
-   CATEGORY FILTER
-========================================= */
-
-function filterCategory(
-category,
-button
-){
-
-selectedCategory =
-category;
-
-
-document
-.querySelectorAll(
-".category"
-)
-.forEach(
-btn =>
-btn.classList.remove(
-"active"
-)
-);
-
-
-button.classList.add(
-"active"
-);
-
-
-searchFood();
-
-}
-
-
-/* =========================================
-   ADD TO CART
-========================================= */
-
-function addToCart(
-id
-){
-
-const item =
-menuItems.find(
-food =>
-food.id === id
-);
-
-
-if(!item){
-
-return;
-
-}
-
-
-const existing =
-cart.find(
-food =>
-food.id === id
-);
-
-
-if(existing){
-
-existing.quantity++;
-
-}
-
-else{
-
-cart.push({
-
-id:item.id,
-
-name:item.name,
-
-price:item.price,
-
-quantity:1
-
+document.querySelectorAll(".category").forEach(btn=>{
+btn.classList.remove("active");
 });
 
+button.classList.add("active");
+searchFood();
 }
 
+function addToCart(id){
+const item=menuItems.find(food=>food.id===id);
+if(!item)return;
+
+const existing=cart.find(food=>food.id===id);
+
+if(existing){
+existing.quantity++;
+}else{
+cart.push({
+id:item.id,
+name:item.name,
+price:item.price,
+quantity:1
+});
+}
 
 updateCart();
-
 }
 
-
-/* =========================================
-   INCREASE
-========================================= */
-
-function increaseQuantity(
-index
-){
-
-if(cart[index]){
-
-cart[index].quantity++;
-
-}
-
+function increaseQuantity(index){
+if(cart[index])cart[index].quantity++;
 updateCart();
-
 }
 
-
-/* =========================================
-   DECREASE
-========================================= */
-
-function decreaseQuantity(
-index
-){
-
-if(!cart[index]){
-
-return;
-
-}
-
+function decreaseQuantity(index){
+if(!cart[index])return;
 
 cart[index].quantity--;
 
-
-if(
-cart[index].quantity <= 0
-){
-
-cart.splice(
-index,
-1
-);
-
+if(cart[index].quantity<=0){
+cart.splice(index,1);
 }
-
 
 updateCart();
-
 }
-
-
-/* =========================================
-   UPDATE CART
-========================================= */
 
 function updateCart(){
+let totalItems=0;
+let totalPrice=0;
 
-let totalItems = 0;
-
-let totalPrice = 0;
-
-
-cart.forEach(
-item => {
-
-totalItems +=
-item.quantity;
-
-totalPrice +=
-item.price *
-item.quantity;
-
-}
-);
-
-
-document
-.getElementById(
-"cartCount"
-)
-.innerText =
-"🛒 Cart (" +
-totalItems +
-")";
-
-
-document
-.getElementById(
-"cartTotal"
-)
-.innerText =
-"₹" +
-totalPrice;
-
-
-const cartList =
-document.getElementById(
-"cartList"
-);
-
-
-if(
-cart.length === 0
-){
-
-cartList.innerHTML =
-'<div class="empty-cart">Your cart is empty</div>';
-
-return;
-
-}
-
-
-cartList.innerHTML = "";
-
-
-cart.forEach(
-(item,index) => {
-
-const total =
-item.price *
-item.quantity;
-
-
-cartList.innerHTML += `
-
-<div class="cart-item">
-
-<div>
-
-<div class="cart-item-name">
-${item.name}
-</div>
-
-<div class="cart-item-price">
-₹${total}
-</div>
-
-</div>
-
-
-<div class="quantity">
-
-<button
-onclick="decreaseQuantity(${index})"
->
-−
-</button>
-
-<span>
-${item.quantity}
-</span>
-
-<button
-onclick="increaseQuantity(${index})"
->
-+
-</button>
-
-</div>
-
-</div>
-
-`;
-
+cart.forEach(item=>{
+totalItems+=item.quantity;
+totalPrice+=item.price*item.quantity;
 });
 
+document.getElementById("cartCount").innerText="🛒 Cart ("+totalItems+")";
+document.getElementById("cartTotal").innerText="₹"+totalPrice;
+
+const cartList=document.getElementById("cartList");
+
+if(cart.length===0){
+cartList.innerHTML='<div class="empty-cart">Your cart is empty</div>';
+return;
 }
 
+cartList.innerHTML="";
 
-/* =========================================
-   TOGGLE CART
-========================================= */
+cart.forEach((item,index)=>{
+const total=item.price*item.quantity;
+
+cartList.innerHTML+=`
+<div class="cart-item">
+<div>
+<div class="cart-item-name">${item.name}</div>
+<div class="cart-item-price">₹${total}</div>
+</div>
+<div class="quantity">
+<button onclick="decreaseQuantity(${index})">−</button>
+<span>${item.quantity}</span>
+<button onclick="increaseQuantity(${index})">+</button>
+</div>
+</div>`;
+});
+}
 
 function toggleCart(){
-
-const cartBox =
-document.getElementById(
-"cartItems"
-);
-
-
-if(
-cartBox.style.display ===
-"block"
-){
-
-cartBox.style.display =
-"none";
-
+const box=document.getElementById("cartItems");
+box.style.display=box.style.display==="block"?"none":"block";
 }
 
-else{
-
-cartBox.style.display =
-"block";
-
-}
-
-}
-
-
-/* =========================================
-   EVENTS
-========================================= */
-
-document
-.getElementById(
-"searchInput"
-)
-.addEventListener(
-"input",
-searchFood
-);
-
-
-document
-.getElementById(
-"cartButton"
-)
-.addEventListener(
-"click",
-toggleCart
-);
-
-
-/* =========================================
-   START
-========================================= */
+document.getElementById("searchInput").addEventListener("input",searchFood);
+document.getElementById("cartButton").addEventListener("click",toggleCart);
 
 loadTableNumber();
-
 updateCart();
-
 loadMenu();
-
-
 </script>
 
 </body>
-
 </html>
