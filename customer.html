@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Restaurant</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f6f6f6;
+            color: #222;
+            padding-bottom: 90px;
+        }
+
+        /* HEADER */
+
+        .header {
+            background: #111;
+            color: white;
+            text-align: center;
+            padding: 22px 15px;
+        }
+
+        .restaurant-name {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .table-number {
+            margin-top: 6px;
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        /* MAIN */
+
+        .container {
+            padding: 15px;
+        }
+
+        /* SEARCH */
+
+        .search {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            font-size: 16px;
+            outline: none;
+            margin-bottom: 16px;
+        }
+
+        /* CATEGORIES */
+
+        .categories {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            margin-bottom: 20px;
+            padding-bottom: 5px;
+        }
+
+        .categories::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category {
+            white-space: nowrap;
+            padding: 10px 17px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .category.active {
+            background: #111;
+            color: white;
+            border-color: #111;
+        }
+
+        /* FOOD CARD */
+
+        .food-card {
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .food-image {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .food-content {
+            padding: 15px;
+        }
+
+        .food-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .food-name {
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .popular {
+            background: #ffe7a3;
+            color: #6b4b00;
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            white-space: nowrap;
+        }
+
+        .food-description {
+            color: #777;
+            font-size: 14px;
+            line-height: 1.4;
+            margin-top: 7px;
+        }
+
+        .food-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 14px;
+        }
+
+        .price {
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .add-btn {
+            background: #111;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 9px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .add-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* CART */
+
+        .cart {
+            position: fixed;
+            bottom: 15px;
+            left: 15px;
+            right: 15px;
+            background: #111;
+            color: white;
+            padding: 16px;
+            border-radius: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+            z-index: 1000;
+        }
+
+        .cart-left {
+            font-weight: bold;
+        }
+
+        .cart-total {
+            font-weight: bold;
+        }
+
+        /* CART DETAILS */
+
+        .cart-items {
+            display: none;
+            position: fixed;
+            bottom: 82px;
+            left: 15px;
+            right: 15px;
+            background: white;
+            border-radius: 15px;
+            padding: 18px;
+            max-height: 60vh;
+            overflow-y: auto;
+            box-shadow: 0 0 25px rgba(0,0,0,0.25);
+            z-index: 999;
+        }
+
+        .cart-items h2 {
+            margin-bottom: 15px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item-name {
+            font-weight: bold;
+        }
+
+        .cart-item-price {
+            color: #666;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .quantity {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .quantity button {
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 7px;
+            background: #111;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .empty-cart {
+            text-align: center;
+            color: #777;
+            padding: 20px 0;
+        }
+
+        .no-result {
+            text-align: center;
+            color: #777;
+            padding: 30px 10px;
+            display: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px 10px;
+            color: #777;
+        }
+
+        .error-box {
+            background: #f8d7da;
+            color: #842029;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div class="restaurant-name">
+            🍽️ My Restaurant
+        </div>
+
+        <div
+            class="table-number"
+            id="tableNumber"
+        >
+            Table No. 5
+        </div>
+
+    </div>
+
+
+    <!-- MENU -->
+
+    <div class="container">
+
+
+        <!-- SEARCH -->
+
+        <input
+            type="text"
+            class="search"
+            id="searchInput"
+            placeholder="🔍 Search food..."
+            onkeyup="searchFood()"
+        >
+
+
+        <!-- CATEGORIES -->
+
+        <div
+            class="categories"
+            id="categories"
+        >
+
+            <div
+                class="category active"
+                onclick="filterCategory('All', this)"
+            >
+                All
+            </div>
+
+        </div>
+
+
+        <!-- FOOD LIST -->
+
+        <div id="foodList">
+
+            <div class="loading">
+                Loading menu... 🍽️
+            </div>
+
+        </div>
+
+
+        <div
+            class="no-result"
+            id="noResult"
+        >
+            No food found 😕
+        </div>
+
+    </div>
+
+
+    <!-- CART DETAILS -->
+
+    <div
+        class="cart-items"
+        id="cartItems"
+    >
+
+        <h2>🛒 Your Cart</h2>
+
+        <div id="cartList"></div>
+
+    </div>
+
+
+    <!-- CART BUTTON -->
+
+    <div
+        class="cart"
+        onclick="toggleCart()"
+    >
+
+        <div
+            class="cart-left"
+            id="cartCount"
+        >
+            🛒 Cart (0)
+        </div>
+
+        <div
+            class="cart-total"
+            id="cartTotal"
+        >
+            ₹0
+        </div>
+
+    </div>
+
+
+    <!-- SUPABASE -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <script>
+
+
+        /* =========================================
+           SUPABASE CONNECTION
+        ========================================= */
+
+
+        const SUPABASE_URL =
+            "https://jxjrcjmrkhknltwvzzvr.supabase.co";
+
+
+        const SUPABASE_KEY =
+            "sb_publishable__Pg5UNoizrSpZB3fRvbARw_fNhHGjvl";
+
+
+        const db =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_KEY
+            );
+
+
+        /* =========================================
+           VARIABLES
+        ========================================= */
+
+
+        let menuItems = [];
+
+        let cart = [];
+
+        let selectedCategory = "All";
+
+
+        /* =========================================
+           GET TABLE NUMBER FROM QR
+        ========================================= */
+
+
+        function loadTableNumber() {
+
+
+            const urlParams =
+                new URLSearchParams(
+                    window.location.search
+                );
+
+
+            const table =
+                urlParams.get("table");
+
+
+            if (table) {
+
+                document
+                    .getElementById("tableNumber")
+                    .innerText =
+                    "Table No. " + table;
+
+            }
+
+        }
+
+
+        /* =========================================
+           LOAD MENU FROM SUPABASE
+        ========================================= */
+
+
+        async function loadMenu() {
+
+
+            const foodList =
+                document.getElementById(
+                    "foodList"
+                );
+
+
+            foodList.innerHTML = `
+                <div class="loading">
+                    Loading menu... 🍽️
+                </div>
+            `;
+
+
+            const { data, error } =
+                await db
+                .from("menu_items")
+                .select("*")
+                .order("id", {
+                    ascending: true
+                });
+
+
+            if (error) {
+
+
+                foodList.innerHTML = `
+
+                    <div class="error-box">
+
+                        ❌ Menu load nahi ho raha.
+
+                        <br><br>
+
+                        ${error.message}
+
+                    </div>
+
+                `;
+
+
+                return;
+
+            }
+
+
+            menuItems =
+                data.map(item => ({
+
+                    id: item.id,
+
+                    name: item.name,
+
+                    price: Number(item.price),
+
+                    category: item.category,
+
+                    description:
+                        item.description || "",
+
+                    image:
+                        item.image_url ||
+                        "https://via.placeholder.com/800x500?text=Food",
+
+                    popular: false
+
+                }));
+
+
+            createCategories();
+
+
+            displayMenu(
+                menuItems
+            );
+
+        }
+
+
+        /* =========================================
+           CREATE CATEGORIES FROM DATABASE
+        ========================================= */
+
+
+        function createCategories() {
+
+
+            const categoriesBox =
+                document.getElementById(
+                    "categories"
+                );
+
+
+            categoriesBox.innerHTML = `
+
+                <div
+                    class="category active"
+                    onclick="filterCategory('All', this)"
+                >
+                    All
+                </div>
+
+            `;
+
+
+            const uniqueCategories =
+                [
+                    ...new Set(
+                        menuItems
+                            .map(item => item.category)
+                            .filter(Boolean)
+                    )
+                ];
+
+
+            uniqueCategories.forEach(
+                category => {
+
+
+                    const button =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    button.className =
+                        "category";
+
+
+                    button.innerText =
+                        category;
+
+
+                    button.onclick =
+                        function() {
+
+                            filterCategory(
+                                category,
+                                this
+                            );
+
+                        };
+
+
+                    categoriesBox
+                        .appendChild(
+                            button
+                        );
+
+                }
+            );
+
+        }
+
+
+        /* =========================================
+           DISPLAY MENU
+        ========================================= */
+
+
+        function displayMenu(items) {
+
+
+            const foodList =
+                document.getElementById(
+                    "foodList"
+                );
+
+
+            const noResult =
+                document.getElementById(
+                    "noResult"
+                );
+
+
+            foodList.innerHTML = "";
+
+
+            if (items.length === 0) {
+
+                noResult.style.display =
+                    "block";
+
+                return;
+
+            }
+
+
+            noResult.style.display =
+                "none";
+
+
+            items.forEach(item => {
+
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "food-card";
+
+
+                card.innerHTML = `
+
+                    <img
+                        src="${item.image}"
+                        class="food-image"
+                        alt="${item.name}"
+                        onerror="this.src='https://via.placeholder.com/800x500?text=Food'"
+                    >
+
+
+                    <div class="food-content">
+
+
+                        <div class="food-title-row">
+
+
+                            <div class="food-name">
+                                ${item.name}
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="food-description">
+                            ${item.description}
+                        </div>
+
+
+                        <div class="food-bottom">
+
+
+                            <div class="price">
+                                ₹${item.price}
+                            </div>
+
+
+                            <button
+                                class="add-btn"
+                                onclick="addToCart(${item.id})"
+                            >
+                                + Add
+                            </button>
+
+
+                        </div>
+
+
+                    </div>
+
+                `;
+
+
+                foodList.appendChild(
+                    card
+                );
+
+            });
+
+        }
+
+
+        /* =========================================
+           ADD TO CART
+        ========================================= */
+
+
+        function addToCart(id) {
+
+
+            const item =
+                menuItems.find(
+                    food => food.id === id
+                );
+
+
+            if (!item) {
+
+                return;
+
+            }
+
+
+            const existingItem =
+                cart.find(
+                    food => food.id === id
+                );
+
+
+            if (existingItem) {
+
+                existingItem.quantity++;
+
+            }
+
+            else {
+
+                cart.push({
+
+                    id: item.id,
+
+                    name: item.name,
+
+                    price: item.price,
+
+                    quantity: 1
+
+                });
+
+            }
+
+
+            updateCart();
+
+        }
+
+
+        /* =========================================
+           INCREASE
+        ========================================= */
+
+
+        function increaseQuantity(index) {
+
+            cart[index].quantity++;
+
+            updateCart();
+
+        }
+
+
+        /* =========================================
+           DECREASE
+        ========================================= */
+
+
+        function decreaseQuantity(index) {
+
+
+            cart[index].quantity--;
+
+
+            if (
+                cart[index].quantity <= 0
+            ) {
+
+                cart.splice(
+                    index,
+                    1
+                );
+
+            }
+
+
+            updateCart();
+
+        }
+
+
+        /* =========================================
+           UPDATE CART
+        ========================================= */
+
+
+        function updateCart() {
+
+
+            let totalItems = 0;
+
+            let totalPrice = 0;
+
+
+            cart.forEach(item => {
+
+
+                totalItems +=
+                    item.quantity;
+
+
+                totalPrice +=
+                    item.price *
+                    item.quantity;
+
+            });
+
+
+            document
+                .getElementById(
+                    "cartCount"
+                )
+                .innerText =
+                "🛒 Cart (" +
+                totalItems +
+                ")";
+
+
+            document
+                .getElementById(
+                    "cartTotal"
+                )
+                .innerText =
+                "₹" +
+                totalPrice;
+
+
+            const cartList =
+                document.getElementById(
+                    "cartList"
+                );
+
+
+            if (cart.length === 0) {
+
+
+                cartList.innerHTML =
+                    '<div class="empty-cart">Your cart is empty</div>';
+
+
+                return;
+
+            }
+
+
+            cartList.innerHTML = "";
+
+
+            cart.forEach(
+                (item, index) => {
+
+
+                    const itemTotal =
+                        item.price *
+                        item.quantity;
+
+
+                    cartList.innerHTML += `
+
+                        <div class="cart-item">
+
+
+                            <div>
+
+                                <div class="cart-item-name">
+                                    ${item.name}
+                                </div>
+
+
+                                <div class="cart-item-price">
+                                    ₹${itemTotal}
+                                </div>
+
+                            </div>
+
+
+                            <div class="quantity">
+
+
+                                <button
+                                    onclick="decreaseQuantity(${index})"
+                                >
+                                    −
+                                </button>
+
+
+                                <span>
+                                    ${item.quantity}
+                                </span>
+
+
+                                <button
+                                    onclick="increaseQuantity(${index})"
+                                >
+                                    +
+                                </button>
+
+
+                            </div>
+
+
+                        </div>
+
+                    `;
+
+                }
+            );
+
+        }
+
+
+        /* =========================================
+           OPEN / CLOSE CART
+        ========================================= */
+
+
+        function toggleCart() {
+
+
+            const cartBox =
+                document.getElementById(
+                    "cartItems"
+                );
+
+
+            if (
+                cartBox.style.display ===
+                "block"
+            ) {
+
+                cartBox.style.display =
+                    "none";
+
+            }
+
+            else {
+
+                cartBox.style.display =
+                    "block";
+
+            }
+
+        }
+
+
+        /* =========================================
+           SEARCH
+        ========================================= */
+
+
+        function searchFood() {
+
+
+            const searchText =
+                document
+                .getElementById(
+                    "searchInput"
+                )
+                .value
+                .toLowerCase();
+
+
+            let filteredItems =
+                menuItems.filter(
+                    item => {
+
+
+                        return item.name
+                            .toLowerCase()
+                            .includes(
+                                searchText
+                            );
+
+                    }
+                );
