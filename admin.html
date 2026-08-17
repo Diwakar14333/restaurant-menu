@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Restaurant Admin</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #222;
+        }
+
+        .header {
+            background: #111;
+            color: white;
+            padding: 20px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+        }
+
+        .header p {
+            color: #bbb;
+            margin-top: 5px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .card .icon {
+            font-size: 30px;
+        }
+
+        .card h3 {
+            margin-top: 8px;
+        }
+
+        .card p {
+            color: #777;
+            margin-top: 5px;
+        }
+
+        .section {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .section h2 {
+            margin-bottom: 8px;
+        }
+
+        .description {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            border: none;
+            padding: 12px 16px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 4px;
+        }
+
+        .primary {
+            background: #111;
+            color: white;
+        }
+
+        .save {
+            background: #198754;
+            color: white;
+        }
+
+        .edit {
+            background: #ffc107;
+            color: #111;
+        }
+
+        .delete {
+            background: #dc3545;
+            color: white;
+        }
+
+        .cancel {
+            background: #ddd;
+            color: #222;
+        }
+
+        #itemForm {
+            display: none;
+            margin-top: 20px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ddd;
+            border-radius: 9px;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .menu-image {
+            width: 75px;
+            height: 75px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .menu-info {
+            flex: 1;
+        }
+
+        .menu-name {
+            font-weight: bold;
+            font-size: 17px;
+        }
+
+        .menu-category {
+            color: #777;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .menu-price {
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .message {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .success-message {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+        @media (max-width: 600px) {
+
+            .container {
+                padding: 15px;
+            }
+
+            .dashboard {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .menu-item {
+                align-items: flex-start;
+            }
+
+            .menu-actions {
+                display: flex;
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="header">
+
+    <h1>🧑‍💼 Restaurant Admin</h1>
+
+    <p>Reception / Management Panel</p>
+
+</div>
+
+
+<div class="container">
+
+
+    <!-- DASHBOARD -->
+
+    <div class="dashboard">
+
+        <div class="card">
+
+            <div class="icon">🍔</div>
+
+            <h3>Menu Items</h3>
+
+            <p id="itemCount">0 Items</p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">🪑</div>
+
+            <h3>Tables</h3>
+
+            <p>10 Tables</p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">📋</div>
+
+            <h3>Orders</h3>
+
+            <p>0 Orders</p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">💳</div>
+
+            <h3>Payments</h3>
+
+            <p>0 Pending</p>
+
+        </div>
+
+    </div>
+
+
+    <!-- MENU MANAGEMENT -->
+
+    <div class="section">
+
+        <h2>🍔 Menu Management</h2>
+
+        <p class="description">
+            Yahan se restaurant ka complete menu manage hoga.
+        </p>
+
+
+        <button
+            class="primary"
+            onclick="openAddForm()"
+        >
+            ➕ Add New Item
+        </button>
+
+
+        <div id="itemForm">
+
+
+            <h3 id="formTitle">
+                Add New Item
+            </h3>
+
+            <br>
+
+
+            <div class="form-group">
+
+                <label>Food Name</label>
+
+                <input
+                    type="text"
+                    id="itemName"
+                    placeholder="Example: Chicken Biryani"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Price (₹)</label>
+
+                <input
+                    type="number"
+                    id="itemPrice"
+                    placeholder="Example: 180"
+                    min="1"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Category</label>
+
+                <select id="itemCategory">
+
+                    <option value="">
+                        Select Category
+                    </option>
+
+                    <option value="Biryani">
+                        Biryani
+                    </option>
+
+                    <option value="Pizza">
+                        Pizza
+                    </option>
+
+                    <option value="Drinks">
+                        Drinks
+                    </option>
+
+                    <option value="Desserts">
+                        Desserts
+                    </option>
+
+                    <option value="Starters">
+                        Starters
+                    </option>
+
+                    <option value="Main Course">
+                        Main Course
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Description</label>
+
+                <textarea
+                    id="itemDescription"
+                    placeholder="Food description"
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Image URL</label>
+
+                <input
+                    type="url"
+                    id="itemImage"
+                    placeholder="Paste image URL"
+                >
+
+            </div>
+
+
+            <button
+                class="save"
+                onclick="saveItem()"
+            >
+                💾 Save Item
+            </button>
+
+
+            <button
+                class="cancel"
+                onclick="closeForm()"
+            >
+                Cancel
+            </button>
+
+
+        </div>
+
+
+        <div
+            id="successMessage"
+            class="message success-message"
+        ></div>
+
+
+        <div
+            id="errorMessage"
+            class="message error-message"
+        ></div>
+
+
+    </div>
+
+
+    <!-- CURRENT MENU -->
+
+    <div class="section">
+
+        <h2>📋 Current Menu</h2>
+
+        <p class="description">
+            Ye items directly database se load ho rahe hain.
+        </p>
+
+
+        <div id="menuList">
+
+            Loading menu...
+
+        </div>
+
+    </div>
+
+
+    <!-- TABLES -->
+
+    <div class="section">
+
+        <h2>🪑 Table Management</h2>
+
+        <p class="description">
+            Tables aur QR codes yahan manage honge.
+        </p>
+
+
+        <button
+            class="primary"
+            onclick="comingSoon('Table Management')"
+        >
+            🪑 Manage Tables
+        </button>
+
+
+        <button
+            class="primary"
+            onclick="comingSoon('QR Generator')"
+        >
+            📱 Generate QR Codes
+        </button>
+
+    </div>
+
+
+    <!-- ORDERS -->
+
+    <div class="section">
+
+        <h2>📋 Orders & Payments</h2>
+
+        <p class="description">
+            Customer orders aur payment status yahan manage honge.
+        </p>
+
+
+        <button
+            class="primary"
+            onclick="comingSoon('Orders')"
+        >
+            📋 View Orders
+        </button>
+
+
+        <button
+            class="primary"
+            onclick="comingSoon('Payments')"
+        >
+            💳 Payment Dashboard
+        </button>
+
+    </div>
+
+
+</div>
+
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+
+/*
+==================================================
+SUPABASE CONNECTION
+==================================================
+*/
+
+
+const SUPABASE_URL =
+    "https://jxjrcjmrkhknltwvzzvr.supabase.co";
+
+
+const SUPABASE_KEY =
+    "sb_publishable__Pg5UNoizrSpZB3fRvbARw_fNhHGjvl";
+
+
+const db =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/*
+==================================================
+EDITING ITEM ID
+==================================================
+*/
+
+
+let editingItemId = null;
+
+
+/*
+==================================================
+LOAD MENU FROM DATABASE
+==================================================
+*/
+
+
+async function loadMenu() {
+
+
+    const menuList =
+        document.getElementById("menuList");
+
+
+    menuList.innerHTML =
+        "Loading menu...";
+
+
+    const { data, error } =
+        await db
+        .from("menu_items")
+        .select("*")
+        .order("id", {
+            ascending: false
+        });
+
+
+    if (error) {
+
+        showError(
+            "Database se menu load nahi ho raha: " +
+            error.message
+        );
+
+        menuList.innerHTML =
+            "Menu load failed.";
+
+        return;
+
+    }
+
+
+    displayMenu(data);
+
+}
+
+
+/*
+==================================================
+DISPLAY MENU
+==================================================
+*/
+
+
+function displayMenu(items) {
+
+
+    const menuList =
+        document.getElementById("menuList");
+
+
+    menuList.innerHTML = "";
+
+
+    document.getElementById("itemCount")
+        .innerText =
+        items.length + " Items";
+
+
+    if (items.length === 0) {
+
+        menuList.innerHTML =
+            "<p>No menu items available.</p>";
+
+        return;
+
+    }
+
+
+    items.forEach(item => {
+
+
+        const image =
+            item.image_url ||
+            "https://via.placeholder.com/75";
+
+
+        menuList.innerHTML += `
+
+            <div class="menu-item">
+
+                <img
+                    src="${image}"
+                    class="menu-image"
+                    alt="${item.name}"
+                >
+
+
+                <div class="menu-info">
+
+                    <div class="menu-name">
+                        ${item.name}
+                    </div>
+
+
+                    <div class="menu-category">
+                        ${item.category || ""}
+                    </div>
+
+
+                    <div class="menu-price">
+                        ₹${item.price}
+                    </div>
+
+                </div>
+
+
+                <div class="menu-actions">
+
+                    <button
+                        class="edit"
+                        onclick="editItem(${item.id})"
+                    >
+                        ✏️ Edit
+                    </button>
+
+
+                    <button
+                        class="delete"
+                        onclick="deleteItem(${item.id})"
+                    >
+                        🗑️ Delete
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+    });
+
+}
+
+
+/*
+==================================================
+OPEN ADD FORM
+==================================================
+*/
+
+
+function openAddForm() {
+
+
+    editingItemId = null;
+
+
+    document.getElementById("formTitle")
+        .innerText =
+        "Add New Item";
+
+
+    clearForm();
+
+
+    document.getElementById("itemForm")
+        .style.display =
+        "block";
+
+
+    window.scrollTo({
+        top: 300,
+        behavior: "smooth"
+    });
+
+}
+
+
+/*
+==================================================
+EDIT ITEM
+==================================================
+*/
+
+
+async function editItem(id) {
+
+
+    const { data, error } =
+        await db
+        .from("menu_items")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+
+    if (error) {
+
+        showError(
+            "Item load nahi hua: " +
+            error.message
+        );
+
+        return;
+
+    }
+
+
+    editingItemId = id;
+
+
+    document.getElementById("formTitle")
+        .innerText =
+        "Edit Item";
+
+
+    document.getElementById("itemName")
+        .value =
+        data.name || "";
+
+
+    document.getElementById("itemPrice")
+        .value =
+        data.price || "";
+
+
+    document.getElementById("itemCategory")
+        .value =
+        data.category || "";
+
+
+    document.getElementById("itemDescription")
+        .value =
+        data.description || "";
+
+
+    document.getElementById("itemImage")
+        .value =
+        data.image_url || "";
+
+
+    document.getElementById("itemForm")
+        .style.display =
+        "block";
+
+
+    window.scrollTo({
+        top: 300,
+        behavior: "smooth"
+    });
+
+}
+
+
+/*
+==================================================
+SAVE ITEM
+==================================================
+*/
+
+
+async function saveItem() {
+
+
+    const name =
+        document.getElementById("itemName")
+        .value
+        .trim();
+
+
+    const price =
+        document.getElementById("itemPrice")
+        .value;
+
+
+    const category =
+        document.getElementById("itemCategory")
+        .value;
+
+
+    const description =
+        document.getElementById("itemDescription")
+        .value
+        .trim();
+
+
+    const image =
+        document.getElementById("itemImage")
+        .value
+        .trim();
+
+
+    if (!name) {
+
+        alert("Food name enter karo.");
+
+        return;
+
+    }
+
+
+    if (!price || Number(price) <= 0) {
+
+        alert("Valid price enter karo.");
+
+        return;
+
+    }
+
+
+    if (!category) {
+
+        alert("Category select karo.");
+
+        return;
+
+    }
+
+
+    if (!description) {
+
+        alert("Description enter karo.");
+
+        return;
+
+    }
+
+
+    if (!image) {
+
+        alert("Image URL enter karo.");
+
+        return;
+
+    }
+
+
+    const itemData = {
+
+        name: name,
+
+        price: Number(price),
+
+        category: category,
+
+        description: description,
+
+        image_url: image
+
+    };
+
+
+    /* EDIT */
+
+    if (editingItemId !== null) {
+
+
+        const { error } =
+            await db
+            .from("menu_items")
+            .update(itemData)
+            .eq("id", editingItemId);
+
+
+        if (error) {
+
+            showError(
+                "Update failed: " +
+                error.message
+            );
+
+            return;
+
+        }
+
+
+        showSuccess(
+            "✅ Item successfully updated!"
+        );
+
+    }
+
+
+    /* ADD */
+
+    else {
+
+
+        const { error } =
+            await db
+            .from("menu_items")
+            .insert([itemData]);
+
+
+        if (error) {
+
+            showError(
+                "Item save nahi hua: " +
+                error.message
+            );
+
+            return;
+
+        }
+
+
+        showSuccess(
+            "✅ New item successfully added!"
+        );
+
+    }
+
+
+    closeForm();
+
+
+    loadMenu();
+
+}
+
+
+/*
+==================================================
+DELETE ITEM
+==================================================
+*/
+
+
+async function deleteItem(id) {
+
+
+    const confirmDelete =
+        confirm(
+            "Kya tum sure ho ki ye item delete karna hai?"
+        );
+
+
+    if (!confirmDelete) {
+
+        return;
+
+    }
+
+
+    const { error } =
+        await db
+        .from("menu_items")
+        .delete()
+        .eq("id", id);
+
+
+    if (error) {
+
+        showError(
+            "Delete failed: " +
+            error.message
+        );
+
+        return;
+
+    }
+
+
+    showSuccess(
+        "🗑️ Item successfully deleted!"
+    );
+
+
+    loadMenu();
+
+}
+
+
+/*
+==================================================
+CLOSE FORM
+==================================================
+*/
+
+
+function closeForm() {
+
+
+    document.getElementById("itemForm")
+        .style.display =
+        "none";
+
+
+    editingItemId = null;
+
+
+    clearForm();
+
+}
+
+
+/*
+==================================================
+CLEAR FORM
+==================================================
+*/
+
+
+function clearForm() {
+
+
+    document.getElementById("itemName")
+        .value = "";
+
+
+    document.getElementById("itemPrice")
+        .value = "";
+
+
+    document.getElementById("itemCategory")
+        .value = "";
+
+
+    document.getElementById("itemDescription")
+        .value = "";
+
+
+    document.getElementById("itemImage")
+        .value = "";
+
+}
+
+
+/*
+==================================================
+MESSAGES
+==================================================
+*/
+
+
+function showSuccess(message) {
+
+
+    const box =
+        document.getElementById(
+            "successMessage"
+        );
+
+
+    box.innerText =
+        message;
+
+
+    box.style.display =
+        "block";
+
+
+    setTimeout(() => {
+
+        box.style.display =
+            "none";
+
+    }, 3000);
+
+}
+
+
+function showError(message) {
+
+
+    const box =
+        document.getElementById(
+            "errorMessage"
+        );
+
+
+    box.innerText =
+        "❌ " + message;
+
+
+    box.style.display =
+        "block";
+
+
+    setTimeout(() => {
+
+        box.style.display =
+            "none";
+
+    }, 6000);
+
+}
+
+
+/*
+==================================================
+COMING SOON
+==================================================
+*/
+
+
+function comingSoon(name) {
+
+    alert(
+        name +
+        " next step mein banayenge 😙🤟🏻"
+    );
+
+}
+
+
+/*
+==================================================
+START
+==================================================
+*/
+
+
+loadMenu();
+
+
+</script>
+
+
+</body>
+
+</html>
