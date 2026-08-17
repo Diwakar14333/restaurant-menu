@@ -2,9 +2,7 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>My Restaurant</title>
@@ -24,6 +22,8 @@
             padding-bottom: 90px;
         }
 
+        /* HEADER */
+
         .header {
             background: #111;
             color: white;
@@ -42,9 +42,13 @@
             font-size: 14px;
         }
 
+        /* MAIN */
+
         .container {
             padding: 15px;
         }
+
+        /* SEARCH */
 
         .search {
             width: 100%;
@@ -55,6 +59,8 @@
             outline: none;
             margin-bottom: 16px;
         }
+
+        /* CATEGORIES */
 
         .categories {
             display: flex;
@@ -83,6 +89,8 @@
             color: white;
             border-color: #111;
         }
+
+        /* FOOD CARD */
 
         .food-card {
             background: white;
@@ -148,6 +156,8 @@
             transform: scale(0.96);
         }
 
+        /* CART */
+
         .cart {
             position: fixed;
             bottom: 15px;
@@ -172,6 +182,8 @@
         .cart-total {
             font-weight: bold;
         }
+
+        /* CART DETAILS */
 
         .cart-items {
             display: none;
@@ -253,6 +265,7 @@
             padding: 15px;
             border-radius: 10px;
             text-align: center;
+            line-height: 1.5;
         }
 
     </style>
@@ -262,6 +275,8 @@
 
 <body>
 
+
+    <!-- HEADER -->
 
     <div class="header">
 
@@ -279,8 +294,12 @@
     </div>
 
 
+    <!-- MENU -->
+
     <div class="container">
 
+
+        <!-- SEARCH -->
 
         <input
             type="text"
@@ -290,6 +309,8 @@
             onkeyup="searchFood()"
         >
 
+
+        <!-- CATEGORIES -->
 
         <div
             class="categories"
@@ -305,6 +326,8 @@
 
         </div>
 
+
+        <!-- FOOD LIST -->
 
         <div id="foodList">
 
@@ -325,6 +348,8 @@
     </div>
 
 
+    <!-- CART DETAILS -->
+
     <div
         class="cart-items"
         id="cartItems"
@@ -336,6 +361,8 @@
 
     </div>
 
+
+    <!-- CART BUTTON -->
 
     <div
         class="cart"
@@ -359,7 +386,7 @@
     </div>
 
 
-    <!-- SUPABASE -->
+    <!-- SUPABASE LIBRARY -->
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -368,7 +395,7 @@
 
 
         /* =========================================
-           SUPABASE
+           SUPABASE CONNECTION
         ========================================= */
 
 
@@ -400,7 +427,7 @@
 
 
         /* =========================================
-           TABLE NUMBER
+           GET TABLE NUMBER
         ========================================= */
 
 
@@ -411,8 +438,10 @@
                     window.location.search
                 );
 
+
             const table =
                 urlParams.get("table");
+
 
             if (table) {
 
@@ -448,24 +477,104 @@
             `;
 
 
-            const result =
-                await db
-                .from("menu_items")
-                .select("*")
-                .order("id", {
-                    ascending: true
-                });
+            try {
 
 
-            const data =
-                result.data;
+                const result =
+                    await db
+                    .from("menu_items")
+                    .select("*")
+                    .order("id", {
+                        ascending: true
+                    });
 
 
-            const error =
-                result.error;
+                const data =
+                    result.data;
 
 
-            if (error) {
+                const error =
+                    result.error;
+
+
+                console.log(
+                    "Supabase menu data:",
+                    data
+                );
+
+
+                console.log(
+                    "Supabase menu error:",
+                    error
+                );
+
+
+                if (error) {
+
+                    throw error;
+
+                }
+
+
+                if (!data) {
+
+                    throw new Error(
+                        "No data received from Supabase."
+                    );
+
+                }
+
+
+                menuItems =
+                    data.map(item => {
+
+                        return {
+
+                            id: item.id,
+
+                            name:
+                                item.name,
+
+                            price:
+                                Number(
+                                    item.price
+                                ),
+
+                            category:
+                                item.category ||
+                                "Other",
+
+                            description:
+                                item.description ||
+                                "",
+
+                            image:
+                                item.image_url ||
+                                "https://via.placeholder.com/800x500?text=Food"
+
+                        };
+
+                    });
+
+
+                createCategories();
+
+
+                displayMenu(
+                    menuItems
+                );
+
+
+            }
+
+            catch (error) {
+
+
+                console.error(
+                    "Menu loading error:",
+                    error
+                );
+
 
                 foodList.innerHTML = `
 
@@ -481,41 +590,7 @@
 
                 `;
 
-                return;
-
             }
-
-
-            menuItems =
-                data.map(item => {
-
-                    return {
-
-                        id: item.id,
-
-                        name: item.name,
-
-                        price:
-                            Number(item.price),
-
-                        category:
-                            item.category || "Other",
-
-                        description:
-                            item.description || "",
-
-                        image:
-                            item.image_url ||
-                            "https://via.placeholder.com/800x500?text=Food"
-
-                    };
-
-                });
-
-
-            createCategories();
-
-            displayMenu(menuItems);
 
         }
 
@@ -550,7 +625,10 @@
                 [
                     ...new Set(
                         menuItems
-                            .map(item => item.category)
+                            .map(
+                                item =>
+                                    item.category
+                            )
                             .filter(Boolean)
                     )
                 ];
@@ -618,7 +696,10 @@
             foodList.innerHTML = "";
 
 
-            if (items.length === 0) {
+            if (
+                !items ||
+                items.length === 0
+            ) {
 
                 noResult.style.display =
                     "block";
@@ -715,7 +796,8 @@
 
             const item =
                 menuItems.find(
-                    food => food.id === id
+                    food =>
+                        food.id === id
                 );
 
 
@@ -728,7 +810,8 @@
 
             const existing =
                 cart.find(
-                    food => food.id === id
+                    food =>
+                        food.id === id
                 );
 
 
@@ -742,13 +825,17 @@
 
                 cart.push({
 
-                    id: item.id,
+                    id:
+                        item.id,
 
-                    name: item.name,
+                    name:
+                        item.name,
 
-                    price: item.price,
+                    price:
+                        item.price,
 
-                    quantity: 1
+                    quantity:
+                        1
 
                 });
 
@@ -761,13 +848,21 @@
 
 
         /* =========================================
-           INCREASE
+           INCREASE QUANTITY
         ========================================= */
 
 
         function increaseQuantity(index) {
 
-            cart[index].quantity++;
+
+            if (
+                cart[index]
+            ) {
+
+                cart[index].quantity++;
+
+            }
+
 
             updateCart();
 
@@ -775,11 +870,21 @@
 
 
         /* =========================================
-           DECREASE
+           DECREASE QUANTITY
         ========================================= */
 
 
         function decreaseQuantity(index) {
+
+
+            if (
+                !cart[index]
+            ) {
+
+                return;
+
+            }
+
 
             cart[index].quantity--;
 
@@ -816,8 +921,10 @@
 
             cart.forEach(item => {
 
+
                 totalItems +=
                     item.quantity;
+
 
                 totalPrice +=
                     item.price *
@@ -851,7 +958,9 @@
                 );
 
 
-            if (cart.length === 0) {
+            if (
+                cart.length === 0
+            ) {
 
                 cartList.innerHTML =
                     '<div class="empty-cart">Your cart is empty</div>';
@@ -877,11 +986,13 @@
 
                         <div class="cart-item">
 
+
                             <div>
 
                                 <div class="cart-item-name">
                                     ${item.name}
                                 </div>
+
 
                                 <div class="cart-item-price">
                                     ₹${total}
@@ -892,15 +1003,18 @@
 
                             <div class="quantity">
 
+
                                 <button
                                     onclick="decreaseQuantity(${index})"
                                 >
                                     −
                                 </button>
 
+
                                 <span>
                                     ${item.quantity}
                                 </span>
+
 
                                 <button
                                     onclick="increaseQuantity(${index})"
@@ -908,110 +1022,10 @@
                                     +
                                 </button>
 
+
                             </div>
+
 
                         </div>
 
                     `;
-
-                }
-            );
-
-        }
-
-
-        /* =========================================
-           CART OPEN / CLOSE
-        ========================================= */
-
-
-        function toggleCart() {
-
-
-            const cartBox =
-                document.getElementById(
-                    "cartItems"
-                );
-
-
-            if (
-                cartBox.style.display ===
-                "block"
-            ) {
-
-                cartBox.style.display =
-                    "none";
-
-            }
-
-            else {
-
-                cartBox.style.display =
-                    "block";
-
-            }
-
-        }
-
-
-        /* =========================================
-           SEARCH
-        ========================================= */
-
-
-        function searchFood() {
-
-
-            const text =
-                document
-                .getElementById(
-                    "searchInput"
-                )
-                .value
-                .toLowerCase();
-
-
-            let filtered =
-                menuItems.filter(
-                    item => {
-
-                        return item.name
-                            .toLowerCase()
-                            .includes(text);
-
-                    }
-                );
-
-
-            if (
-                selectedCategory !==
-                "All"
-            ) {
-
-                filtered =
-                    filtered.filter(
-                        item =>
-                            item.category ===
-                            selectedCategory
-                    );
-
-            }
-
-
-            displayMenu(filtered);
-
-        }
-
-
-        /* =========================================
-           CATEGORY
-        ========================================= */
-
-
-        function filterCategory(
-            category,
-            button
-        ) {
-
-
-            selectedCategory =
