@@ -54,8 +54,13 @@ margin-bottom:25px;
 background:white;
 padding:20px;
 border-radius:15px;
-box-shadow:0 3px 12px rgba(0,0,0,0.08);
+box-shadow:0 3px 12px rgba(0,0,0,.08);
 cursor:pointer;
+transition:.2s;
+}
+
+.card:active{
+transform:scale(.98);
 }
 
 .card .icon{
@@ -76,7 +81,7 @@ background:white;
 padding:20px;
 border-radius:15px;
 margin-bottom:20px;
-box-shadow:0 3px 12px rgba(0,0,0,0.08);
+box-shadow:0 3px 12px rgba(0,0,0,.08);
 }
 
 .section h2{
@@ -207,10 +212,120 @@ background:#f8d7da;
 color:#842029;
 }
 
-/* LIVE ORDERS */
 
-#ordersSection{
-display:none;
+/* ==============================
+   ORDERS DRAWER
+============================== */
+
+.orders-overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.45);
+backdrop-filter:blur(3px);
+opacity:0;
+visibility:hidden;
+transition:.3s;
+z-index:1999;
+}
+
+.orders-overlay.show{
+opacity:1;
+visibility:visible;
+}
+
+.orders-drawer{
+position:fixed;
+top:0;
+right:0;
+width:430px;
+max-width:92%;
+height:100vh;
+background:#f5f5f5;
+transform:translateX(100%);
+transition:.35s ease;
+z-index:2000;
+box-shadow:-8px 0 30px rgba(0,0,0,.25);
+display:flex;
+flex-direction:column;
+}
+
+.orders-drawer.show{
+transform:translateX(0);
+}
+
+.orders-header{
+background:#111;
+color:white;
+padding:20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.orders-header h2{
+font-size:20px;
+}
+
+.close-orders{
+background:rgba(255,255,255,.15);
+color:white;
+width:38px;
+height:38px;
+padding:0;
+margin:0;
+border-radius:50%;
+font-size:22px;
+}
+
+.orders-body{
+padding:15px;
+overflow-y:auto;
+flex:1;
+}
+
+.orders-summary{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+margin-bottom:15px;
+}
+
+.summary-card{
+background:white;
+padding:15px;
+border-radius:13px;
+box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+
+.summary-card .summary-icon{
+font-size:22px;
+}
+
+.summary-card h3{
+font-size:22px;
+margin-top:5px;
+}
+
+.summary-card p{
+font-size:12px;
+color:#777;
+margin-top:3px;
+}
+
+.pending h3{
+color:#d39e00;
+}
+
+.completed h3{
+color:#198754;
+}
+
+.cancelled h3{
+color:#dc3545;
+}
+
+.total-orders h3{
+color:#111;
 }
 
 .refresh{
@@ -221,14 +336,14 @@ color:white;
 border:0;
 border-radius:10px;
 font-size:15px;
-margin-bottom:15px;
+margin:0 0 15px 0;
 }
 
 .order{
-background:#fff;
+background:white;
 border-radius:15px;
-padding:18px;
-margin-bottom:15px;
+padding:16px;
+margin-bottom:13px;
 box-shadow:0 3px 12px rgba(0,0,0,.08);
 }
 
@@ -236,11 +351,11 @@ box-shadow:0 3px 12px rgba(0,0,0,.08);
 display:flex;
 justify-content:space-between;
 gap:10px;
-margin-bottom:12px;
+margin-bottom:10px;
 }
 
 .table{
-font-size:18px;
+font-size:17px;
 font-weight:bold;
 }
 
@@ -249,15 +364,25 @@ padding:6px 10px;
 border-radius:7px;
 background:#fff3cd;
 color:#856404;
-font-size:12px;
+font-size:11px;
 font-weight:bold;
+}
+
+.status.completed{
+background:#d1e7dd;
+color:#0f5132;
+}
+
+.status.cancelled{
+background:#f8d7da;
+color:#842029;
 }
 
 .items{
 border-top:1px solid #eee;
 border-bottom:1px solid #eee;
-padding:12px 0;
-margin:10px 0;
+padding:10px 0;
+margin:8px 0;
 }
 
 .item{
@@ -270,14 +395,14 @@ font-size:14px;
 .total{
 display:flex;
 justify-content:space-between;
-font-size:18px;
+font-size:17px;
 font-weight:bold;
 }
 
 .time{
 color:#777;
-font-size:12px;
-margin-top:10px;
+font-size:11px;
+margin-top:9px;
 }
 
 .empty{
@@ -292,6 +417,9 @@ color:#842029;
 padding:15px;
 border-radius:10px;
 }
+
+
+/* MOBILE */
 
 @media(max-width:600px){
 
@@ -310,6 +438,11 @@ align-items:flex-start;
 .menu-actions{
 display:flex;
 flex-direction:column;
+}
+
+.orders-drawer{
+width:100%;
+max-width:100%;
 }
 
 }
@@ -401,7 +534,6 @@ onclick="openOrders()"
 Yahan se restaurant ka complete menu manage hoga.
 </p>
 
-
 <button
 class="primary"
 onclick="openAddForm()"
@@ -411,7 +543,6 @@ onclick="openAddForm()"
 
 
 <div id="itemForm">
-
 
 <h3 id="formTitle">
 Add New Item
@@ -457,29 +588,12 @@ min="1"
 Select Category
 </option>
 
-<option value="Biryani">
-Biryani
-</option>
-
-<option value="Pizza">
-Pizza
-</option>
-
-<option value="Drinks">
-Drinks
-</option>
-
-<option value="Desserts">
-Desserts
-</option>
-
-<option value="Starters">
-Starters
-</option>
-
-<option value="Main Course">
-Main Course
-</option>
+<option value="Biryani">Biryani</option>
+<option value="Pizza">Pizza</option>
+<option value="Drinks">Drinks</option>
+<option value="Desserts">Desserts</option>
+<option value="Starters">Starters</option>
+<option value="Main Course">Main Course</option>
 
 </select>
 
@@ -518,14 +632,12 @@ onclick="saveItem()"
 💾 Save Item
 </button>
 
-
 <button
 class="cancel"
 onclick="closeForm()"
 >
 Cancel
 </button>
-
 
 </div>
 
@@ -535,12 +647,10 @@ id="successMessage"
 class="message success-message"
 ></div>
 
-
 <div
 id="errorMessage"
 class="message error-message"
 ></div>
-
 
 </div>
 
@@ -554,7 +664,6 @@ class="message error-message"
 <p class="description">
 Ye items directly database se load ho rahe hain.
 </p>
-
 
 <div id="menuList">
 Loading menu...
@@ -573,14 +682,12 @@ Loading menu...
 Tables aur QR codes yahan manage honge.
 </p>
 
-
 <button
 class="primary"
 onclick="comingSoon('Table Management')"
 >
 🪑 Manage Tables
 </button>
-
 
 <button
 class="primary"
@@ -602,14 +709,12 @@ onclick="comingSoon('QR Generator')"
 Customer orders aur payment status yahan manage honge.
 </p>
 
-
 <button
 class="primary"
 onclick="openOrders()"
 >
 📋 View Orders
 </button>
-
 
 <button
 class="primary"
@@ -621,18 +726,109 @@ onclick="comingSoon('Payments')"
 </div>
 
 
-<!-- LIVE CUSTOMER ORDERS -->
+</div>
+
+
+<!-- ==============================
+     ORDERS OVERLAY
+============================== -->
 
 <div
-class="section"
-id="ordersSection"
+class="orders-overlay"
+id="ordersOverlay"
+onclick="closeOrders()"
+></div>
+
+
+<!-- ==============================
+     ORDERS DRAWER
+============================== -->
+
+<div
+class="orders-drawer"
+id="ordersDrawer"
 >
 
-<h2>🛒 Live Customer Orders</h2>
+<div class="orders-header">
 
-<p class="description">
-Customer se aaye hue live orders yahan dikhenge.
-</p>
+<h2>📋 Live Orders</h2>
+
+<button
+class="close-orders"
+onclick="closeOrders()"
+>
+×
+</button>
+
+</div>
+
+
+<div class="orders-body">
+
+
+<div class="orders-summary">
+
+
+<div class="summary-card total-orders">
+
+<div class="summary-icon">
+📦
+</div>
+
+<h3 id="totalCount">
+0
+</h3>
+
+<p>Total Orders</p>
+
+</div>
+
+
+<div class="summary-card pending">
+
+<div class="summary-icon">
+🟡
+</div>
+
+<h3 id="pendingCount">
+0
+</h3>
+
+<p>Pending</p>
+
+</div>
+
+
+<div class="summary-card completed">
+
+<div class="summary-icon">
+🟢
+</div>
+
+<h3 id="completedCount">
+0
+</h3>
+
+<p>Completed</p>
+
+</div>
+
+
+<div class="summary-card cancelled">
+
+<div class="summary-icon">
+🔴
+</div>
+
+<h3 id="cancelledCount">
+0
+</h3>
+
+<p>Cancelled</p>
+
+</div>
+
+</div>
 
 
 <button
@@ -654,7 +850,6 @@ Loading orders... 🍽️
 
 </div>
 
-
 </div>
 
 
@@ -669,9 +864,8 @@ Loading orders... 🍽️
 const SUPABASE_URL =
 "https://jxjrcjmrkhknltwvzzvr.supabase.co";
 
-
 const SUPABASE_KEY =
-"sb_publishable__Pg5UNoizrSpZB3fRvbARw_fNhHGjvl";
+"sb_publishable__Pg5UNoizrSpSpZB3fRvbARw_fNhHGjvl";
 
 
 const db =
@@ -684,16 +878,16 @@ SUPABASE_KEY
 let editingItemId=null;
 
 
-/* MENU */
-
+/* ==============================
+   MENU
+============================== */
 
 async function loadMenu(){
 
 const menuList=
 document.getElementById("menuList");
 
-menuList.innerHTML=
-"Loading menu...";
+menuList.innerHTML="Loading menu...";
 
 
 const {data,error}=await db
@@ -709,13 +903,11 @@ showError(
 error.message
 );
 
-menuList.innerHTML=
-"Menu load failed.";
+menuList.innerHTML="Menu load failed.";
 
 return;
 
 }
-
 
 displayMenu(data);
 
@@ -850,20 +1042,20 @@ editingItemId=id;
 document.getElementById("formTitle")
 .innerText="Edit Item";
 
-document.getElementById("itemName")
-.value=data.name||"";
+document.getElementById("itemName").value=
+data.name||"";
 
-document.getElementById("itemPrice")
-.value=data.price||"";
+document.getElementById("itemPrice").value=
+data.price||"";
 
-document.getElementById("itemCategory")
-.value=data.category||"";
+document.getElementById("itemCategory").value=
+data.category||"";
 
-document.getElementById("itemDescription")
-.value=data.description||"";
+document.getElementById("itemDescription").value=
+data.description||"";
 
-document.getElementById("itemImage")
-.value=data.image_url||"";
+document.getElementById("itemImage").value=
+data.image_url||"";
 
 document.getElementById("itemForm")
 .style.display="block";
@@ -953,10 +1145,7 @@ return;
 
 }
 
-
-showSuccess(
-"✅ Item successfully updated!"
-);
+showSuccess("✅ Item successfully updated!");
 
 }else{
 
@@ -976,10 +1165,7 @@ return;
 
 }
 
-
-showSuccess(
-"✅ New item successfully added!"
-);
+showSuccess("✅ New item successfully added!");
 
 }
 
@@ -998,10 +1184,7 @@ confirm(
 "Kya tum sure ho ki ye item delete karna hai?"
 );
 
-
-if(!confirmDelete){
-return;
-}
+if(!confirmDelete)return;
 
 
 const {error}=await db
@@ -1045,20 +1228,11 @@ clearForm();
 
 function clearForm(){
 
-document.getElementById("itemName")
-.value="";
-
-document.getElementById("itemPrice")
-.value="";
-
-document.getElementById("itemCategory")
-.value="";
-
-document.getElementById("itemDescription")
-.value="";
-
-document.getElementById("itemImage")
-.value="";
+document.getElementById("itemName").value="";
+document.getElementById("itemPrice").value="";
+document.getElementById("itemCategory").value="";
+document.getElementById("itemDescription").value="";
+document.getElementById("itemImage").value="";
 
 }
 
@@ -1095,37 +1269,68 @@ box.style.display="none";
 }
 
 
-/* OPEN ORDERS */
+/* ==============================
+   OPEN ORDERS DRAWER
+============================== */
 
 function openOrders(){
 
-const section=
-document.getElementById("ordersSection");
+const drawer=
+document.getElementById("ordersDrawer");
 
-section.style.display="block";
+const overlay=
+document.getElementById("ordersOverlay");
 
-section.scrollIntoView({
-behavior:"smooth",
-block:"start"
-});
+
+overlay.classList.add("show");
+
+drawer.classList.add("show");
+
+document.body.style.overflow="hidden";
 
 loadOrders();
 
 }
 
 
-/* LOAD ORDERS */
+/* ==============================
+   CLOSE ORDERS DRAWER
+============================== */
+
+function closeOrders(){
+
+const drawer=
+document.getElementById("ordersDrawer");
+
+const overlay=
+document.getElementById("ordersOverlay");
+
+
+drawer.classList.remove("show");
+
+overlay.classList.remove("show");
+
+document.body.style.overflow="";
+
+}
+
+
+/* ==============================
+   LOAD ORDERS
+============================== */
 
 async function loadOrders(){
 
 const box=
 document.getElementById("orders");
 
+
 box.innerHTML=
 '<div class="empty">Loading orders... 🍽️</div>';
 
 
 try{
+
 
 const result=
 await db
@@ -1161,6 +1366,59 @@ const orders=
 result.data||[];
 
 
+/* COUNTS */
+
+let pending=0;
+let completed=0;
+let cancelled=0;
+
+
+orders.forEach(order=>{
+
+const status=
+String(order.status||"pending")
+.toLowerCase();
+
+
+if(
+status==="pending"||
+status==="new"
+){
+
+pending++;
+
+}else if(
+status==="completed"||
+status==="complete"
+){
+
+completed++;
+
+}else if(
+status==="cancelled"||
+status==="canceled"
+){
+
+cancelled++;
+
+}
+
+});
+
+
+document.getElementById("totalCount")
+.innerText=orders.length;
+
+document.getElementById("pendingCount")
+.innerText=pending;
+
+document.getElementById("completedCount")
+.innerText=completed;
+
+document.getElementById("cancelledCount")
+.innerText=cancelled;
+
+
 document.getElementById(
 "dashboardOrderCount"
 ).innerText=
@@ -1188,6 +1446,7 @@ box.innerHTML="";
 
 
 orders.forEach(order=>{
+
 
 let items=order.items;
 
@@ -1221,7 +1480,7 @@ const quantity=
 item.quantity||1;
 
 const price=
-item.price||0;
+Number(item.price)||0;
 
 
 itemsHTML+=`
@@ -1265,14 +1524,34 @@ Order items
 
 const date=
 order.created_at
-?new Date(
-order.created_at
-).toLocaleString("en-IN")
+?new Date(order.created_at)
+.toLocaleString("en-IN")
 :"";
 
 
 const status=
-order.status||"pending";
+String(order.status||"pending");
+
+
+let statusClass="";
+
+if(
+status.toLowerCase()==="completed"||
+status.toLowerCase()==="complete"
+){
+
+statusClass="completed";
+
+}
+
+if(
+status.toLowerCase()==="cancelled"||
+status.toLowerCase()==="canceled"
+){
+
+statusClass="cancelled";
+
+}
 
 
 box.innerHTML+=`
@@ -1288,7 +1567,7 @@ ${order.table_number||"-"}
 
 </div>
 
-<div class="status">
+<div class="status ${statusClass}">
 
 ${status.toUpperCase()}
 
@@ -1323,12 +1602,12 @@ Total
 
 </div>
 
-
 </div>
 
 `;
 
 });
+
 
 }catch(error){
 
@@ -1353,6 +1632,10 @@ ${error.message}
 }
 
 
+/* ==============================
+   COMING SOON
+============================== */
+
 function comingSoon(name){
 
 alert(
@@ -1363,12 +1646,13 @@ name+
 }
 
 
-/* START */
+/* ==============================
+   START
+============================== */
 
 loadMenu();
 
 </script>
-
 
 </body>
 
