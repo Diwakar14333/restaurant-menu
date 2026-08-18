@@ -135,37 +135,7 @@ background:#ddd;
 color:#222;
 }
 
-#itemForm{
-display:none;
-margin-top:20px;
-border-top:1px solid #eee;
-padding-top:20px;
-}
-
-.form-group{
-margin-bottom:15px;
-}
-
-label{
-display:block;
-font-weight:bold;
-margin-bottom:7px;
-}
-
-input,
-select,
-textarea{
-width:100%;
-padding:13px;
-border:1px solid #ddd;
-border-radius:9px;
-font-size:15px;
-}
-
-textarea{
-min-height:90px;
-resize:vertical;
-}
+/* MENU LIST */
 
 .menu-item{
 display:flex;
@@ -202,6 +172,8 @@ font-weight:bold;
 margin-top:5px;
 }
 
+/* MESSAGES */
+
 .message{
 margin-top:15px;
 padding:12px;
@@ -219,12 +191,12 @@ background:#f8d7da;
 color:#842029;
 }
 
-/* DRAWERS */
+/* GENERAL DRAWER OVERLAY */
 
-.overlay{
+.drawer-overlay{
 position:fixed;
 inset:0;
-background:rgba(0,0,0,.5);
+background:rgba(0,0,0,.48);
 backdrop-filter:blur(3px);
 opacity:0;
 visibility:hidden;
@@ -232,12 +204,139 @@ transition:.25s;
 z-index:2000;
 }
 
-.overlay.open{
+.drawer-overlay.open{
 opacity:1;
 visibility:visible;
 }
 
-.drawer{
+/* MENU DRAWER */
+
+.menu-drawer{
+position:fixed;
+top:0;
+right:0;
+width:min(520px,95vw);
+height:100vh;
+background:#f4f5f7;
+transform:translateX(100%);
+transition:transform .3s ease;
+z-index:2001;
+display:flex;
+flex-direction:column;
+box-shadow:-12px 0 35px rgba(0,0,0,.22);
+}
+
+.menu-drawer.open{
+transform:translateX(0);
+}
+
+.menu-drawer-head{
+background:#111;
+color:#fff;
+padding:18px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+}
+
+.menu-drawer-head h2{
+font-size:20px;
+}
+
+.menu-drawer-head p{
+font-size:11px;
+color:#aaa;
+margin-top:4px;
+}
+
+.close-drawer{
+width:38px;
+height:38px;
+padding:0;
+margin:0;
+border:0;
+border-radius:50%;
+background:#fff;
+color:#111;
+font-size:22px;
+cursor:pointer;
+}
+
+.menu-drawer-body{
+flex:1;
+overflow:auto;
+padding:18px;
+}
+
+.form-group{
+margin-bottom:16px;
+}
+
+label{
+display:block;
+font-weight:bold;
+margin-bottom:7px;
+font-size:14px;
+}
+
+input,
+select,
+textarea{
+width:100%;
+padding:13px;
+border:1px solid #ddd;
+border-radius:10px;
+font-size:15px;
+background:#fff;
+outline:none;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+border-color:#111;
+}
+
+textarea{
+min-height:110px;
+resize:vertical;
+}
+
+.form-buttons{
+display:flex;
+gap:8px;
+margin-top:18px;
+}
+
+.form-buttons button{
+flex:1;
+margin:0;
+}
+
+.form-note{
+background:#fff;
+border-radius:12px;
+padding:12px;
+color:#777;
+font-size:12px;
+margin-bottom:18px;
+}
+
+.image-preview{
+width:100%;
+height:180px;
+object-fit:cover;
+border-radius:12px;
+margin-top:8px;
+display:none;
+background:#eee;
+}
+
+/* ORDERS / PAYMENTS DRAWERS */
+
+.orders-drawer,
+.payments-drawer{
 position:fixed;
 top:0;
 right:0;
@@ -249,10 +348,11 @@ transition:.3s ease;
 z-index:2001;
 display:flex;
 flex-direction:column;
-box-shadow:-12px 0 35px rgba(0,0,0,.2);
+box-shadow:-12px 0 35px rgba(0,0,0,.22);
 }
 
-.drawer.open{
+.orders-drawer.open,
+.payments-drawer.open{
 transform:translateX(0);
 }
 
@@ -273,19 +373,6 @@ font-size:21px;
 font-size:11px;
 color:#aaa;
 margin-top:4px;
-}
-
-.close{
-width:38px;
-height:38px;
-padding:0;
-margin:0;
-border:0;
-border-radius:50%;
-background:#fff;
-color:#111;
-font-size:22px;
-cursor:pointer;
 }
 
 .stats{
@@ -313,7 +400,7 @@ font-size:10px;
 color:#777;
 }
 
-.orders-body{
+.drawer-scroll{
 flex:1;
 overflow:auto;
 padding:0 12px 20px;
@@ -330,8 +417,8 @@ box-shadow:0 3px 12px rgba(0,0,0,.06);
 .table-top{
 display:flex;
 justify-content:space-between;
-gap:10px;
 align-items:center;
+gap:10px;
 }
 
 .table-title{
@@ -423,7 +510,9 @@ grid-template-columns:1fr 1fr;
 grid-template-columns:repeat(2,1fr);
 }
 
-.drawer{
+.menu-drawer,
+.orders-drawer,
+.payments-drawer{
 width:100vw;
 }
 
@@ -444,9 +533,14 @@ flex-direction:column;
 
 <body>
 
+
+<!-- HEADER -->
+
 <div class="header">
 
-<h1>🧑‍💼 Restaurant Admin</h1>
+<h1>
+🧑‍💼 Restaurant Admin
+</h1>
 
 <p>
 Reception / Management Panel
@@ -454,7 +548,9 @@ Reception / Management Panel
 
 </div>
 
+
 <div class="container">
+
 
 <!-- DASHBOARD -->
 
@@ -462,9 +558,13 @@ Reception / Management Panel
 
 <div class="card">
 
-<div class="icon">🍔</div>
+<div class="icon">
+🍔
+</div>
 
-<h3>Menu Items</h3>
+<h3>
+Menu Items
+</h3>
 
 <p id="itemCount">
 0 Items
@@ -472,11 +572,16 @@ Reception / Management Panel
 
 </div>
 
+
 <div class="card">
 
-<div class="icon">🪑</div>
+<div class="icon">
+🪑
+</div>
 
-<h3>Tables</h3>
+<h3>
+Tables
+</h3>
 
 <p>
 10 Tables
@@ -484,11 +589,19 @@ Reception / Management Panel
 
 </div>
 
-<div class="card" onclick="openOrders()">
 
-<div class="icon">📋</div>
+<div
+class="card"
+onclick="openOrders()"
+>
 
-<h3>Orders</h3>
+<div class="icon">
+📋
+</div>
+
+<h3>
+Orders
+</h3>
 
 <p id="orderCount">
 0 Open
@@ -496,11 +609,19 @@ Reception / Management Panel
 
 </div>
 
-<div class="card" onclick="openPayments()">
 
-<div class="icon">💳</div>
+<div
+class="card"
+onclick="openPayments()"
+>
 
-<h3>Payments</h3>
+<div class="icon">
+💳
+</div>
+
+<h3>
+Payments
+</h3>
 
 <p id="paymentCount">
 ₹0 Pending
@@ -511,7 +632,7 @@ Reception / Management Panel
 </div>
 
 
-<!-- MENU -->
+<!-- MENU MANAGEMENT -->
 
 <div class="section">
 
@@ -523,142 +644,13 @@ Reception / Management Panel
 Yahan se restaurant ka complete menu manage hoga.
 </p>
 
+
 <button
 class="primary"
 onclick="openAddForm()"
 >
 ➕ Add New Item
 </button>
-
-<div id="itemForm">
-
-<h3 id="formTitle">
-Add New Item
-</h3>
-
-<br>
-
-<div class="form-group">
-
-<label>
-Food Name
-</label>
-
-<input
-type="text"
-id="itemName"
-placeholder="Example: Chicken Biryani"
->
-
-</div>
-
-<div class="form-group">
-
-<label>
-Price (₹)
-</label>
-
-<input
-type="number"
-id="itemPrice"
-placeholder="Example: 180"
-min="1"
->
-
-</div>
-
-<div class="form-group">
-
-<label>
-Category
-</label>
-
-<select id="itemCategory">
-
-<option value="">
-Select Category
-</option>
-
-<option value="Biryani">
-Biryani
-</option>
-
-<option value="Pizza">
-Pizza
-</option>
-
-<option value="Drinks">
-Drinks
-</option>
-
-<option value="Desserts">
-Desserts
-</option>
-
-<option value="Starters">
-Starters
-</option>
-
-<option value="Main Course">
-Main Course
-</option>
-
-</select>
-
-</div>
-
-<div class="form-group">
-
-<label>
-Description
-</label>
-
-<textarea
-id="itemDescription"
-placeholder="Food description"
-></textarea>
-
-</div>
-
-<div class="form-group">
-
-<label>
-Image URL
-</label>
-
-<input
-type="url"
-id="itemImage"
-placeholder="Paste image URL"
->
-
-</div>
-
-<button
-class="save"
-onclick="saveItem()"
->
-💾 Save Item
-</button>
-
-<button
-class="cancel"
-onclick="closeForm()"
->
-Cancel
-</button>
-
-</div>
-
-<div
-id="successMessage"
-class="message success-message"
-></div>
-
-<div
-id="errorMessage"
-class="message error-message"
-></div>
 
 </div>
 
@@ -710,20 +702,206 @@ onclick="comingSoon('QR Generator')"
 
 </div>
 
+
+</div>
+
+
+<!-- MESSAGE BOXES -->
+
+<div
+id="successMessage"
+class="message success-message"
+></div>
+
+<div
+id="errorMessage"
+class="message error-message"
+></div>
+
+
+<!-- DRAWER OVERLAY -->
+
+<div
+id="drawerOverlay"
+class="drawer-overlay"
+onclick="closeAllDrawers()"
+></div>
+
+
+<!-- ADD / EDIT MENU DRAWER -->
+
+<div
+id="menuDrawer"
+class="menu-drawer"
+>
+
+<div class="menu-drawer-head">
+
+<div>
+
+<h2 id="drawerTitle">
+➕ Add New Item
+</h2>
+
+<p id="drawerSubtitle">
+Add a new food item to your menu
+</p>
+
+</div>
+
+<button
+class="close-drawer"
+onclick="closeMenuDrawer()"
+>
+×
+</button>
+
+</div>
+
+
+<div class="menu-drawer-body">
+
+<div class="form-note">
+🍽️ Food details yahan enter karo. Save karte hi menu database me update ho jayega.
+</div>
+
+
+<div class="form-group">
+
+<label>
+Food Name
+</label>
+
+<input
+type="text"
+id="itemName"
+placeholder="Example: Chicken Biryani"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Price (₹)
+</label>
+
+<input
+type="number"
+id="itemPrice"
+placeholder="Example: 180"
+min="1"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Category
+</label>
+
+<select id="itemCategory">
+
+<option value="">
+Select Category
+</option>
+
+<option value="Biryani">
+Biryani
+</option>
+
+<option value="Pizza">
+Pizza
+</option>
+
+<option value="Drinks">
+Drinks
+</option>
+
+<option value="Desserts">
+Desserts
+</option>
+
+<option value="Starters">
+Starters
+</option>
+
+<option value="Main Course">
+Main Course
+</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Description
+</label>
+
+<textarea
+id="itemDescription"
+placeholder="Food description"
+></textarea>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Image URL
+</label>
+
+<input
+type="url"
+id="itemImage"
+placeholder="Paste image URL"
+oninput="previewImage()"
+>
+
+<img
+id="imagePreview"
+class="image-preview"
+alt="Food Preview"
+>
+
+</div>
+
+
+<div class="form-buttons">
+
+<button
+class="save"
+onclick="saveItem()"
+>
+💾 <span id="saveButtonText">Save Item</span>
+</button>
+
+<button
+class="cancel"
+onclick="closeMenuDrawer()"
+>
+Cancel
+</button>
+
+</div>
+
+</div>
+
 </div>
 
 
 <!-- ORDERS DRAWER -->
 
 <div
-id="overlay"
-class="overlay"
-onclick="closeDrawers()"
-></div>
-
-<div
 id="ordersDrawer"
-class="drawer"
+class="orders-drawer"
 >
 
 <div class="drawer-head">
@@ -741,13 +919,14 @@ Open customer + waiter orders
 </div>
 
 <button
-class="close"
+class="close-drawer"
 onclick="closeOrders()"
 >
 ×
 </button>
 
 </div>
+
 
 <div class="stats">
 
@@ -773,7 +952,11 @@ onclick="closeOrders()"
 
 </div>
 
-<div id="ordersBody" class="orders-body">
+
+<div
+id="ordersBody"
+class="drawer-scroll"
+>
 
 <div class="loading">
 Loading orders...
@@ -788,7 +971,7 @@ Loading orders...
 
 <div
 id="paymentsDrawer"
-class="drawer"
+class="payments-drawer"
 >
 
 <div class="drawer-head">
@@ -806,7 +989,7 @@ Pending & completed collections
 </div>
 
 <button
-class="close"
+class="close-drawer"
 onclick="closePayments()"
 >
 ×
@@ -814,31 +997,44 @@ onclick="closePayments()"
 
 </div>
 
+
 <div class="stats">
 
 <div class="stat">
-<strong id="payPending">₹0</strong>
+<strong id="payPending">
+₹0
+</strong>
 <span>Pending</span>
 </div>
 
 <div class="stat">
-<strong id="payPaid">₹0</strong>
+<strong id="payPaid">
+₹0
+</strong>
 <span>Paid</span>
 </div>
 
 <div class="stat">
-<strong id="payTables">0</strong>
+<strong id="payTables">
+0
+</strong>
 <span>Open Tables</span>
 </div>
 
 <div class="stat">
-<strong id="payDoneOrders">0</strong>
+<strong id="payDoneOrders">
+0
+</strong>
 <span>Paid Orders</span>
 </div>
 
 </div>
 
-<div id="paymentsBody" class="orders-body">
+
+<div
+id="paymentsBody"
+class="drawer-scroll"
+>
 
 <div class="loading">
 Loading payments...
@@ -867,17 +1063,481 @@ SUPABASE_KEY
 
 let editingItemId=null;
 
+
+/* ==============================
+   DRAWERS
+============================== */
+
+function showDrawer(id){
+
+document.getElementById(
+"drawerOverlay"
+).classList.add("open");
+
+document.getElementById(
+id
+).classList.add("open");
+
+document.body.classList.add(
+"drawer-open"
+);
+
+}
+
+function hideDrawer(id){
+
+document.getElementById(
+id
+).classList.remove("open");
+
+if(
+!document.getElementById("menuDrawer").classList.contains("open") &&
+!document.getElementById("ordersDrawer").classList.contains("open") &&
+!document.getElementById("paymentsDrawer").classList.contains("open")
+){
+
+document.getElementById(
+"drawerOverlay"
+).classList.remove("open");
+
+document.body.classList.remove(
+"drawer-open"
+);
+
+}
+
+}
+
+function closeAllDrawers(){
+
+document.querySelectorAll(
+".menu-drawer,.orders-drawer,.payments-drawer"
+).forEach(drawer=>{
+drawer.classList.remove("open");
+});
+
+document.getElementById(
+"drawerOverlay"
+).classList.remove("open");
+
+document.body.classList.remove(
+"drawer-open"
+);
+
+}
+
+function openOrders(){
+
+closeAllDrawers();
+
+showDrawer("ordersDrawer");
+
+loadOrders();
+
+}
+
+function closeOrders(){
+
+hideDrawer("ordersDrawer");
+
+}
+
+function openPayments(){
+
+closeAllDrawers();
+
+showDrawer("paymentsDrawer");
+
+loadPayments();
+
+}
+
+function closePayments(){
+
+hideDrawer("paymentsDrawer");
+
+}
+
+
+/* ==============================
+   MENU DRAWER
+============================== */
+
+function openAddForm(){
+
+editingItemId=null;
+
+document.getElementById(
+"drawerTitle"
+).innerText=
+"➕ Add New Item";
+
+document.getElementById(
+"drawerSubtitle"
+).innerText=
+"Add a new food item to your menu";
+
+document.getElementById(
+"saveButtonText"
+).innerText=
+"Save Item";
+
+clearForm();
+
+showDrawer("menuDrawer");
+
+}
+
+async function editItem(id){
+
+const {
+data,
+error
+}=
+await db
+.from("menu_items")
+.select("*")
+.eq("id",id)
+.single();
+
+if(error){
+
+showError(
+"Item load nahi hua: "+
+error.message
+);
+
+return;
+
+}
+
+editingItemId=id;
+
+document.getElementById(
+"drawerTitle"
+).innerText=
+"✏️ Edit Item";
+
+document.getElementById(
+"drawerSubtitle"
+).innerText=
+"Update this food item";
+
+document.getElementById(
+"saveButtonText"
+).innerText=
+"Update Item";
+
+document.getElementById(
+"itemName"
+).value=
+data.name||"";
+
+document.getElementById(
+"itemPrice"
+).value=
+data.price||"";
+
+document.getElementById(
+"itemCategory"
+).value=
+data.category||"";
+
+document.getElementById(
+"itemDescription"
+).value=
+data.description||"";
+
+document.getElementById(
+"itemImage"
+).value=
+data.image_url||"";
+
+previewImage();
+
+showDrawer("menuDrawer");
+
+}
+
+
+function previewImage(){
+
+const url=
+document.getElementById(
+"itemImage"
+).value.trim();
+
+const img=
+document.getElementById(
+"imagePreview"
+);
+
+if(!url){
+
+img.style.display="none";
+img.removeAttribute("src");
+
+return;
+
+}
+
+img.src=url;
+img.style.display="block";
+
+img.onerror=function(){
+img.style.display="none";
+};
+
+}
+
+
+async function saveItem(){
+
+const name=
+document.getElementById(
+"itemName"
+).value.trim();
+
+const price=
+document.getElementById(
+"itemPrice"
+).value;
+
+const category=
+document.getElementById(
+"itemCategory"
+).value;
+
+const description=
+document.getElementById(
+"itemDescription"
+).value.trim();
+
+const image=
+document.getElementById(
+"itemImage"
+).value.trim();
+
+
+if(!name){
+
+alert(
+"Food name enter karo."
+);
+
+return;
+
+}
+
+if(
+!price||
+Number(price)<=0
+){
+
+alert(
+"Valid price enter karo."
+);
+
+return;
+
+}
+
+if(!category){
+
+alert(
+"Category select karo."
+);
+
+return;
+
+}
+
+if(!description){
+
+alert(
+"Description enter karo."
+);
+
+return;
+
+}
+
+if(!image){
+
+alert(
+"Image URL enter karo."
+);
+
+return;
+
+}
+
+
+const itemData={
+name:name,
+price:Number(price),
+category:category,
+description:description,
+image_url:image
+};
+
+
+if(
+editingItemId!==null
+){
+
+const {
+error
+}=
+await db
+.from("menu_items")
+.update(itemData)
+.eq(
+"id",
+editingItemId
+);
+
+if(error){
+
+showError(
+"Update failed: "+
+error.message
+);
+
+return;
+
+}
+
+showSuccess(
+"✅ Item successfully updated!"
+);
+
+}else{
+
+const {
+error
+}=
+await db
+.from("menu_items")
+.insert([
+itemData
+]);
+
+if(error){
+
+showError(
+"Item save nahi hua: "+
+error.message
+);
+
+return;
+
+}
+
+showSuccess(
+"✅ New item successfully added!"
+);
+
+}
+
+
+closeMenuDrawer();
+
+loadMenu();
+
+}
+
+
+function closeMenuDrawer(){
+
+document.getElementById(
+"menuDrawer"
+).classList.remove(
+"open"
+);
+
+if(
+!document.getElementById("ordersDrawer").classList.contains("open") &&
+!document.getElementById("paymentsDrawer").classList.contains("open")
+){
+
+document.getElementById(
+"drawerOverlay"
+).classList.remove("open");
+
+document.body.classList.remove(
+"drawer-open"
+);
+
+}
+
+editingItemId=null;
+
+clearForm();
+
+}
+
+
+function clearForm(){
+
+document.getElementById(
+"itemName"
+).value="";
+
+document.getElementById(
+"itemPrice"
+).value="";
+
+document.getElementById(
+"itemCategory"
+).value="";
+
+document.getElementById(
+"itemDescription"
+).value="";
+
+document.getElementById(
+"itemImage"
+).value="";
+
+document.getElementById(
+"imagePreview"
+).style.display="none";
+
+document.getElementById(
+"imagePreview"
+).removeAttribute("src");
+
+}
+
+
+/* ==============================
+   MENU LOAD
+============================== */
+
 async function loadMenu(){
 
 const box=
-document.getElementById("menuList");
+document.getElementById(
+"menuList"
+);
 
-box.innerHTML="Loading menu...";
+box.innerHTML=
+"Loading menu...";
 
-const {data,error}=
-await db.from("menu_items")
+
+const {
+data,
+error
+}=
+await db
+.from("menu_items")
 .select("*")
-.order("id",{ascending:false});
+.order(
+"id",
+{ascending:false}
+);
+
 
 if(error){
 
@@ -886,23 +1546,37 @@ showError(
 error.message
 );
 
+box.innerHTML=
+"Menu load failed.";
+
 return;
-}
-
-displayMenu(data||[]);
 
 }
+
+
+displayMenu(
+data||[]
+);
+
+}
+
 
 function displayMenu(items){
 
 const box=
-document.getElementById("menuList");
+document.getElementById(
+"menuList"
+);
 
 box.innerHTML="";
 
-document.getElementById("itemCount")
-.innerText=
-items.length+" Items";
+
+document.getElementById(
+"itemCount"
+).innerText=
+items.length+
+" Items";
+
 
 if(!items.length){
 
@@ -910,13 +1584,16 @@ box.innerHTML=
 "<p>No menu items available.</p>";
 
 return;
+
 }
+
 
 items.forEach(item=>{
 
 const image=
 item.image_url||
 "https://via.placeholder.com/75";
+
 
 box.innerHTML+=`
 
@@ -969,182 +1646,31 @@ onclick="deleteItem(${item.id})"
 
 }
 
-function openAddForm(){
-
-editingItemId=null;
-
-document.getElementById(
-"formTitle"
-).innerText=
-"Add New Item";
-
-clearForm();
-
-document.getElementById(
-"itemForm"
-).style.display="block";
-
-}
-
-async function editItem(id){
-
-const {data,error}=
-await db.from("menu_items")
-.select("*")
-.eq("id",id)
-.single();
-
-if(error){
-
-showError(
-"Item load nahi hua: "+
-error.message
-);
-
-return;
-}
-
-editingItemId=id;
-
-document.getElementById(
-"formTitle"
-).innerText=
-"Edit Item";
-
-document.getElementById(
-"itemName"
-).value=data.name||"";
-
-document.getElementById(
-"itemPrice"
-).value=data.price||"";
-
-document.getElementById(
-"itemCategory"
-).value=data.category||"";
-
-document.getElementById(
-"itemDescription"
-).value=data.description||"";
-
-document.getElementById(
-"itemImage"
-).value=data.image_url||"";
-
-document.getElementById(
-"itemForm"
-).style.display="block";
-
-}
-
-async function saveItem(){
-
-const name=
-document.getElementById("itemName")
-.value.trim();
-
-const price=
-document.getElementById("itemPrice")
-.value;
-
-const category=
-document.getElementById("itemCategory")
-.value;
-
-const description=
-document.getElementById("itemDescription")
-.value.trim();
-
-const image=
-document.getElementById("itemImage")
-.value.trim();
-
-if(!name){
-alert("Food name enter karo.");
-return;
-}
-
-if(!price||Number(price)<=0){
-alert("Valid price enter karo.");
-return;
-}
-
-if(!category){
-alert("Category select karo.");
-return;
-}
-
-if(!description){
-alert("Description enter karo.");
-return;
-}
-
-if(!image){
-alert("Image URL enter karo.");
-return;
-}
-
-const itemData={
-name,
-price:Number(price),
-category,
-description,
-image_url:image
-};
-
-if(editingItemId!==null){
-
-const {error}=
-await db.from("menu_items")
-.update(itemData)
-.eq("id",editingItemId);
-
-if(error){
-
-showError(
-"Update failed: "+
-error.message
-);
-
-return;
-}
-
-showSuccess("✅ Item updated!");
-
-}else{
-
-const {error}=
-await db.from("menu_items")
-.insert([itemData]);
-
-if(error){
-
-showError(
-"Item save nahi hua: "+
-error.message
-);
-
-return;
-}
-
-showSuccess("✅ Item added!");
-}
-
-closeForm();
-loadMenu();
-
-}
 
 async function deleteItem(id){
 
-if(!confirm(
+if(
+!confirm(
 "Kya tum sure ho ki ye item delete karna hai?"
-))return;
+)
+){
 
-const {error}=
-await db.from("menu_items")
+return;
+
+}
+
+
+const {
+error
+}=
+await db
+.from("menu_items")
 .delete()
-.eq("id",id);
+.eq(
+"id",
+id
+);
+
 
 if(error){
 
@@ -1154,42 +1680,32 @@ error.message
 );
 
 return;
+
 }
 
-showSuccess("🗑️ Item deleted!");
+
+showSuccess(
+"🗑️ Item successfully deleted!"
+);
 
 loadMenu();
 
 }
 
-function closeForm(){
 
-document.getElementById(
-"itemForm"
-).style.display="none";
-
-editingItemId=null;
-
-clearForm();
-
-}
-
-function clearForm(){
-
-document.getElementById("itemName").value="";
-document.getElementById("itemPrice").value="";
-document.getElementById("itemCategory").value="";
-document.getElementById("itemDescription").value="";
-document.getElementById("itemImage").value="";
-
-}
+/* ==============================
+   MESSAGES
+============================== */
 
 function showSuccess(text){
 
 const box=
-document.getElementById("successMessage");
+document.getElementById(
+"successMessage"
+);
 
 box.innerText=text;
+
 box.style.display="block";
 
 setTimeout(()=>{
@@ -1201,9 +1717,13 @@ box.style.display="none";
 function showError(text){
 
 const box=
-document.getElementById("errorMessage");
+document.getElementById(
+"errorMessage"
+);
 
-box.innerText="❌ "+text;
+box.innerText=
+"❌ "+text;
+
 box.style.display="block";
 
 setTimeout(()=>{
@@ -1213,41 +1733,9 @@ box.style.display="none";
 }
 
 
-function openOrders(){
-
-closePayments();
-
-document.getElementById(
-"ordersDrawer"
-).classList.add("open");
-
-document.getElementById(
-"overlay"
-).classList.add("open");
-
-loadOrders();
-
-}
-
-function closeOrders(){
-
-document.getElementById(
-"ordersDrawer"
-).classList.remove("open");
-
-if(
-!document.getElementById(
-"paymentsDrawer"
-).classList.contains("open")
-){
-
-document.getElementById(
-"overlay"
-).classList.remove("open");
-
-}
-
-}
+/* ==============================
+   ORDERS
+============================== */
 
 async function loadOrders(){
 
@@ -1257,14 +1745,21 @@ document.getElementById(
 );
 
 box.innerHTML=
-'<div class="loading">Loading orders...</div>';
+'<div class="empty">Loading orders...</div>';
 
 try{
 
-const {data,error}=
-await db.from("orders")
+const {
+data,
+error
+}=
+await db
+.from("orders")
 .select("*")
-.order("created_at",{ascending:false});
+.order(
+"created_at",
+{ascending:false}
+);
 
 if(error)throw error;
 
@@ -1277,8 +1772,13 @@ let open=0;
 
 orders.forEach(o=>{
 
-const s=
-String(o.status||"pending").toLowerCase();
+const status=
+String(o.status||"pending")
+.toLowerCase();
+
+if(status==="pending")pending++;
+if(status==="completed")completed++;
+if(status==="cancelled")cancelled++;
 
 if(
 String(o.payment_status||"pending")
@@ -1286,10 +1786,6 @@ String(o.payment_status||"pending")
 ){
 open++;
 }
-
-if(s==="pending")pending++;
-if(s==="completed")completed++;
-if(s==="cancelled")cancelled++;
 
 });
 
@@ -1309,12 +1805,21 @@ document.getElementById(
 "cancelledOrders"
 ).innerText=cancelled;
 
+document.getElementById(
+"orderCount"
+).innerText=
+open+" Open";
+
+
 if(!orders.length){
 
 box.innerHTML=
 '<div class="empty">📭 No orders.</div>';
+
 return;
+
 }
+
 
 const grouped={};
 
@@ -1325,16 +1830,20 @@ String(o.payment_status||"pending")
 )
 .forEach(o=>{
 
-const t=
+const table=
 String(o.table_number||"-");
 
-if(!grouped[t])grouped[t]=[];
+if(!grouped[table]){
+grouped[table]=[];
+}
 
-grouped[t].push(o);
+grouped[table].push(o);
 
 });
 
+
 box.innerHTML="";
+
 
 Object.keys(grouped)
 .sort((a,b)=>Number(a)-Number(b))
@@ -1344,19 +1853,27 @@ const list=grouped[table];
 
 const total=
 list.reduce(
-(s,o)=>s+(Number(o.total_amount)||0),
+(s,o)=>
+s+
+(Number(o.total_amount)||0),
 0
 );
 
 let html="";
+
 
 list.forEach(order=>{
 
 let items=order.items;
 
 if(typeof items==="string"){
-try{items=JSON.parse(items)}
-catch(e){items=[]}
+
+try{
+items=JSON.parse(items);
+}catch(e){
+items=[];
+}
+
 }
 
 let lines="";
@@ -1367,8 +1884,20 @@ items.forEach(item=>{
 
 lines+=`
 <div class="line">
-<span>${item.name} × ${item.quantity||1}</span>
-<span>₹${Number(item.price)*Number(item.quantity||1)}</span>
+
+<span>
+${item.name}
+×
+${item.quantity||1}
+</span>
+
+<span>
+₹${
+Number(item.price)*
+Number(item.quantity||1)
+}
+</span>
+
 </div>
 `;
 
@@ -1381,38 +1910,40 @@ order.order_source==="waiter";
 
 html+=`
 
-<div class="small-order">
+<div style="margin-top:10px">
 
 <strong>
 Order #${order.id}
 </strong>
 
 <div>
+
 <span class="source ${
 isWaiter?"waiter":"customer"
 }">
 ${
 isWaiter
 ?
-"🔵 WAITER • "+(order.waiter_name||"")
+"🔵 WAITER • "+
+(order.waiter_name||"")
 :
 "🟢 CUSTOMER"
 }
 </span>
-</div>
 
-<div style="margin-top:6px">
-Status: ${order.status||"pending"}
 </div>
 
 <div class="lines">
+
 ${lines}
+
 </div>
 
 </div>
 `;
 
 });
+
 
 box.innerHTML+=`
 
@@ -1448,10 +1979,15 @@ ${html}
 }catch(error){
 
 box.innerHTML=`
+
 <div class="error-box">
+
 ❌ Orders load nahi hue.
+
 <br><br>
+
 ${error.message}
+
 </div>
 `;
 
@@ -1460,39 +1996,9 @@ ${error.message}
 }
 
 
-async function openPayments(){
-
-closeOrders();
-
-document.getElementById(
-"paymentsDrawer"
-).classList.add("open");
-
-document.getElementById(
-"overlay"
-).classList.add("open");
-
-loadPayments();
-
-}
-
-function closePayments(){
-
-document.getElementById(
-"paymentsDrawer"
-).classList.remove("open");
-
-if(
-!document.getElementById(
-"ordersDrawer"
-).classList.contains("open")
-){
-document.getElementById(
-"overlay"
-).classList.remove("open");
-}
-
-}
+/* ==============================
+   PAYMENTS
+============================== */
 
 async function loadPayments(){
 
@@ -1502,14 +2008,21 @@ document.getElementById(
 );
 
 box.innerHTML=
-'<div class="loading">Loading payments...</div>';
+'<div class="empty">Loading payments...</div>';
 
 try{
 
-const {data,error}=
-await db.from("orders")
+const {
+data,
+error
+}=
+await db
+.from("orders")
 .select("*")
-.order("created_at",{ascending:false});
+.order(
+"created_at",
+{ascending:false}
+);
 
 if(error)throw error;
 
@@ -1565,11 +2078,11 @@ document.getElementById(
 ).innerText=
 paidOrders;
 
-
 if(!orders.length){
 
 box.innerHTML=
 '<div class="empty">💳 No payment records.</div>';
+
 return;
 }
 
@@ -1581,7 +2094,9 @@ orders.forEach(o=>{
 const t=
 String(o.table_number||"-");
 
-if(!grouped[t])grouped[t]=[];
+if(!grouped[t]){
+grouped[t]=[];
+}
 
 grouped[t].push(o);
 
@@ -1590,36 +2105,47 @@ grouped[t].push(o);
 
 box.innerHTML="";
 
+
 Object.keys(grouped)
 .sort((a,b)=>Number(a)-Number(b))
 .forEach(table=>{
 
 const list=grouped[table];
 
-let pendingAmount=0;
-let paidAmount=0;
+const pendingAmount=
+list
+.filter(o=>
+String(o.payment_status||"pending")
+!=="paid"
+)
+.reduce(
+(s,o)=>
+s+
+(Number(o.total_amount)||0),
+0
+);
 
-list.forEach(o=>{
-
-const amount=
-Number(o.total_amount)||0;
-
-if(
+const paidAmount=
+list
+.filter(o=>
 String(o.payment_status||"pending")
 ==="paid"
-){
-paidAmount+=amount;
-}else{
-pendingAmount+=amount;
-}
-
-});
+)
+.reduce(
+(s,o)=>
+s+
+(Number(o.total_amount)||0),
+0
+);
 
 if(
 pendingAmount===0 &&
 paidAmount===0
-)return;
+){
 
+return;
+
+}
 
 box.innerHTML+=`
 
@@ -1634,7 +2160,9 @@ box.innerHTML+=`
 </div>
 
 <div class="table-sub">
-Pending ₹${pendingAmount} • Paid ₹${paidAmount}
+Pending ₹${pendingAmount}
+•
+Paid ₹${paidAmount}
 </div>
 
 </div>
@@ -1649,6 +2177,7 @@ Pending ₹${pendingAmount} • Paid ₹${paidAmount}
 class="pay-btn"
 onclick="adminPay('${table}')"
 >
+
 💳 ${
 pendingAmount>0
 ?
@@ -1656,6 +2185,7 @@ pendingAmount>0
 :
 "Already Paid"
 }
+
 </button>
 
 </div>
@@ -1663,19 +2193,26 @@ pendingAmount>0
 
 });
 
+
 }catch(error){
 
 box.innerHTML=`
+
 <div class="error-box">
+
 ❌ Payments load nahi hue.
+
 <br><br>
+
 ${error.message}
+
 </div>
 `;
 
 }
 
 }
+
 
 async function adminPay(table){
 
@@ -1686,7 +2223,10 @@ prompt(
 
 if(!method)return;
 
-const clean=method.toLowerCase().trim();
+const clean=
+method
+.toLowerCase()
+.trim();
 
 if(
 clean!=="cash" &&
@@ -1699,10 +2239,13 @@ alert(
 );
 
 return;
+
 }
 
-const ok=confirm(
-"Table "+table+
+const ok=
+confirm(
+"Table "+
+table+
 " ka pending bill clear karna hai?"
 );
 
@@ -1710,18 +2253,27 @@ if(!ok)return;
 
 try{
 
-const {data,error}=
+const {
+data,
+error
+}=
 await db.rpc(
 "admin_collect_table_payment",
 {
-p_table_number:String(table),
-p_payment_method:clean
+p_table_number:
+String(table),
+
+p_payment_method:
+clean
 }
 );
 
 if(error)throw error;
 
-if(!data||!data.success){
+if(
+!data||
+!data.success
+){
 
 throw new Error(
 data?.message||
@@ -1732,9 +2284,12 @@ data?.message||
 
 alert(
 "✅ Payment complete.\n"+
-"Table: "+table+
-"\nAmount: ₹"+data.amount+
-"\nMethod: "+data.payment_method
+"Table: "+
+table+
+"\nAmount: ₹"+
+data.amount+
+"\nMethod: "+
+data.payment_method
 );
 
 loadPayments();
@@ -1750,16 +2305,16 @@ error.message
 
 }
 
-function closeDrawers(){
 
-closeOrders();
-closePayments();
+function comingSoon(name){
 
-document.getElementById(
-"overlay"
-).classList.remove("open");
+alert(
+name+
+" next step mein banayenge 😙🤟🏻"
+);
 
 }
+
 
 loadMenu();
 
