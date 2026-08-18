@@ -378,6 +378,14 @@ background:#f8d7da;
 color:#842029;
 }
 
+.payment{
+font-size:12px;
+margin-top:10px;
+padding:8px;
+background:#f5f5f5;
+border-radius:8px;
+}
+
 .items{
 border-top:1px solid #eee;
 border-bottom:1px solid #eee;
@@ -416,6 +424,12 @@ background:#f8d7da;
 color:#842029;
 padding:15px;
 border-radius:10px;
+}
+
+.live-status{
+font-size:11px;
+color:#198754;
+margin-top:4px;
 }
 
 
@@ -751,7 +765,15 @@ id="ordersDrawer"
 
 <div class="orders-header">
 
+<div>
+
 <h2>📋 Live Orders</h2>
+
+<div class="live-status">
+🟢 Live updates enabled
+</div>
+
+</div>
 
 <button
 class="close-orders"
@@ -1331,7 +1353,6 @@ box.innerHTML=
 
 try{
 
-
 const result=
 await db
 .from("orders")
@@ -1341,7 +1362,10 @@ await db
 
 if(result.error){
 
-console.error(result.error);
+console.error(
+"ORDERS FETCH ERROR:",
+result.error
+);
 
 box.innerHTML=`
 
@@ -1366,6 +1390,12 @@ const orders=
 result.data||[];
 
 
+console.log(
+"ORDERS FROM SUPABASE:",
+orders
+);
+
+
 /* COUNTS */
 
 let pending=0;
@@ -1377,7 +1407,8 @@ orders.forEach(order=>{
 
 const status=
 String(order.status||"pending")
-.toLowerCase();
+.toLowerCase()
+.trim();
 
 
 if(
@@ -1459,6 +1490,11 @@ items=JSON.parse(items);
 
 }catch(e){
 
+console.error(
+"ITEM JSON ERROR:",
+e
+);
+
 items=[];
 
 }
@@ -1477,7 +1513,7 @@ const name=
 item.name||"Item";
 
 const quantity=
-item.quantity||1;
+Number(item.quantity)||1;
 
 const price=
 Number(item.price)||0;
@@ -1513,6 +1549,7 @@ Order items
 
 <span>
 —
+
 </span>
 
 </div>
@@ -1530,7 +1567,8 @@ order.created_at
 
 
 const status=
-String(order.status||"pending");
+String(order.status||"pending")
+.trim();
 
 
 let statusClass="";
@@ -1552,6 +1590,13 @@ status.toLowerCase()==="canceled"
 statusClass="cancelled";
 
 }
+
+
+const paymentStatus=
+String(
+order.payment_status||"pending"
+)
+.trim();
 
 
 box.innerHTML+=`
@@ -1590,8 +1635,18 @@ Total
 </span>
 
 <span>
-₹${order.total_amount||0}
+₹${Number(order.total_amount)||0}
 </span>
+
+</div>
+
+
+<div class="payment">
+
+💳 Payment:
+<strong>
+${paymentStatus.toUpperCase()}
+</strong>
 
 </div>
 
@@ -1611,7 +1666,10 @@ Total
 
 }catch(error){
 
-console.error(error);
+console.error(
+"ORDERS ERROR:",
+error
+);
 
 box.innerHTML=`
 
@@ -1628,6 +1686,57 @@ ${error.message}
 `;
 
 }
+
+}
+
+
+/* ==============================
+   REALTIME ORDERS
+============================== */
+
+function startOrderRealtime(){
+
+console.log(
+"Starting realtime orders..."
+);
+
+
+db.channel("orders-live-channel")
+
+.on(
+"postgres_changes",
+{
+event:"*",
+schema:"public",
+table:"orders"
+},
+(payload)=>{
+
+console.log(
+"REALTIME ORDER EVENT:",
+payload
+);
+
+
+/*
+   Whenever customer creates,
+   updates or deletes an order,
+   reload the orders.
+*/
+
+loadOrders();
+
+}
+)
+
+.subscribe((status)=>{
+
+console.log(
+"Realtime status:",
+status
+);
+
+});
 
 }
 
@@ -1651,6 +1760,10 @@ name+
 ============================== */
 
 loadMenu();
+
+loadOrders();
+
+startOrderRealtime();
 
 </script>
 
