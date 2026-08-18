@@ -1,57 +1,458 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
 <title>My Restaurant</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:#f6f6f6;color:#222;padding-bottom:90px}
-.header{background:#111;color:#fff;text-align:center;padding:22px 15px}
-.restaurant-name{font-size:26px;font-weight:bold}
-.table-number{margin-top:6px;color:#ccc;font-size:14px}
-.container{padding:15px}
-.status{text-align:center;color:#777;font-size:13px;margin-bottom:12px}
-.search{width:100%;padding:14px;border:1px solid #ddd;border-radius:12px;font-size:16px;margin-bottom:16px}
-.categories{display:flex;gap:10px;overflow-x:auto;margin-bottom:20px;padding-bottom:5px}
-.category{white-space:nowrap;padding:10px 17px;background:#fff;border:1px solid #ddd;border-radius:25px;font-size:14px;cursor:pointer}
-.category.active{background:#111;color:#fff;border-color:#111}
-.food-card{background:#fff;border-radius:15px;margin-bottom:16px;overflow:hidden;box-shadow:0 3px 12px #00000014}
-.food-image{width:100%;height:190px;object-fit:cover;display:block}
-.food-content{padding:15px}
-.food-name{font-size:19px;font-weight:bold}
-.food-description{color:#777;font-size:14px;line-height:1.4;margin-top:7px}
-.food-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
-.price{font-size:19px;font-weight:bold}
-.add-btn,.quantity button,.place-btn{background:#111;color:#fff;border:0;border-radius:9px;cursor:pointer}
-.add-btn{padding:10px 20px}
-.cart{position:fixed;bottom:15px;left:15px;right:15px;background:#111;color:#fff;padding:16px;border-radius:13px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;box-shadow:0 5px 20px #0004;z-index:1000}
-.cart-left{font-weight:bold}
-.cart-items{display:none;position:fixed;bottom:82px;left:15px;right:15px;background:#fff;border-radius:15px;padding:18px;max-height:60vh;overflow-y:auto;box-shadow:0 0 25px #0004;z-index:999}
-.cart-items h2{margin-bottom:15px}
-.cart-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #eee}
-.cart-item-name{font-weight:bold}
-.cart-item-price{color:#666;font-size:13px;margin-top:4px}
-.quantity{display:flex;align-items:center;gap:9px}
-.quantity button{width:30px;height:30px;font-size:18px}
-.place-btn{width:100%;padding:14px;margin-top:18px;font-size:16px;font-weight:bold}
-.empty-cart,.no-result,.loading{text-align:center;color:#777;padding:25px}
-.no-result{display:none}
-.error-box{background:#f8d7da;color:#842029;padding:15px;border-radius:10px;line-height:1.5}
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+body{
+font-family:Arial,sans-serif;
+background:#f6f6f6;
+color:#222;
+padding-bottom:90px;
+}
+
+.header{
+background:#111;
+color:#fff;
+text-align:center;
+padding:20px 15px;
+}
+
+.restaurant-name{
+font-size:26px;
+font-weight:bold;
+}
+
+.table-number{
+margin-top:5px;
+color:#bbb;
+font-size:14px;
+}
+
+.header-actions{
+display:flex;
+justify-content:center;
+gap:8px;
+margin-top:14px;
+}
+
+.header-btn{
+border:0;
+background:#fff;
+color:#111;
+padding:9px 13px;
+border-radius:9px;
+font-size:13px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.container{
+padding:15px;
+}
+
+.status{
+text-align:center;
+color:#777;
+font-size:13px;
+margin-bottom:12px;
+}
+
+.search{
+width:100%;
+padding:14px;
+border:1px solid #ddd;
+border-radius:12px;
+font-size:16px;
+margin-bottom:16px;
+}
+
+.categories{
+display:flex;
+gap:10px;
+overflow-x:auto;
+margin-bottom:20px;
+padding-bottom:5px;
+}
+
+.categories::-webkit-scrollbar{
+display:none;
+}
+
+.category{
+white-space:nowrap;
+padding:10px 17px;
+background:#fff;
+border:1px solid #ddd;
+border-radius:25px;
+font-size:14px;
+cursor:pointer;
+}
+
+.category.active{
+background:#111;
+color:#fff;
+border-color:#111;
+}
+
+.food-card{
+background:#fff;
+border-radius:15px;
+margin-bottom:16px;
+overflow:hidden;
+box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.food-image{
+width:100%;
+height:190px;
+object-fit:cover;
+display:block;
+}
+
+.food-content{
+padding:15px;
+}
+
+.food-name{
+font-size:19px;
+font-weight:bold;
+}
+
+.food-description{
+color:#777;
+font-size:14px;
+line-height:1.4;
+margin-top:7px;
+}
+
+.food-bottom{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-top:14px;
+}
+
+.price{
+font-size:19px;
+font-weight:bold;
+}
+
+.add-btn,
+.quantity button,
+.place-btn{
+background:#111;
+color:#fff;
+border:0;
+border-radius:9px;
+cursor:pointer;
+}
+
+.add-btn{
+padding:10px 20px;
+}
+
+.cart{
+position:fixed;
+bottom:15px;
+left:15px;
+right:15px;
+background:#111;
+color:#fff;
+padding:16px;
+border-radius:13px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+cursor:pointer;
+box-shadow:0 5px 20px rgba(0,0,0,.25);
+z-index:1000;
+}
+
+.cart-left{
+font-weight:bold;
+}
+
+.cart-items{
+display:none;
+position:fixed;
+bottom:82px;
+left:15px;
+right:15px;
+background:#fff;
+border-radius:15px;
+padding:18px;
+max-height:60vh;
+overflow-y:auto;
+box-shadow:0 0 25px rgba(0,0,0,.25);
+z-index:999;
+}
+
+.cart-items h2{
+margin-bottom:15px;
+}
+
+.cart-item{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+padding:12px 0;
+border-bottom:1px solid #eee;
+}
+
+.cart-item-name{
+font-weight:bold;
+}
+
+.cart-item-price{
+color:#666;
+font-size:13px;
+margin-top:4px;
+}
+
+.quantity{
+display:flex;
+align-items:center;
+gap:9px;
+}
+
+.quantity button{
+width:30px;
+height:30px;
+font-size:18px;
+}
+
+.place-btn{
+width:100%;
+padding:14px;
+margin-top:18px;
+font-size:16px;
+font-weight:bold;
+}
+
+.empty-cart,
+.no-result,
+.loading{
+text-align:center;
+color:#777;
+padding:25px;
+}
+
+.no-result{
+display:none;
+}
+
+.error-box{
+background:#f8d7da;
+color:#842029;
+padding:15px;
+border-radius:10px;
+line-height:1.5;
+}
+
+/* MY ORDERS DRAWER */
+
+.orders-overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.45);
+backdrop-filter:blur(3px);
+display:none;
+z-index:2000;
+}
+
+.orders-overlay.open{
+display:block;
+}
+
+.orders-drawer{
+position:fixed;
+top:0;
+right:0;
+width:min(520px,95vw);
+height:100vh;
+background:#f5f5f5;
+transform:translateX(100%);
+transition:.3s;
+z-index:2001;
+display:flex;
+flex-direction:column;
+}
+
+.orders-drawer.open{
+transform:translateX(0);
+}
+
+.orders-head{
+background:#111;
+color:#fff;
+padding:18px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.orders-head h2{
+font-size:20px;
+}
+
+.orders-head p{
+font-size:12px;
+color:#bbb;
+margin-top:4px;
+}
+
+.close-orders{
+width:38px;
+height:38px;
+border:0;
+border-radius:50%;
+background:#fff;
+color:#111;
+font-size:22px;
+cursor:pointer;
+}
+
+.orders-summary{
+padding:14px;
+background:#f5f5f5;
+}
+
+.bill-box{
+background:#111;
+color:#fff;
+border-radius:15px;
+padding:15px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.bill-box small{
+color:#bbb;
+font-size:11px;
+}
+
+.bill-box strong{
+font-size:23px;
+}
+
+.orders-list{
+flex:1;
+overflow:auto;
+padding:0 14px 20px;
+}
+
+.order-card{
+background:#fff;
+border-radius:14px;
+padding:15px;
+margin-bottom:11px;
+box-shadow:0 3px 12px rgba(0,0,0,.06);
+}
+
+.order-top{
+display:flex;
+justify-content:space-between;
+gap:10px;
+}
+
+.order-source{
+padding:6px 9px;
+border-radius:20px;
+font-size:10px;
+font-weight:bold;
+}
+
+.customer-source{
+background:#d1e7dd;
+color:#0f5132;
+}
+
+.waiter-source{
+background:#cff4fc;
+color:#055160;
+}
+
+.order-status{
+font-size:11px;
+color:#777;
+margin-top:4px;
+}
+
+.order-items{
+border-top:1px solid #eee;
+border-bottom:1px solid #eee;
+margin:10px 0;
+padding:9px 0;
+}
+
+.order-item{
+display:flex;
+justify-content:space-between;
+font-size:13px;
+padding:4px 0;
+}
+
+.order-total{
+display:flex;
+justify-content:space-between;
+font-weight:bold;
+}
+
+.order-time{
+font-size:11px;
+color:#888;
+margin-top:8px;
+}
+
 </style>
+
 </head>
 
 <body>
 
 <div class="header">
-<div class="restaurant-name">🍽️ My Restaurant</div>
-<div class="table-number" id="tableNumber">Table No. 5</div>
+
+<div class="restaurant-name">
+🍽️ My Restaurant
 </div>
+
+<div class="table-number" id="tableNumber">
+Table No. 5
+</div>
+
+<div class="header-actions">
+
+<button
+class="header-btn"
+onclick="openMyOrders()"
+>
+📋 My Orders
+</button>
+
+</div>
+
+</div>
+
 
 <div class="container">
 
-<div class="status" id="status">🔄 Starting website...</div>
+<div class="status" id="status">
+🔄 Starting website...
+</div>
 
 <input
 type="text"
@@ -63,7 +464,9 @@ placeholder="🔍 Search food..."
 <div class="categories" id="categories"></div>
 
 <div id="foodList">
-<div class="loading">Loading menu... 🍽️</div>
+<div class="loading">
+Loading menu... 🍽️
+</div>
 </div>
 
 <div class="no-result" id="noResult">
@@ -72,24 +475,120 @@ No food found 😕
 
 </div>
 
+
+<!-- CART -->
+
 <div class="cart-items" id="cartItems">
+
 <h2>🛒 Your Cart</h2>
+
 <div id="cartList"></div>
+
 </div>
 
+
 <div class="cart" id="cartButton">
-<div class="cart-left" id="cartCount">🛒 Cart (0)</div>
-<div id="cartTotal">₹0</div>
+
+<div class="cart-left" id="cartCount">
+🛒 Cart (0)
 </div>
+
+<div id="cartTotal">
+₹0
+</div>
+
+</div>
+
+
+<!-- MY ORDERS -->
+
+<div
+class="orders-overlay"
+id="ordersOverlay"
+onclick="closeMyOrders()"
+></div>
+
+
+<div
+class="orders-drawer"
+id="ordersDrawer"
+>
+
+<div class="orders-head">
+
+<div>
+
+<h2>
+📋 My Orders
+</h2>
+
+<p id="myOrdersSubtitle">
+Current table orders
+</p>
+
+</div>
+
+<button
+class="close-orders"
+onclick="closeMyOrders()"
+>
+×
+</button>
+
+</div>
+
+
+<div class="orders-summary">
+
+<div class="bill-box">
+
+<div>
+
+<small>
+CURRENT TABLE BILL
+</small>
+
+<div id="billOrderCount">
+0 active orders
+</div>
+
+</div>
+
+<strong id="currentBill">
+₹0
+</strong>
+
+</div>
+
+</div>
+
+
+<div
+class="orders-list"
+id="myOrdersList"
+>
+
+<div class="loading">
+Loading orders...
+</div>
+
+</div>
+
+</div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
-const SUPABASE_URL="https://jxjrcjmrkhknltwvzzvr.supabase.co";
-const SUPABASE_KEY="sb_publishable__Pg5UNoizrSpZB3fRvbARw_fNhHGjvl";
+const SUPABASE_URL=
+"https://jxjrcjmrkhknltwvzzvr.supabase.co";
 
-const db=window.supabase.createClient(
+const SUPABASE_KEY=
+"sb_publishable__Pg5UNoizrSpZB3fRvbARw_fNhHGjvl";
+
+const db=
+window.supabase.createClient(
 SUPABASE_URL,
 SUPABASE_KEY
 );
@@ -97,12 +596,17 @@ SUPABASE_KEY
 let menuItems=[];
 let cart=[];
 let selectedCategory="All";
+let currentTable="5";
+let myOrdersTimer=null;
 
-const statusBox=document.getElementById("status");
+const statusBox=
+document.getElementById("status");
+
 
 function setStatus(text){
 statusBox.innerText=text;
 }
+
 
 function loadTableNumber(){
 
@@ -112,11 +616,16 @@ window.location.search
 ).get("table");
 
 if(table){
-document.getElementById("tableNumber")
-.innerText="Table No. "+table;
+currentTable=table;
+
+document.getElementById(
+"tableNumber"
+).innerText=
+"Table No. "+table;
 }
 
 }
+
 
 function displayMenu(items){
 
@@ -139,9 +648,11 @@ noResult.style.display="none";
 
 items.forEach(item=>{
 
-const card=document.createElement("div");
+const card=
+document.createElement("div");
 
-card.className="food-card";
+card.className=
+"food-card";
 
 card.innerHTML=`
 
@@ -186,6 +697,7 @@ foodList.appendChild(card);
 
 }
 
+
 function createCategories(){
 
 const box=
@@ -196,10 +708,13 @@ box.innerHTML="";
 const all=
 document.createElement("div");
 
-all.className="category active";
+all.className=
+"category active";
+
 all.innerText="All";
 
-all.onclick=function(){
+all.onclick=
+function(){
 filterCategory("All",this);
 };
 
@@ -218,10 +733,14 @@ categories.forEach(category=>{
 const button=
 document.createElement("div");
 
-button.className="category";
-button.innerText=category;
+button.className=
+"category";
 
-button.onclick=function(){
+button.innerText=
+category;
+
+button.onclick=
+function(){
 filterCategory(category,this);
 };
 
@@ -231,13 +750,17 @@ box.appendChild(button);
 
 }
 
+
 async function loadMenu(){
 
-setStatus("🔄 Connecting to menu database...");
+setStatus(
+"🔄 Connecting to menu database..."
+);
 
 try{
 
-const result=await db
+const result=
+await db
 .from("menu_items")
 .select("*")
 .order("id",{ascending:true});
@@ -246,7 +769,8 @@ if(result.error){
 throw result.error;
 }
 
-const data=result.data||[];
+const data=
+result.data||[];
 
 if(data.length===0){
 
@@ -254,17 +778,12 @@ setStatus(
 "⚠️ Database connected hai, lekin menu empty hai."
 );
 
-document.getElementById("foodList").innerHTML=`
-<div class="error-box">
-⚠️ menu_items table mein abhi koi item nahi mila.
-</div>
-`;
-
 return;
 
 }
 
-menuItems=data.map(item=>({
+menuItems=
+data.map(item=>({
 
 id:item.id,
 name:item.name,
@@ -289,13 +808,22 @@ menuItems.length+
 
 console.error(error);
 
-setStatus("❌ Database error");
+setStatus(
+"❌ Database error"
+);
 
-document.getElementById("foodList").innerHTML=`
+document.getElementById(
+"foodList"
+).innerHTML=`
+
 <div class="error-box">
+
 ❌ Menu load nahi hua.
+
 <br><br>
+
 ${error.message}
+
 </div>
 `;
 
@@ -303,11 +831,13 @@ ${error.message}
 
 }
 
+
 function searchFood(){
 
 const text=
-document.getElementById("searchInput")
-.value
+document.getElementById(
+"searchInput"
+).value
 .toLowerCase()
 .trim();
 
@@ -331,12 +861,14 @@ displayMenu(filtered);
 
 }
 
+
 function filterCategory(
 category,
 button
 ){
 
-selectedCategory=category;
+selectedCategory=
+category;
 
 document
 .querySelectorAll(".category")
@@ -350,15 +882,20 @@ searchFood();
 
 }
 
+
 function addToCart(id){
 
 const item=
-menuItems.find(food=>food.id===id);
+menuItems.find(
+food=>food.id===id
+);
 
 if(!item)return;
 
 const existing=
-cart.find(food=>food.id===id);
+cart.find(
+food=>food.id===id
+);
 
 if(existing){
 
@@ -381,6 +918,7 @@ updateCart();
 
 }
 
+
 function increaseQuantity(index){
 
 if(cart[index]){
@@ -390,6 +928,7 @@ cart[index].quantity++;
 updateCart();
 
 }
+
 
 function decreaseQuantity(index){
 
@@ -405,6 +944,7 @@ updateCart();
 
 }
 
+
 function updateCart(){
 
 let totalItems=0;
@@ -412,7 +952,8 @@ let totalPrice=0;
 
 cart.forEach(item=>{
 
-totalItems+=item.quantity;
+totalItems+=
+item.quantity;
 
 totalPrice+=
 item.price*
@@ -420,19 +961,23 @@ item.quantity;
 
 });
 
-document.getElementById("cartCount")
-.innerText=
+document.getElementById(
+"cartCount"
+).innerText=
 "🛒 Cart ("+
 totalItems+
 ")";
 
-document.getElementById("cartTotal")
-.innerText=
+document.getElementById(
+"cartTotal"
+).innerText=
 "₹"+
 totalPrice;
 
 const cartList=
-document.getElementById("cartList");
+document.getElementById(
+"cartList"
+);
 
 if(cart.length===0){
 
@@ -445,7 +990,8 @@ return;
 
 cartList.innerHTML="";
 
-cart.forEach((item,index)=>{
+cart.forEach(
+(item,index)=>{
 
 const itemTotal=
 item.price*
@@ -505,10 +1051,13 @@ onclick="placeOrder()"
 
 }
 
+
 function toggleCart(){
 
 const box=
-document.getElementById("cartItems");
+document.getElementById(
+"cartItems"
+);
 
 box.style.display=
 box.style.display==="block"
@@ -517,28 +1066,25 @@ box.style.display==="block"
 
 }
 
+
 async function placeOrder(){
 
 if(cart.length===0){
 
-alert("Cart empty hai bhai 😅");
+alert(
+"Cart empty hai bhai 😅"
+);
+
 return;
 
 }
 
-const tableNumber=
-new URLSearchParams(
-window.location.search
-).get("table")||"5";
-
 let total=0;
 
 cart.forEach(item=>{
-
 total+=
 item.price*
 item.quantity;
-
 });
 
 const orderItems=
@@ -551,29 +1097,24 @@ quantity:item.quantity
 
 }));
 
-setStatus("🔄 Placing order...");
+setStatus(
+"🔄 Placing order..."
+);
 
 try{
 
-const {data,error}=
+const {error}=
 await db.rpc(
 "create_customer_order",
 {
-p_table_number:tableNumber,
+p_table_number:currentTable,
 p_items:orderItems,
 p_total_amount:total
 }
 );
 
 if(error){
-
-console.error(
-"ORDER ERROR:",
-error
-);
-
 throw error;
-
 }
 
 alert(
@@ -584,9 +1125,10 @@ cart=[];
 
 updateCart();
 
-document
-.getElementById("cartItems")
-.style.display="none";
+document.getElementById(
+"cartItems"
+).style.display=
+"none";
 
 setStatus(
 "✅ Order placed successfully!"
@@ -594,10 +1136,7 @@ setStatus(
 
 }catch(error){
 
-console.error(
-"ORDER ERROR:",
-error
-);
+console.error(error);
 
 alert(
 "❌ Order place nahi hua:\n"+
@@ -611,6 +1150,269 @@ setStatus(
 }
 
 }
+
+
+/* MY ORDERS */
+
+async function loadMyOrders(){
+
+const list=
+document.getElementById(
+"myOrdersList"
+);
+
+list.innerHTML=
+'<div class="loading">Loading orders...</div>';
+
+try{
+
+const {
+data,
+error
+}=
+await db
+.from("orders")
+.select("*")
+.eq("table_number",currentTable)
+.neq("payment_status","paid")
+.order("created_at",{ascending:false});
+
+if(error){
+throw error;
+}
+
+const orders=
+data||[];
+
+let bill=0;
+
+orders.forEach(order=>{
+bill+=Number(order.total_amount)||0;
+});
+
+document.getElementById(
+"currentBill"
+).innerText=
+"₹"+bill;
+
+document.getElementById(
+"billOrderCount"
+).innerText=
+orders.length+
+" active order"+
+(orders.length===1?"":"s");
+
+document.getElementById(
+"myOrdersSubtitle"
+).innerText=
+"Table "+currentTable+
+" • Current session";
+
+
+if(orders.length===0){
+
+list.innerHTML=`
+
+<div class="empty-cart">
+
+✅ Abhi koi active order nahi hai.
+
+<br><br>
+
+Payment complete hone ke baad
+table session yahan reset ho gaya hai.
+
+</div>
+`;
+
+return;
+
+}
+
+list.innerHTML="";
+
+orders.forEach(order=>{
+
+let items=order.items;
+
+if(typeof items==="string"){
+
+try{
+items=JSON.parse(items);
+}catch(e){
+items=[];
+}
+
+}
+
+let itemsHTML="";
+
+if(Array.isArray(items)){
+
+items.forEach(item=>{
+
+itemsHTML+=`
+
+<div class="order-item">
+
+<span>
+${item.name}
+×
+${item.quantity||1}
+</span>
+
+<span>
+₹${(
+Number(item.price)*
+Number(item.quantity||1)
+)}
+
+</span>
+
+</div>
+`;
+
+});
+
+}
+
+const isWaiter=
+order.order_source==="waiter";
+
+const sourceClass=
+isWaiter
+?"waiter-source"
+:"customer-source";
+
+const sourceText=
+isWaiter
+?
+"🔵 WAITER"+
+(order.waiter_name
+?
+" • "+order.waiter_name
+:"")
+:
+"🟢 CUSTOMER";
+
+
+list.innerHTML+=`
+
+<div class="order-card">
+
+<div class="order-top">
+
+<div>
+
+<strong>
+Order #${order.id}
+</strong>
+
+<div class="order-status">
+${String(order.status||"pending").toUpperCase()}
+</div>
+
+</div>
+
+<div class="order-source ${sourceClass}">
+${sourceText}
+</div>
+
+</div>
+
+<div class="order-items">
+${itemsHTML}
+</div>
+
+<div class="order-total">
+
+<span>
+Total
+</span>
+
+<span>
+₹${order.total_amount||0}
+</span>
+
+</div>
+
+<div class="order-time">
+🕒 ${
+order.created_at
+?
+new Date(order.created_at)
+.toLocaleString("en-IN")
+:
+""
+}
+</div>
+
+</div>
+`;
+
+});
+
+}catch(error){
+
+console.error(error);
+
+list.innerHTML=`
+
+<div class="error-box">
+
+❌ My Orders load nahi hua.
+
+<br><br>
+
+${error.message}
+
+</div>
+`;
+
+}
+
+}
+
+
+function openMyOrders(){
+
+document.getElementById(
+"ordersDrawer"
+).classList.add("open");
+
+document.getElementById(
+"ordersOverlay"
+).classList.add("open");
+
+loadMyOrders();
+
+clearInterval(myOrdersTimer);
+
+myOrdersTimer=
+setInterval(
+loadMyOrders,
+8000
+);
+
+}
+
+
+function closeMyOrders(){
+
+document.getElementById(
+"ordersDrawer"
+).classList.remove("open");
+
+document.getElementById(
+"ordersOverlay"
+).classList.remove("open");
+
+clearInterval(
+myOrdersTimer
+);
+
+}
+
 
 document
 .getElementById("searchInput")
