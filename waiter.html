@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
@@ -144,13 +145,10 @@ input:focus{
     cursor:pointer;
 }
 
-.hidden{
-    display:none;
-}
-
 </style>
 
 </head>
+
 
 <body>
 
@@ -178,22 +176,24 @@ input:focus{
     ></div>
 
 
-    <!-- LOGIN -->
+    <!-- =========================
+         LOGIN
+    ========================== -->
 
     <form id="loginForm">
 
         <div class="form-group">
 
             <label>
-                Email
+                Waiter ID
             </label>
 
             <input
-                type="email"
-                id="email"
-                placeholder="Enter waiter email"
+                type="text"
+                id="waiterId"
+                placeholder="Enter waiter ID"
                 required
-                autocomplete="email"
+                autocomplete="username"
             >
 
         </div>
@@ -239,7 +239,9 @@ input:focus{
     </div>
 
 
-    <!-- FORGOT PASSWORD -->
+    <!-- =========================
+         FORGOT PASSWORD
+    ========================== -->
 
     <div id="forgotBox">
 
@@ -250,21 +252,21 @@ input:focus{
         <p
             style="color:#777;font-size:13px;margin:8px 0 15px"
         >
-            Apna registered email enter karo.
-            Reset instructions email par bheje jayenge.
+            Apna Waiter ID enter karo.
+            Registered email par password reset mail bheja jayega.
         </p>
 
 
         <div class="form-group">
 
             <label>
-                Email
+                Waiter ID
             </label>
 
             <input
-                type="email"
-                id="resetEmail"
-                placeholder="Enter registered email"
+                type="text"
+                id="resetWaiterId"
+                placeholder="Enter waiter ID"
             >
 
         </div>
@@ -297,7 +299,6 @@ input:focus{
 
 
 <script>
-
 
 /* ==========================================
    SUPABASE
@@ -334,10 +335,10 @@ document.getElementById("loginSuccess");
 
 
 /* ==========================================
-   MESSAGE FUNCTIONS
+   MESSAGES
 ========================================== */
 
-function showLoginError(message){
+function showError(message){
 
     loginSuccess.style.display="none";
 
@@ -348,7 +349,7 @@ function showLoginError(message){
 }
 
 
-function showLoginSuccess(message){
+function showSuccess(message){
 
     loginError.style.display="none";
 
@@ -368,7 +369,7 @@ function clearMessages(){
 
 
 /* ==========================================
-   LOGIN
+   WAITER LOGIN
 ========================================== */
 
 loginForm.addEventListener(
@@ -379,20 +380,22 @@ loginForm.addEventListener(
 
         clearMessages();
 
-        const email =
-            document.getElementById("email")
+
+        const waiterId =
+            document.getElementById("waiterId")
             .value
             .trim();
+
 
         const password =
             document.getElementById("password")
             .value;
 
 
-        if(!email){
+        if(!waiterId){
 
-            showLoginError(
-                "Email enter karo."
+            showError(
+                "Waiter ID enter karo."
             );
 
             return;
@@ -401,7 +404,7 @@ loginForm.addEventListener(
 
         if(!password){
 
-            showLoginError(
+            showError(
                 "Password enter karo."
             );
 
@@ -412,50 +415,36 @@ loginForm.addEventListener(
         loginBtn.disabled=true;
 
         loginBtn.innerText =
-            "⏳ Logging in...";
+            "⏳ Checking...";
 
 
         try{
 
+
+            /*
+            ==========================================
+            WAITER TABLE CHECK
+            ==========================================
+            */
+
             const {
                 data,
                 error
-            } = await db.auth.signInWithPassword({
-
-                email:email,
-
-                password:password
-
-            });
+            } = await db
+                .from("waiters")
+                .select("*")
+                .eq("waiter_id", waiterId)
+                .maybeSingle();
 
 
             if(error){
 
                 console.error(error);
 
-
-                /*
-                 LOGIN FAILED
-                */
-
-                if(
+                showError(
+                    "Waiter data check nahi ho pa raha: " +
                     error.message
-                    .toLowerCase()
-                    .includes("invalid login credentials")
-                ){
-
-                    showLoginError(
-                        "Email ya password galat hai."
-                    );
-
-                }else{
-
-                    showLoginError(
-                        error.message
-                    );
-
-                }
-
+                );
 
                 loginBtn.disabled=false;
 
@@ -463,46 +452,90 @@ loginForm.addEventListener(
                     "🔐 Login";
 
                 return;
-
             }
 
 
             /*
-             LOGIN SUCCESS
+            ==========================================
+            WAITER NOT FOUND
+            ==========================================
             */
 
-            showLoginSuccess(
-                "Login successful! Opening waiter panel..."
-            );
+            if(!data){
+
+                showError(
+                    "Waiter ID ya password galat hai."
+                );
+
+                loginBtn.disabled=false;
+
+                loginBtn.innerText =
+                    "🔐 Login";
+
+                return;
+            }
 
 
             /*
-             THODA DELAY
-             */
+            ==========================================
+            PASSWORD CHECK
+            ==========================================
+            */
+
+            if(data.password !== password){
+
+                showError(
+                    "Waiter ID ya password galat hai."
+                );
+
+                loginBtn.disabled=false;
+
+                loginBtn.innerText =
+                    "🔐 Login";
+
+                return;
+            }
+
+
+            /*
+            ==========================================
+            LOGIN SUCCESS
+            ==========================================
+            */
+
+            sessionStorage.setItem(
+                "waiter_id",
+                data.waiter_id
+            );
+
+
+            sessionStorage.setItem(
+                "waiter_name",
+                data.name || data.waiter_id
+            );
+
+
+            showSuccess(
+                "Login successful! Waiter panel opening..."
+            );
+
 
             setTimeout(function(){
-
-                /*
-                 waiter-dashboard.html
-                 ko baad mein isi naam se
-                 GitHub par rakhna.
-                */
 
                 window.location.href =
                     "waiter-dashboard.html";
 
-            },800);
+            },700);
 
 
         }catch(error){
 
             console.error(error);
 
-            showLoginError(
+            showError(
                 "Login ke time error aaya: " +
                 error.message
             );
-
 
             loginBtn.disabled=false;
 
@@ -559,20 +592,20 @@ async function sendResetEmail(){
 
     clearMessages();
 
-    const email =
-        document.getElementById("resetEmail")
+
+    const waiterId =
+        document.getElementById("resetWaiterId")
         .value
         .trim();
 
 
-    if(!email){
+    if(!waiterId){
 
-        showLoginError(
-            "Registered email enter karo."
+        showError(
+            "Waiter ID enter karo."
         );
 
         return;
-
     }
 
 
@@ -583,14 +616,80 @@ async function sendResetEmail(){
     resetBtn.disabled=true;
 
     resetBtn.innerText =
-        "⏳ Sending...";
+        "⏳ Checking...";
 
 
     try{
 
+
         /*
-         IMPORTANT:
-         Apne GitHub Pages URL ko yahan rakho.
+        ==========================================
+        GET WAITER EMAIL
+        ==========================================
+        */
+
+        const {
+            data,
+            error
+        } = await db
+            .from("waiters")
+            .select("email")
+            .eq("waiter_id", waiterId)
+            .maybeSingle();
+
+
+        if(error){
+
+            console.error(error);
+
+            showError(
+                "Waiter details nahi mil rahe: " +
+                error.message
+            );
+
+            resetBtn.disabled=false;
+
+            resetBtn.innerText =
+                "📧 Send Reset Email";
+
+            return;
+        }
+
+
+        if(!data){
+
+            showError(
+                "Waiter ID nahi mila."
+            );
+
+            resetBtn.disabled=false;
+
+            resetBtn.innerText =
+                "📧 Send Reset Email";
+
+            return;
+        }
+
+
+        if(!data.email){
+
+            showError(
+                "Is waiter ke account me email registered nahi hai."
+            );
+
+            resetBtn.disabled=false;
+
+            resetBtn.innerText =
+                "📧 Send Reset Email";
+
+            return;
+        }
+
+
+        /*
+        ==========================================
+        RESET REDIRECT
+        ==========================================
         */
 
         const redirectUrl =
@@ -602,26 +701,34 @@ async function sendResetEmail(){
             );
 
 
+        resetBtn.innerText =
+            "⏳ Sending...";
+
+
+        /*
+        ==========================================
+        SUPABASE RESET EMAIL
+        ==========================================
+        */
+
         const {
-            error
-        } = await db.auth.resetPasswordForEmail(
-
-            email,
-
-            {
-                redirectTo:redirectUrl
-            }
-
-        );
+            error:resetError
+        } = await db.auth
+            .resetPasswordForEmail(
+                data.email,
+                {
+                    redirectTo:redirectUrl
+                }
+            );
 
 
-        if(error){
+        if(resetError){
 
-            console.error(error);
+            console.error(resetError);
 
-            showLoginError(
+            showError(
                 "Reset email nahi bheja gaya: " +
-                error.message
+                resetError.message
             );
 
             resetBtn.disabled=false;
@@ -630,12 +737,11 @@ async function sendResetEmail(){
                 "📧 Send Reset Email";
 
             return;
-
         }
 
 
-        showLoginSuccess(
-            "Password reset email bhej diya gaya. Email inbox/spam check karo."
+        showSuccess(
+            "Password reset email registered email par bhej diya gaya."
         );
 
 
@@ -649,8 +755,8 @@ async function sendResetEmail(){
 
         console.error(error);
 
-        showLoginError(
-            "Reset error: " +
+        showError(
+            "Reset ke time error aaya: " +
             error.message
         );
 
@@ -666,39 +772,12 @@ async function sendResetEmail(){
 
 
 /* ==========================================
-   CHECK EXISTING SESSION
+   START
 ========================================== */
-
-async function checkSession(){
-
-    const {
-        data
-    } = await db.auth.getSession();
-
-
-    if(
-        data &&
-        data.session
-    ){
-
-        /*
-         Agar already logged in hai
-         to waiter dashboard khol do.
-        */
-
-        window.location.href =
-            "waiter-dashboard.html";
-
-    }
-
-}
-
-
-checkSession();
-
 
 </script>
 
 
 </body>
+
 </html>
