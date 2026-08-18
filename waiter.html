@@ -1,31 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-
 <title>Waiter Panel</title>
 
 <style>
-
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
-}
-
+*{box-sizing:border-box;margin:0;padding:0}
 body{
 font-family:Arial,sans-serif;
-background:#f5f5f5;
+background:#f4f5f7;
 color:#222;
 padding-bottom:90px;
 }
-
-button,
-input{
-font:inherit;
-}
+button,input{font:inherit}
 
 .login-wrap{
 min-height:100vh;
@@ -35,61 +23,38 @@ justify-content:center;
 padding:20px;
 background:linear-gradient(135deg,#111,#333);
 }
-
 .login-box{
 width:100%;
 max-width:420px;
 background:#fff;
-border-radius:22px;
+border-radius:24px;
 padding:30px;
-box-shadow:0 15px 40px rgba(0,0,0,.25);
+box-shadow:0 18px 45px rgba(0,0,0,.25);
 }
-
-.logo{
-text-align:center;
-font-size:55px;
-}
-
-h1{
-text-align:center;
-margin:8px 0;
-}
-
-.sub{
-text-align:center;
-color:#777;
-font-size:14px;
-margin-bottom:22px;
-}
-
-label{
-display:block;
-font-weight:bold;
-margin:12px 0 6px;
-}
-
+.logo{text-align:center;font-size:58px}
+h1{text-align:center;margin:8px 0}
+.sub{text-align:center;color:#777;font-size:14px;margin-bottom:22px}
+label{display:block;font-weight:bold;margin:12px 0 6px}
 input{
 width:100%;
-padding:13px;
+padding:14px;
 border:1px solid #ddd;
-border-radius:10px;
+border-radius:11px;
 outline:none;
+background:#fff;
 }
-
 .btn{
 width:100%;
-padding:13px;
+padding:14px;
 border:0;
-border-radius:10px;
+border-radius:11px;
 background:#111;
 color:#fff;
 cursor:pointer;
 margin-top:14px;
+font-weight:700;
 }
-
-.btn:disabled{
-opacity:.6;
-}
+.btn:disabled{opacity:.6}
 
 .msg{
 display:none;
@@ -98,16 +63,8 @@ border-radius:10px;
 margin-bottom:12px;
 font-size:14px;
 }
-
-.err{
-background:#f8d7da;
-color:#842029;
-}
-
-.ok{
-background:#d1e7dd;
-color:#0f5132;
-}
+.err{background:#f8d7da;color:#842029}
+.ok{background:#d1e7dd;color:#0f5132}
 
 .forgot{
 display:block;
@@ -118,17 +75,16 @@ cursor:pointer;
 font-size:14px;
 }
 
-#app{
-display:none;
-}
+#app{display:none}
 
 .header{
-background:#111;
+background:linear-gradient(135deg,#111,#292929);
 color:#fff;
 padding:16px;
 position:sticky;
 top:0;
 z-index:50;
+box-shadow:0 5px 18px rgba(0,0,0,.13);
 }
 
 .head{
@@ -141,7 +97,7 @@ gap:10px;
 }
 
 .head p{
-color:#bbb;
+color:#aaa;
 font-size:12px;
 margin-top:3px;
 }
@@ -153,6 +109,7 @@ border:0;
 padding:9px 12px;
 border-radius:9px;
 cursor:pointer;
+font-weight:700;
 }
 
 .container{
@@ -161,22 +118,17 @@ margin:auto;
 padding:16px;
 }
 
-.welcome,
-.section{
-background:#fff;
-border-radius:18px;
-padding:18px;
-margin-bottom:16px;
-box-shadow:0 4px 15px rgba(0,0,0,.06);
-}
-
 .welcome{
 background:linear-gradient(135deg,#111,#292929);
 color:#fff;
+border-radius:20px;
+padding:20px;
+margin-bottom:16px;
+box-shadow:0 6px 22px rgba(0,0,0,.13);
 }
 
 .welcome small{
-color:#bbb;
+color:#aaa;
 }
 
 .quick{
@@ -188,20 +140,36 @@ margin-top:15px;
 
 .quick-card{
 background:#ffffff12;
-border-radius:12px;
+border:1px solid #ffffff15;
+border-radius:13px;
 padding:12px;
 }
-
 .quick-card small{
-font-size:11px;
+font-size:10px;
 color:#aaa;
 }
-
 .quick-card strong{
 display:block;
-font-size:18px;
+font-size:19px;
 margin-top:4px;
-color:#fff;
+}
+
+.section{
+background:#fff;
+border-radius:19px;
+padding:18px;
+margin-bottom:16px;
+box-shadow:0 4px 16px rgba(0,0,0,.06);
+}
+
+.section-title{
+font-size:20px;
+margin-bottom:5px;
+}
+.section-sub{
+font-size:13px;
+color:#777;
+margin-bottom:15px;
 }
 
 .tables{
@@ -213,55 +181,34 @@ gap:10px;
 .table{
 background:#fafafa;
 border:2px solid #eee;
-border-radius:14px;
-padding:15px;
+border-radius:15px;
+padding:14px 8px;
 text-align:center;
 cursor:pointer;
 }
-
 .table.active{
 background:#111;
 color:#fff;
 border-color:#111;
 }
-
 .table b{
 display:block;
-font-size:22px;
+font-size:23px;
 margin-bottom:5px;
 }
-
 .table-money{
-font-size:11px;
-color:#777;
+font-size:10px;
 margin-top:5px;
-}
-
-.table.active .table-money{
-color:#bbb;
-}
-
-.section-title{
-font-size:20px;
-margin-bottom:5px;
-}
-
-.section-sub{
-font-size:13px;
 color:#777;
-margin-bottom:15px;
 }
+.table.active .table-money{color:#bbb}
 
 .toolbar{
 display:flex;
 gap:10px;
 margin-bottom:12px;
 }
-
-.search{
-flex:1;
-}
-
+.search{flex:1}
 .pill{
 background:#111;
 color:#fff;
@@ -274,9 +221,8 @@ white-space:nowrap;
 display:flex;
 gap:8px;
 overflow:auto;
-margin-bottom:15px;
+margin-bottom:14px;
 }
-
 .cat{
 white-space:nowrap;
 padding:9px 14px;
@@ -285,7 +231,6 @@ border-radius:20px;
 background:#fff;
 cursor:pointer;
 }
-
 .cat.active{
 background:#111;
 color:#fff;
@@ -296,14 +241,12 @@ display:grid;
 grid-template-columns:repeat(2,1fr);
 gap:14px;
 }
-
 .food{
 background:#fff;
 border:1px solid #eee;
-border-radius:16px;
+border-radius:17px;
 overflow:hidden;
 }
-
 .food img{
 width:100%;
 height:180px;
@@ -311,30 +254,21 @@ object-fit:cover;
 display:block;
 background:#eee;
 }
-
-.food-body{
-padding:14px;
-}
-
-.food-name{
-font-weight:bold;
-font-size:17px;
-}
-
+.food-body{padding:14px}
+.food-name{font-weight:800;font-size:17px}
 .food-desc{
 color:#777;
 font-size:13px;
 line-height:1.4;
 margin-top:6px;
+min-height:36px;
 }
-
 .food-bottom{
 display:flex;
 justify-content:space-between;
 align-items:center;
 margin-top:13px;
 }
-
 .add{
 background:#111;
 color:#fff;
@@ -342,48 +276,31 @@ border:0;
 padding:10px 14px;
 border-radius:9px;
 cursor:pointer;
+font-weight:700;
 }
 
-/* TABLE ORDERS */
-
-.table-orders-grid{
+.bill-grid{
 display:grid;
 grid-template-columns:repeat(2,1fr);
 gap:12px;
 }
-
-.bill-table-card{
+.bill-card{
 background:#fff;
 border:1px solid #eee;
-border-radius:15px;
+border-radius:16px;
 padding:15px;
-box-shadow:0 3px 12px rgba(0,0,0,.05);
+box-shadow:0 3px 10px rgba(0,0,0,.05);
 }
-
-.bill-table-top{
+.bill-top{
 display:flex;
 justify-content:space-between;
+align-items:center;
 gap:10px;
 }
-
-.bill-table-name{
-font-size:18px;
-font-weight:bold;
-}
-
-.bill-amount{
-font-size:19px;
-font-weight:bold;
-color:#198754;
-}
-
-.bill-count{
-font-size:12px;
-color:#777;
-margin-top:5px;
-}
-
-.view-bill{
+.bill-title{font-size:18px;font-weight:800}
+.bill-total{font-size:20px;font-weight:800;color:#198754}
+.bill-count{font-size:11px;color:#777;margin-top:4px}
+.bill-open{
 width:100%;
 border:0;
 background:#111;
@@ -394,28 +311,27 @@ margin-top:12px;
 cursor:pointer;
 }
 
-/* CART */
-
 .cartbar{
 display:none;
 position:fixed;
-bottom:15px;
 left:15px;
 right:15px;
+bottom:15px;
 background:#111;
 color:#fff;
 padding:15px;
-border-radius:14px;
+border-radius:15px;
 z-index:100;
 justify-content:space-between;
 cursor:pointer;
-box-shadow:0 8px 25px rgba(0,0,0,.25);
+box-shadow:0 8px 30px rgba(0,0,0,.25);
 }
 
 .overlay{
 position:fixed;
 inset:0;
 background:rgba(0,0,0,.55);
+backdrop-filter:blur(3px);
 display:none;
 z-index:200;
 }
@@ -428,57 +344,57 @@ width:min(520px,95vw);
 height:100vh;
 background:#f5f5f5;
 transform:translateX(100%);
-transition:.3s;
+transition:.3s ease;
 z-index:201;
 display:flex;
 flex-direction:column;
-box-shadow:-10px 0 30px rgba(0,0,0,.2);
+box-shadow:-12px 0 30px rgba(0,0,0,.2);
 }
-
-.drawer.open{
-transform:translateX(0);
-}
-
+.drawer.open{transform:translateX(0)}
 .drawer-head{
 background:#111;
 color:#fff;
-padding:16px;
+padding:17px;
 display:flex;
 justify-content:space-between;
+align-items:center;
 }
-
 .close{
-background:#fff;
+width:38px;
+height:38px;
 border:0;
 border-radius:50%;
-width:36px;
-height:36px;
+background:#fff;
+color:#111;
+font-size:22px;
 cursor:pointer;
-font-size:21px;
 }
-
 .drawer-body{
 flex:1;
 overflow:auto;
 padding:14px;
 }
 
-.cart-item{
+.cart-item,
+.bill-item{
 background:#fff;
+border-radius:13px;
 padding:13px;
-border-radius:12px;
 margin-bottom:9px;
-display:flex;
-justify-content:space-between;
-gap:10px;
+box-shadow:0 2px 8px rgba(0,0,0,.05);
 }
 
+.cart-item{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+}
 .qty{
 display:flex;
 align-items:center;
 gap:8px;
 }
-
 .qty button{
 width:30px;
 height:30px;
@@ -486,21 +402,19 @@ border:0;
 background:#111;
 color:#fff;
 border-radius:7px;
+cursor:pointer;
 }
-
 .drawer-foot{
 background:#fff;
 padding:15px;
 border-top:1px solid #ddd;
 }
-
 .total{
 display:flex;
 justify-content:space-between;
-font-weight:bold;
-font-size:18px;
+font-size:19px;
+font-weight:800;
 }
-
 .place{
 width:100%;
 border:0;
@@ -509,59 +423,43 @@ color:#fff;
 padding:14px;
 border-radius:10px;
 margin-top:10px;
-font-weight:bold;
+font-weight:800;
 cursor:pointer;
 }
 
-/* BILL DRAWER */
-
-.bill-item{
-background:#fff;
-border-radius:13px;
-padding:13px;
-margin-bottom:9px;
-box-shadow:0 2px 8px rgba(0,0,0,.04);
-}
-
-.source-badge{
+.source{
 display:inline-block;
-padding:6px 9px;
+padding:5px 8px;
 border-radius:20px;
 font-size:10px;
-font-weight:bold;
+font-weight:800;
 margin-top:6px;
 }
-
-.customer-badge{
+.customer-source{
 background:#d1e7dd;
 color:#0f5132;
 }
-
-.waiter-badge{
+.waiter-source{
 background:#cff4fc;
 color:#055160;
 }
-
-.bill-item-lines{
-border-top:1px solid #eee;
-border-bottom:1px solid #eee;
-margin:10px 0;
-padding:8px 0;
-}
-
 .bill-line{
 display:flex;
 justify-content:space-between;
 font-size:13px;
 padding:3px 0;
 }
-
+.bill-lines{
+border-top:1px solid #eee;
+border-bottom:1px solid #eee;
+margin:9px 0;
+padding:8px 0;
+}
 .payment-row{
 display:flex;
-gap:8px;
-margin-top:12px;
+gap:7px;
+margin-top:10px;
 }
-
 .payment-btn{
 flex:1;
 border:0;
@@ -572,55 +470,27 @@ border-radius:9px;
 cursor:pointer;
 }
 
-.empty,
-.loading{
+.empty,.loading{
+padding:35px 10px;
 text-align:center;
 color:#777;
-padding:30px;
 }
 
 @media(max-width:800px){
-
-.tables{
-grid-template-columns:repeat(3,1fr);
-}
-
-.table-orders-grid{
-grid-template-columns:1fr;
-}
-
+.tables{grid-template-columns:repeat(3,1fr)}
+.bill-grid{grid-template-columns:1fr}
 }
 
 @media(max-width:600px){
-
-.tables{
-grid-template-columns:repeat(2,1fr);
+.tables{grid-template-columns:repeat(2,1fr)}
+.menu{grid-template-columns:1fr}
+.toolbar{flex-direction:column}
+.drawer{width:100vw}
 }
-
-.menu{
-grid-template-columns:1fr;
-}
-
-.toolbar{
-flex-direction:column;
-}
-
-.drawer{
-width:100vw;
-}
-
-.quick{
-grid-template-columns:1fr 1fr 1fr;
-}
-
-}
-
 </style>
-
 </head>
 
 <body>
-
 
 <!-- LOGIN -->
 
@@ -629,34 +499,17 @@ grid-template-columns:1fr 1fr 1fr;
 <div class="login-box">
 
 <div class="logo">🧑‍🍳</div>
-
 <h1>Waiter Login</h1>
+<div class="sub">Restaurant Waiter Panel</div>
 
-<div class="sub">
-Restaurant Waiter Panel
-</div>
-
-<div
-id="loginMsg"
-class="msg"
-></div>
+<div id="loginMsg" class="msg"></div>
 
 <form id="loginForm">
 
-<label>
-Waiter ID
-</label>
+<label>Waiter ID</label>
+<input id="waiterIdInput" placeholder="Example: W001" required>
 
-<input
-id="waiterIdInput"
-placeholder="Example: W001"
-required
->
-
-<label>
-Password
-</label>
-
+<label>Password</label>
 <input
 id="passwordInput"
 type="password"
@@ -674,15 +527,11 @@ type="submit"
 
 </form>
 
-<div
-class="forgot"
-onclick="forgotPassword()"
->
+<div class="forgot" onclick="forgotPassword()">
 Forgot Password?
 </div>
 
 </div>
-
 </div>
 
 
@@ -695,146 +544,85 @@ Forgot Password?
 <div class="head">
 
 <div>
-
-<h2>
-🧑‍🍳 Waiter Panel
-</h2>
-
-<p id="headerInfo">
-Waiter
-</p>
-
+<h2>🧑‍🍳 Waiter Panel</h2>
+<p id="headerInfo">Waiter</p>
 </div>
 
-<button
-class="logout"
-onclick="logout()"
->
+<button class="logout" onclick="logout()">
 🚪 Logout
 </button>
 
 </div>
-
 </div>
 
-
 <div class="container">
-
 
 <div class="welcome">
 
 <h2>
-👋 Hello,
-<span id="waiterName">
-Waiter
-</span>
+👋 Hello, <span id="waiterName">Waiter</span>
 </h2>
 
 <small>
-Waiter ID:
-<span id="waiterIdText">
--
-</span>
+Waiter ID: <span id="waiterIdText">-</span>
 </small>
-
 
 <div class="quick">
 
 <div class="quick-card">
-
-<small>
-Open Tables
-</small>
-
-<strong
-id="openTableCount"
->
-0
-</strong>
-
+<small>Open Tables</small>
+<strong id="openTableCount">0</strong>
 </div>
 
 <div class="quick-card">
-
-<small>
-Unpaid Bills
-</small>
-
-<strong
-id="openBillTotal"
->
-₹0
-</strong>
-
+<small>Unpaid Amount</small>
+<strong id="openBillTotal">₹0</strong>
 </div>
 
 <div class="quick-card">
-
-<small>
-My Waiter Orders
-</small>
-
-<strong
-id="myOrderCount"
->
-0
-</strong>
-
+<small>My Orders</small>
+<strong id="myOrderCount">0</strong>
 </div>
 
 </div>
 
 </div>
 
-
-<div
-id="appMsg"
-class="msg"
-></div>
+<div id="appMsg" class="msg"></div>
 
 
-<!-- TABLE ORDERS -->
+<!-- ALL TABLE BILLS -->
 
 <div class="section">
 
 <h2 class="section-title">
-📋 All Table Orders
+💳 All Table Bills
 </h2>
 
 <p class="section-sub">
-Kisi bhi table ka pending bill dekho aur payment collect karo.
+Kisi bhi table ka unpaid bill dekh kar payment collect karo.
 </p>
 
-<div
-id="tableOrders"
-class="table-orders-grid"
->
-
-<div class="loading">
-Loading table bills...
-</div>
-
+<div id="tableBills" class="bill-grid">
+<div class="loading">Loading bills...</div>
 </div>
 
 </div>
 
 
-<!-- TABLE SELECTION -->
+<!-- TABLE SELECT -->
 
 <div class="section">
 
 <h2 class="section-title">
-🪑 Select Table
+🪑 New Order — Select Table
 </h2>
 
 <p class="section-sub">
-Naya order lene ke liye table select karo.
+Customer ki table select karo.
 </p>
 
-<div
-id="tables"
-class="tables"
-></div>
+<div id="tables" class="tables"></div>
 
 </div>
 
@@ -860,29 +648,20 @@ Table -
 
 </div>
 
-<div
-id="categories"
-class="cats"
-></div>
+<div id="categories" class="cats"></div>
 
-<div
-id="menu"
-class="menu"
->
-<div class="loading">
-🍽️ Loading menu...
-</div>
+<div id="menu" class="menu">
+<div class="loading">🍽️ Loading menu...</div>
 </div>
 
 </div>
-
 
 </div>
 
 </div>
 
 
-<!-- CART DRAWER -->
+<!-- CART -->
 
 <div
 id="cartDrawer"
@@ -892,43 +671,21 @@ class="drawer"
 <div class="drawer-head">
 
 <div>
+<h3>🛒 Current Order</h3>
+<small id="drawerTable">No table</small>
+</div>
 
-<h3>
-🛒 Current Order
-</h3>
-
-<small id="drawerTable">
-No table
-</small>
+<button class="close" onclick="closeCart()">×</button>
 
 </div>
 
-<button
-class="close"
-onclick="closeCart()"
->
-×
-</button>
-
-</div>
-
-<div
-id="cartList"
-class="drawer-body"
-></div>
+<div id="cartList" class="drawer-body"></div>
 
 <div class="drawer-foot">
 
 <div class="total">
-
-<span>
-Total
-</span>
-
-<span id="cartTotal">
-₹0
-</span>
-
+<span>Total</span>
+<span id="cartTotal">₹0</span>
 </div>
 
 <button
@@ -944,7 +701,7 @@ onclick="placeOrder()"
 </div>
 
 
-<!-- BILL DRAWER -->
+<!-- BILL -->
 
 <div
 id="billDrawer"
@@ -954,43 +711,21 @@ class="drawer"
 <div class="drawer-head">
 
 <div>
+<h3>💳 Table Bill</h3>
+<small id="billTable">Table -</small>
+</div>
 
-<h3>
-💳 Table Bill
-</h3>
-
-<small id="billDrawerTable">
-Table -
-</small>
+<button class="close" onclick="closeBill()">×</button>
 
 </div>
 
-<button
-class="close"
-onclick="closeBill()"
->
-×
-</button>
-
-</div>
-
-<div
-id="billDrawerBody"
-class="drawer-body"
-></div>
+<div id="billBody" class="drawer-body"></div>
 
 <div class="drawer-foot">
 
 <div class="total">
-
-<span>
-Total
-</span>
-
-<span id="billDrawerTotal">
-₹0
-</span>
-
+<span>Total</span>
+<span id="billTotal">₹0</span>
 </div>
 
 <div class="payment-row">
@@ -1049,7 +784,6 @@ onclick="openCart()"
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
 <script>
 
 const SUPABASE_URL=
@@ -1064,25 +798,21 @@ SUPABASE_URL,
 SUPABASE_KEY
 );
 
-
 let waiterId="";
 let waiterName="";
 let selectedTable=null;
+let currentBillTable=null;
 let menuItems=[];
 let cart=[];
 let category="All";
-let currentBillTable=null;
-let tableOrdersTimer=null;
-
+let timer=null;
 
 function msg(id,text,type){
 
-const el=
-document.getElementById(id);
+const el=document.getElementById(id);
 
 el.innerText=text;
-el.className=
-"msg "+type;
+el.className="msg "+type;
 el.style.display="block";
 
 setTimeout(()=>{
@@ -1091,19 +821,17 @@ el.style.display="none";
 
 }
 
-
 async function login(){
 
 const id=
-document
-.getElementById("waiterIdInput")
-.value
-.trim();
+document.getElementById("waiterIdInput")
+.value.trim();
 
 const password=
-document
-.getElementById("passwordInput")
-.value;
+document.getElementById("passwordInput").value;
+
+const btn=
+document.getElementById("loginBtn");
 
 if(!id||!password){
 
@@ -1116,16 +844,8 @@ msg(
 return;
 }
 
-
-const btn=
-document.getElementById(
-"loginBtn"
-);
-
 btn.disabled=true;
-btn.innerText=
-"⏳ Logging in...";
-
+btn.innerText="⏳ Logging in...";
 
 try{
 
@@ -1136,10 +856,8 @@ SUPABASE_URL+
 {
 method:"POST",
 headers:{
-"Content-Type":
-"application/json",
-"apikey":
-SUPABASE_KEY
+"Content-Type":"application/json",
+"apikey":SUPABASE_KEY
 },
 body:JSON.stringify({
 waiter_id:id,
@@ -1151,63 +869,30 @@ password:password
 const result=
 await response.json();
 
-if(
-!response.ok||
-!result.success
-){
-
+if(!response.ok||!result.success){
 throw new Error(
 result.message||
 "Waiter ID ya password galat hai."
 );
-
 }
 
-
-const {
-error:sessionError
-}=
+const {error}=
 await db.auth.setSession({
-
-access_token:
-result.session.access_token,
-
-refresh_token:
-result.session.refresh_token
-
+access_token:result.session.access_token,
+refresh_token:result.session.refresh_token
 });
 
+if(error)throw error;
 
-if(sessionError){
-throw sessionError;
-}
+waiterId=result.waiter.waiter_id;
+waiterName=result.waiter.name||"Waiter";
 
-
-waiterId=
-result.waiter.waiter_id;
-
-waiterName=
-result.waiter.name||
-"Waiter";
-
-
-sessionStorage.setItem(
-"waiter_id",
-waiterId
-);
-
-sessionStorage.setItem(
-"waiter_name",
-waiterName
-);
-
+sessionStorage.setItem("waiter_id",waiterId);
+sessionStorage.setItem("waiter_name",waiterName);
 
 await showApp();
 
-
 }catch(error){
-
-console.error(error);
 
 msg(
 "loginMsg",
@@ -1218,136 +903,70 @@ msg(
 }finally{
 
 btn.disabled=false;
-
-btn.innerText=
-"🔐 Login";
+btn.innerText="🔐 Login";
 
 }
 
 }
 
-
-document
-.getElementById("loginForm")
-.addEventListener(
-"submit",
-function(e){
-
+document.getElementById("loginForm")
+.addEventListener("submit",e=>{
 e.preventDefault();
-
 login();
-
 });
-
 
 async function showApp(){
 
-document.getElementById(
-"loginScreen"
-).style.display=
-"none";
+document.getElementById("loginScreen").style.display="none";
+document.getElementById("app").style.display="block";
 
-document.getElementById(
-"app"
-).style.display=
-"block";
-
-document.getElementById(
-"waiterName"
-).innerText=
-waiterName;
-
-document.getElementById(
-"waiterIdText"
-).innerText=
-waiterId;
-
-document.getElementById(
-"headerInfo"
-).innerText=
-waiterName+
-" • "+
-waiterId;
-
+document.getElementById("waiterName").innerText=waiterName;
+document.getElementById("waiterIdText").innerText=waiterId;
+document.getElementById("headerInfo").innerText=
+waiterName+" • "+waiterId;
 
 createTables();
 
 await loadMenu();
+await loadBills();
 
-await loadTableOrders();
-
-clearInterval(
-tableOrdersTimer
-);
-
-tableOrdersTimer=
-setInterval(
-loadTableOrders,
-10000
-);
+clearInterval(timer);
+timer=setInterval(loadBills,10000);
 
 }
 
-
 async function restore(){
 
-const {
-data
-}=
+const {data}=
 await db.auth.getSession();
 
-if(
-!data.session
-){
-
-document.getElementById(
-"loginScreen"
-).style.display=
-"flex";
-
-document.getElementById(
-"app"
-).style.display=
-"none";
+if(!data.session){
 
 return;
 }
 
-
 waiterId=
-sessionStorage.getItem(
-"waiter_id"
-);
+sessionStorage.getItem("waiter_id");
 
 waiterName=
-sessionStorage.getItem(
-"waiter_name"
-);
-
+sessionStorage.getItem("waiter_name");
 
 if(!waiterId){
 
 await db.auth.signOut();
-
 return;
-
 }
-
 
 await showApp();
 
 }
 
-
 function createTables(){
 
 const box=
-document.getElementById(
-"tables"
-);
+document.getElementById("tables");
 
 box.innerHTML="";
-
 
 for(let i=1;i<=10;i++){
 
@@ -1355,7 +974,7 @@ box.innerHTML+=`
 
 <button
 class="table"
-id="t${i}"
+id="table${i}"
 onclick="selectTable(${i})"
 >
 
@@ -1365,60 +984,43 @@ Table ${i}
 
 <div
 class="table-money"
-id="tableMoney${i}"
+id="money${i}"
 >
-No pending bill
+No unpaid bill
 </div>
 
 </button>
 `;
-
 }
-
 }
-
 
 function selectTable(number){
 
-selectedTable=
-String(number);
+selectedTable=String(number);
 
-
-document
-.querySelectorAll(".table")
+document.querySelectorAll(".table")
 .forEach(x=>
 x.classList.remove("active")
 );
 
-
-document
-.getElementById(
-"t"+number
-)
-.classList.add("active");
-
+document.getElementById(
+"table"+number
+).classList.add("active");
 
 document.getElementById(
 "tablePill"
 ).innerText=
-"🪑 Table "+
-number;
-
+"🪑 Table "+number;
 
 document.getElementById(
 "drawerTable"
 ).innerText=
-"Order for Table "+
-number;
-
+"Table "+number;
 
 cart=[];
-
 renderCart();
 
-
-document
-.getElementById("menu")
+document.getElementById("menu")
 .scrollIntoView({
 behavior:"smooth",
 block:"start"
@@ -1426,226 +1028,133 @@ block:"start"
 
 }
 
-
 async function loadMenu(){
 
-const menu=
-document.getElementById(
-"menu"
-);
+const box=
+document.getElementById("menu");
 
-menu.innerHTML=
+box.innerHTML=
 '<div class="loading">🍽️ Loading menu...</div>';
-
 
 try{
 
-const {
-data,
-error
-}=
-await db
-.from("menu_items")
+const {data,error}=
+await db.from("menu_items")
 .select("*")
-.order(
-"id",
-{ascending:false}
-);
-
+.order("id",{ascending:false});
 
 if(error)throw error;
 
-
-menuItems=
-(data||[]).map(x=>({
-
+menuItems=(data||[]).map(x=>({
 id:x.id,
 name:x.name,
 price:Number(x.price),
 category:x.category||"Other",
 description:x.description||"",
 image:x.image_url||""
-
 }));
 
-
 createCategories();
-
-renderMenu(
-menuItems
-);
-
+renderMenu(menuItems);
 
 }catch(error){
 
-console.error(error);
-
-menu.innerHTML=`
-
+box.innerHTML=
+`
 <div class="empty">
-
 ❌ Menu load nahi hua.
-
 <br><br>
-
 ${error.message}
-
 </div>
 `;
-
 }
 
 }
-
 
 function createCategories(){
 
 const box=
-document.getElementById(
-"categories"
-);
+document.getElementById("categories");
 
 box.innerHTML="";
-
 category="All";
 
-
 const all=
-document.createElement(
-"button"
-);
+document.createElement("button");
 
-all.className=
-"cat active";
-
-all.innerText=
-"All";
-
-all.onclick=
-()=>{
-filterCategory(
-"All",
-all
-)};
+all.className="cat active";
+all.innerText="All";
+all.onclick=()=>filterCategory("All",all);
 
 box.appendChild(all);
 
-
 [
 ...new Set(
-menuItems
-.map(x=>x.category)
-.filter(Boolean)
+menuItems.map(x=>x.category).filter(Boolean)
 )
-]
-.forEach(c=>{
+].forEach(c=>{
 
 const b=
-document.createElement(
-"button"
-);
+document.createElement("button");
 
 b.className="cat";
-
 b.innerText=c;
-
-b.onclick=
-()=>filterCategory(
-c,
-b
-);
+b.onclick=()=>filterCategory(c,b);
 
 box.appendChild(b);
 
 });
-
 }
 
-
-function filterCategory(
-c,
-button
-){
+function filterCategory(c,button){
 
 category=c;
 
-document
-.querySelectorAll(".cat")
-.forEach(x=>
-x.classList.remove(
-"active"
-)
-);
+document.querySelectorAll(".cat")
+.forEach(x=>x.classList.remove("active"));
 
-button.classList.add(
-"active"
-);
+button.classList.add("active");
 
 filterMenu();
 
 }
 
-
-document
-.getElementById("search")
-.addEventListener(
-"input",
-filterMenu
-);
-
+document.getElementById("search")
+.addEventListener("input",filterMenu);
 
 function filterMenu(){
 
 const text=
-document
-.getElementById("search")
+document.getElementById("search")
 .value
 .toLowerCase()
 .trim();
 
-
 let list=
-menuItems.filter(x=>
-x.name
-.toLowerCase()
-.includes(text)
+menuItems.filter(
+x=>x.name.toLowerCase().includes(text)
 );
-
 
 if(category!=="All"){
-
-list=
-list.filter(x=>
-x.category===category
-);
-
+list=list.filter(x=>x.category===category);
 }
-
 
 renderMenu(list);
 
 }
 
-
 function renderMenu(list){
 
 const box=
-document.getElementById(
-"menu"
-);
+document.getElementById("menu");
 
 box.innerHTML="";
 
-
 if(!list.length){
-
 box.innerHTML=
 '<div class="empty">😕 No food found.</div>';
-
 return;
-
 }
-
 
 list.forEach(item=>{
 
@@ -1654,10 +1163,8 @@ box.innerHTML+=`
 <div class="food">
 
 <img
-src="${
-item.image||
-"https://via.placeholder.com/700x400?text=Food"
-}"
+src="${item.image||
+"https://via.placeholder.com/700x400?text=Food"}"
 alt="${item.name}"
 onerror="this.src='https://via.placeholder.com/700x400?text=Food'"
 >
@@ -1674,9 +1181,7 @@ ${item.description}
 
 <div class="food-bottom">
 
-<strong>
-₹${item.price}
-</strong>
+<strong>₹${item.price}</strong>
 
 <button
 class="add"
@@ -1688,90 +1193,58 @@ onclick="addToCart(${item.id})"
 </div>
 
 </div>
-
 </div>
 `;
-
 });
 
 }
-
 
 function addToCart(id){
 
 const item=
-menuItems.find(
-x=>x.id===id
-);
+menuItems.find(x=>x.id===id);
 
 if(!item)return;
 
-
 const old=
-cart.find(
-x=>x.id===id
-);
-
+cart.find(x=>x.id===id);
 
 if(old){
-
 old.quantity++;
-
 }else{
-
 cart.push({
-
 id:item.id,
 name:item.name,
 price:item.price,
 quantity:1
-
 });
-
 }
-
 
 renderCart();
 
 }
 
-
-function changeQty(
-index,
-change
-){
+function changeQty(index,change){
 
 if(!cart[index])return;
 
-cart[index].quantity+=
-change;
+cart[index].quantity+=change;
 
-if(
-cart[index].quantity<=0
-){
-
-cart.splice(
-index,
-1
-);
-
+if(cart[index].quantity<=0){
+cart.splice(index,1);
 }
 
 renderCart();
 
 }
-
 
 function renderCart(){
 
 const box=
-document.getElementById(
-"cartList"
-);
+document.getElementById("cartList");
 
 let total=0;
 let count=0;
-
 
 if(!cart.length){
 
@@ -1782,497 +1255,320 @@ box.innerHTML=
 
 box.innerHTML="";
 
+cart.forEach((x,i)=>{
 
-cart.forEach(
-(x,i)=>{
-
-const itemTotal=
-x.price*x.quantity;
+const itemTotal=x.price*x.quantity;
 
 total+=itemTotal;
 count+=x.quantity;
-
 
 box.innerHTML+=`
 
 <div class="cart-item">
 
 <div>
-
-<strong>
-${x.name}
-</strong>
+<strong>${x.name}</strong>
 
 <div
-style="
-color:#777;
-font-size:12px;
-margin-top:4px"
+style="font-size:12px;color:#777;margin-top:4px"
 >
-
-₹${x.price}
-×
-${x.quantity}
-=
-₹${itemTotal}
-
+₹${x.price} × ${x.quantity}
+= ₹${itemTotal}
 </div>
-
 </div>
 
 <div class="qty">
 
-<button
-onclick="changeQty(${i},-1)"
->
-−
-</button>
+<button onclick="changeQty(${i},-1)">−</button>
 
-<span>
-${x.quantity}
-</span>
+<span>${x.quantity}</span>
 
-<button
-onclick="changeQty(${i},1)"
->
-+
-</button>
+<button onclick="changeQty(${i},1)">+</button>
 
 </div>
 
 </div>
 `;
-
 });
 
 }
 
-
-document.getElementById(
-"cartTotal"
-).innerText=
+document.getElementById("cartTotal").innerText=
 "₹"+total;
 
-document.getElementById(
-"barTotal"
-).innerText=
+document.getElementById("barTotal").innerText=
 "₹"+total;
 
-document.getElementById(
-"cartCount"
-).innerText=
-"🛒 Cart ("+
-count+
-")";
+document.getElementById("cartCount").innerText=
+"🛒 Cart ("+count+")";
 
-document.getElementById(
-"cartBar"
-).style.display=
-count?
-"flex":
-"none";
+document.getElementById("cartBar").style.display=
+count?"flex":"none";
 
 }
-
 
 function openCart(){
 
 closeBill();
 
-document
-.getElementById("cartDrawer")
-.classList.add("open");
+document.getElementById(
+"cartDrawer"
+).classList.add("open");
 
 document.getElementById(
 "overlay"
-).style.display=
-"block";
+).style.display="block";
 
 }
-
 
 function closeCart(){
 
-document
-.getElementById("cartDrawer")
-.classList.remove("open");
+document.getElementById(
+"cartDrawer"
+).classList.remove("open");
 
 if(
-!document
-.getElementById("billDrawer")
-.classList.contains("open")
+!document.getElementById(
+"billDrawer"
+).classList.contains("open")
 ){
-
 document.getElementById(
 "overlay"
-).style.display=
-"none";
-
+).style.display="none";
 }
 
 }
-
 
 async function placeOrder(){
 
 if(!selectedTable){
-
 msg(
 "appMsg",
 "❌ Pehle table select karo.",
 "err"
 );
-
 return;
-
 }
 
-
 if(!cart.length){
-
 msg(
 "appMsg",
 "❌ Cart empty hai.",
 "err"
 );
-
 return;
-
 }
 
-
-const {
-data:sessionData
-}=
+const {data:sessionData}=
 await db.auth.getSession();
 
-
-if(
-!sessionData.session
-){
-
+if(!sessionData.session){
 msg(
 "appMsg",
 "❌ Session expire ho gayi. Login dobara karo.",
 "err"
 );
-
 return;
-
 }
-
 
 const total=
 cart.reduce(
-(s,x)=>
-s+(x.price*x.quantity),
+(s,x)=>s+(x.price*x.quantity),
 0
 );
 
-
 const items=
 cart.map(x=>({
-
 id:x.id,
 name:x.name,
 price:x.price,
 quantity:x.quantity
-
 }));
 
-
 const btn=
-document.getElementById(
-"placeBtn"
-);
+document.getElementById("placeBtn");
 
 btn.disabled=true;
-btn.innerText=
-"⏳ Placing...";
-
+btn.innerText="⏳ Placing...";
 
 try{
 
-const {
-data,
-error
-}=
-await db
-.from("orders")
+const {data,error}=
+await db.from("orders")
 .insert([{
-
-table_number:
-selectedTable,
-
-items:
-items,
-
-total_amount:
-total,
-
-status:
-"pending",
-
-payment_status:
-"pending",
-
-waiter_id:
-waiterId
-
+table_number:selectedTable,
+items:items,
+total_amount:total,
+status:"pending",
+payment_status:"pending",
+waiter_id:waiterId
 }])
 .select()
 .single();
 
-
 if(error)throw error;
 
-
 cart=[];
-
 renderCart();
-
 closeCart();
-
-await loadTableOrders();
-
+await loadBills();
 
 msg(
 "appMsg",
-"✅ Order #"+
-data.id+
-" placed for Table "+
-selectedTable,
+"✅ Order #"+data.id+" placed for Table "+selectedTable,
 "ok"
 );
 
-
 }catch(error){
-
-console.error(error);
 
 msg(
 "appMsg",
-"❌ Order place nahi hua: "+
-error.message,
+"❌ Order place nahi hua: "+error.message,
 "err"
 );
 
 }finally{
 
 btn.disabled=false;
-btn.innerText=
-"✅ Place Order";
+btn.innerText="✅ Place Order";
 
 }
 
 }
 
 
-/* =====================================
-   ALL TABLE ORDERS
-===================================== */
-
-async function loadTableOrders(){
+async function loadBills(){
 
 const box=
-document.getElementById(
-"tableOrders"
-);
+document.getElementById("tableBills");
 
 box.innerHTML=
-'<div class="loading">Loading table bills...</div>';
-
+'<div class="loading">Loading bills...</div>';
 
 try{
 
-const {
-data,
-error
-}=
-await db
-.from("orders")
+const {data,error}=
+await db.from("orders")
 .select("*")
 .neq("payment_status","paid")
-.order(
-"created_at",
-{ascending:false}
-);
-
+.order("created_at",{ascending:false});
 
 if(error)throw error;
 
-
-const orders=
-data||[];
+const orders=data||[];
 
 const grouped={};
 
+orders.forEach(o=>{
 
-orders.forEach(order=>{
+const t=String(o.table_number||"-");
 
-const table=
-String(
-order.table_number||
-"-"
-);
+if(!grouped[t])grouped[t]=[];
 
-if(!grouped[table]){
-grouped[table]=[];
-}
-
-grouped[table].push(order);
+grouped[t].push(o);
 
 });
 
-
 let totalOpen=0;
 let openTables=0;
-let myCount=0;
+let myOrders=0;
 
+Object.keys(grouped).forEach(table=>{
 
-Object.keys(grouped)
-.forEach(table=>{
+const list=grouped[table];
 
-const tableOrders=
-grouped[table];
-
-const total=
-tableOrders.reduce(
-(sum,o)=>
-sum+
-(Number(o.total_amount)||0),
+const total=list.reduce(
+(s,o)=>s+(Number(o.total_amount)||0),
 0
 );
 
 totalOpen+=total;
 openTables++;
 
-tableOrders.forEach(o=>{
-
-if(
-o.waiter_id===waiterId
-){
-myCount++;
-}
-
+list.forEach(o=>{
+if(o.waiter_id===waiterId)myOrders++;
 });
 
 });
 
+document.getElementById("openTableCount")
+.innerText=openTables;
 
-document.getElementById(
-"openTableCount"
-).innerText=
-openTables;
+document.getElementById("openBillTotal")
+.innerText="₹"+totalOpen;
 
-document.getElementById(
-"openBillTotal"
-).innerText=
-"₹"+totalOpen;
-
-document.getElementById(
-"myOrderCount"
-).innerText=
-myCount;
-
-
-/* update table buttons */
+document.getElementById("myOrderCount")
+.innerText=myOrders;
 
 for(let i=1;i<=10;i++){
 
-const ordersForTable=
+const label=
+document.getElementById("money"+i);
+
+const list=
 grouped[String(i)]||[];
 
 const total=
-ordersForTable.reduce(
-(sum,o)=>
-sum+
-(Number(o.total_amount)||0),
+list.reduce(
+(s,o)=>s+(Number(o.total_amount)||0),
 0
 );
 
-const label=
-document.getElementById(
-"tableMoney"+i
-);
-
-if(total>0){
-
 label.innerText=
-"Unpaid ₹"+total;
-
-}else{
-
-label.innerText=
-"No pending bill";
+total>0
+?
+"Unpaid ₹"+total
+:
+"No unpaid bill";
 
 }
-
-}
-
-
-/* cards */
 
 if(!Object.keys(grouped).length){
 
 box.innerHTML=
-'<div class="empty">✅ Abhi koi unpaid table bill nahi hai.</div>';
-
+'<div class="empty">✅ No unpaid table bills.</div>';
 return;
-
 }
-
 
 box.innerHTML="";
 
-
 Object.keys(grouped)
-.sort(
-(a,b)=>
-Number(a)-Number(b)
-)
+.sort((a,b)=>Number(a)-Number(b))
 .forEach(table=>{
 
-const tableOrders=
-grouped[table];
+const list=grouped[table];
 
-const total=
-tableOrders.reduce(
-(sum,o)=>
-sum+
-(Number(o.total_amount)||0),
+const total=list.reduce(
+(s,o)=>s+(Number(o.total_amount)||0),
 0
 );
 
-
 box.innerHTML+=`
 
-<div class="bill-table-card">
+<div class="bill-card">
 
-<div class="bill-table-top">
+<div class="bill-top">
 
 <div>
 
-<div class="bill-table-name">
+<div class="bill-title">
 🪑 Table ${table}
 </div>
 
 <div class="bill-count">
-${tableOrders.length}
-active order(s)
+${list.length} active order(s)
 </div>
 
 </div>
 
-<div class="bill-amount">
+<div class="bill-total">
 ₹${total}
 </div>
 
 </div>
 
-
 <button
-class="view-bill"
+class="bill-open"
 onclick="openBill('${table}')"
 >
 💳 View Bill / Collect
@@ -2283,24 +1579,16 @@ onclick="openBill('${table}')"
 
 });
 
-
 }catch(error){
 
-console.error(error);
-
-box.innerHTML=`
-
+box.innerHTML=
+`
 <div class="empty">
-
-❌ Table orders load nahi hue.
-
+❌ Bills load nahi hue.
 <br><br>
-
 ${error.message}
-
 </div>
 `;
-
 }
 
 }
@@ -2310,98 +1598,65 @@ async function openBill(table){
 
 closeCart();
 
-currentBillTable=
-String(table);
-
+currentBillTable=String(table);
 
 document.getElementById(
-"billDrawerTable"
+"billTable"
 ).innerText=
 "Table "+table;
 
-
 document.getElementById(
 "billDrawer"
-).classList.add(
-"open"
-);
+).classList.add("open");
 
 document.getElementById(
 "overlay"
-).style.display=
-"block";
+).style.display="block";
 
+const body=
+document.getElementById("billBody");
 
-const box=
-document.getElementById(
-"billDrawerBody"
-);
-
-box.innerHTML=
+body.innerHTML=
 '<div class="loading">Loading bill...</div>';
-
 
 try{
 
-const {
-data,
-error
-}=
-await db
-.from("orders")
+const {data,error}=
+await db.from("orders")
 .select("*")
 .eq("table_number",String(table))
 .neq("payment_status","paid")
-.order(
-"created_at",
-{ascending:false}
-);
-
+.order("created_at",{ascending:false});
 
 if(error)throw error;
 
-
-const orders=
-data||[];
+const orders=data||[];
 
 let total=0;
 
-box.innerHTML="";
-
-
 if(!orders.length){
 
-box.innerHTML=
-'<div class="empty">✅ Is table ka bill already clear hai.</div>';
+body.innerHTML=
+'<div class="empty">✅ Bill already clear.</div>';
 
 document.getElementById(
-"billDrawerTotal"
-).innerText=
-"₹0";
+"billTotal"
+).innerText="₹0";
 
 return;
-
 }
 
+body.innerHTML="";
 
 orders.forEach(order=>{
 
-total+=
-Number(order.total_amount)||0;
-
+total+=Number(order.total_amount)||0;
 
 let items=order.items;
 
 if(typeof items==="string"){
-
-try{
-items=JSON.parse(items);
-}catch(e){
-items=[];
+try{items=JSON.parse(items)}catch(e){items=[]}
 }
-
-}
-
 
 let lines="";
 
@@ -2410,22 +1665,9 @@ if(Array.isArray(items)){
 items.forEach(item=>{
 
 lines+=`
-
 <div class="bill-line">
-
-<span>
-${item.name}
-×
-${item.quantity||1}
-</span>
-
-<span>
-₹${
-Number(item.price)*
-Number(item.quantity||1)
-}
-</span>
-
+<span>${item.name} × ${item.quantity||1}</span>
+<span>₹${Number(item.price)*Number(item.quantity||1)}</span>
 </div>
 `;
 
@@ -2433,34 +1675,26 @@ Number(item.quantity||1)
 
 }
 
-
 const isWaiter=
 order.order_source==="waiter";
-
 
 const badge=
 isWaiter
 ?
 `
-<div class="source-badge waiter-badge">
-🔵 WAITER
-${
-order.waiter_name
-?
-" • "+order.waiter_name
-:""
-}
+<div class="source waiter-source">
+🔵 WAITER ${order.waiter_name?
+"• "+order.waiter_name:""}
 </div>
 `
 :
 `
-<div class="source-badge customer-badge">
+<div class="source customer-source">
 🟢 CUSTOMER
 </div>
 `;
 
-
-box.innerHTML+=`
+body.innerHTML+=`
 
 <div class="bill-item">
 
@@ -2470,27 +1704,13 @@ Order #${order.id}
 
 ${badge}
 
-<div
-class="bill-item-lines"
->
+<div class="bill-lines">
 ${lines}
 </div>
 
-<div
-style="
-display:flex;
-justify-content:space-between;
-font-weight:bold"
->
-
-<span>
-Total
-</span>
-
-<span>
-₹${order.total_amount||0}
-</span>
-
+<div class="bill-line">
+<strong>Total</strong>
+<strong>₹${order.total_amount||0}</strong>
 </div>
 
 </div>
@@ -2498,18 +1718,14 @@ Total
 
 });
 
-
 document.getElementById(
-"billDrawerTotal"
+"billTotal"
 ).innerText=
 "₹"+total;
 
-
 }catch(error){
 
-console.error(error);
-
-box.innerHTML=
+body.innerHTML=
 `
 <div class="empty">
 ❌ Bill load failed.
@@ -2517,87 +1733,55 @@ box.innerHTML=
 ${error.message}
 </div>
 `;
-
 }
 
 }
 
 
-async function collectPayment(
-method
-){
+async function collectPayment(method){
 
 if(!currentBillTable)return;
 
-
-const confirmPay=
-confirm(
+const ok=confirm(
 "Table "+
 currentBillTable+
 " ka full bill "+
 method.toUpperCase()+
-" se paid mark karna hai?"
+" se paid karna hai?"
 );
 
-
-if(!confirmPay)return;
-
+if(!ok)return;
 
 try{
 
-const {
-data,
-error
-}=
+const {data,error}=
 await db.rpc(
 "collect_table_payment",
 {
-p_table_number:
-currentBillTable,
-
-p_payment_method:
-method
+p_table_number:currentBillTable,
+p_payment_method:method
 }
 );
-
 
 if(error)throw error;
 
-
-if(
-!data||
-!data.success
-){
-
+if(!data||!data.success){
 throw new Error(
-data?.message||
-"Payment complete nahi hua."
+data?.message||"Payment complete nahi hua."
 );
-
 }
-
 
 alert(
 "✅ Payment collected!\n\n"+
-"Table: "+
-currentBillTable+
-"\n"+
-"Amount: ₹"+
-data.amount+
-"\n"+
-"Collected by: "+
-data.collected_by_name
+"Table: "+currentBillTable+
+"\nAmount: ₹"+data.amount+
+"\nCollected by: "+data.collected_by_name
 );
 
-
 closeBill();
-
-await loadTableOrders();
-
+await loadBills();
 
 }catch(error){
-
-console.error(error);
 
 alert(
 "❌ Payment failed:\n"+
@@ -2611,27 +1795,25 @@ error.message
 
 function closeBill(){
 
-document
-.getElementById("billDrawer")
-.classList.remove("open");
+document.getElementById(
+"billDrawer"
+).classList.remove("open");
 
 if(
-!document
-.getElementById("cartDrawer")
-.classList.contains("open")
+!document.getElementById(
+"cartDrawer"
+).classList.contains("open")
 ){
 
 document.getElementById(
 "overlay"
-).style.display=
-"none";
+).style.display="none";
 
 }
 
 currentBillTable=null;
 
 }
-
 
 function closeDrawers(){
 
@@ -2640,17 +1822,13 @@ closeBill();
 
 document.getElementById(
 "overlay"
-).style.display=
-"none";
+).style.display="none";
 
 }
 
-
 async function logout(){
 
-clearInterval(
-tableOrdersTimer
-);
+clearInterval(timer);
 
 await db.auth.signOut();
 
@@ -2660,47 +1838,31 @@ location.reload();
 
 }
 
-
 async function forgotPassword(){
 
-const waiterId=
-prompt(
+const id=prompt(
 "Apna Waiter ID enter karo:"
 );
 
-if(!waiterId)return;
+if(!id)return;
 
-
-const {
-data,
-error
-}=
-await db
-.from("waiters")
+const {data,error}=
+await db.from("waiters")
 .select("user_id")
-.eq("waiter_id",waiterId.trim())
+.eq("waiter_id",id.trim())
 .maybeSingle();
-
 
 if(error||!data){
 
-alert(
-"❌ Waiter ID nahi mila."
-);
-
+alert("❌ Waiter ID nahi mila.");
 return;
-
 }
 
-
 alert(
-"Password reset abhi registered Auth email ke through kiya jayega."
+"Registered recovery email se password reset karna hoga."
 );
 
 }
-
-
-/* START */
 
 restore();
 
