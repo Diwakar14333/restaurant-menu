@@ -1,0 +1,1915 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Waiter Panel</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+body{
+font-family:Arial,sans-serif;
+background:#f5f5f5;
+color:#222;
+padding-bottom:100px;
+}
+
+.header{
+background:#111;
+color:white;
+padding:22px 18px;
+position:sticky;
+top:0;
+z-index:50;
+}
+
+.header-top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+}
+
+.header h1{
+font-size:23px;
+}
+
+.header p{
+color:#bbb;
+font-size:13px;
+margin-top:5px;
+}
+
+.logout{
+background:#333;
+color:white;
+border:0;
+padding:9px 12px;
+border-radius:8px;
+cursor:pointer;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+padding:18px;
+}
+
+.card{
+background:white;
+border-radius:18px;
+padding:20px;
+margin-bottom:18px;
+box-shadow:0 4px 18px rgba(0,0,0,.08);
+}
+
+.card h2{
+margin-bottom:8px;
+}
+
+.subtitle{
+color:#777;
+font-size:14px;
+margin-bottom:18px;
+}
+
+input{
+width:100%;
+padding:14px;
+border:1px solid #ddd;
+border-radius:11px;
+font-size:15px;
+margin-bottom:12px;
+outline:none;
+}
+
+input:focus{
+border-color:#111;
+}
+
+button{
+border:0;
+border-radius:10px;
+padding:12px 16px;
+font-size:14px;
+cursor:pointer;
+}
+
+.primary{
+background:#111;
+color:white;
+width:100%;
+}
+
+.secondary{
+background:#eee;
+color:#222;
+width:100%;
+margin-top:10px;
+}
+
+.login-box{
+max-width:430px;
+margin:70px auto;
+}
+
+.logo{
+font-size:45px;
+text-align:center;
+margin-bottom:10px;
+}
+
+.login-title{
+text-align:center;
+font-size:25px;
+margin-bottom:5px;
+}
+
+.login-subtitle{
+text-align:center;
+color:#777;
+font-size:14px;
+margin-bottom:25px;
+}
+
+.forgot{
+display:block;
+text-align:center;
+margin-top:16px;
+color:#555;
+font-size:14px;
+cursor:pointer;
+}
+
+.message{
+padding:12px;
+border-radius:10px;
+margin-top:12px;
+display:none;
+font-size:14px;
+line-height:1.4;
+}
+
+.success{
+background:#d1e7dd;
+color:#0f5132;
+}
+
+.error{
+background:#f8d7da;
+color:#842029;
+}
+
+#app{
+display:none;
+}
+
+.waiter-info{
+background:#111;
+color:white;
+border-radius:16px;
+padding:17px;
+margin-bottom:18px;
+}
+
+.waiter-name{
+font-size:18px;
+font-weight:bold;
+}
+
+.waiter-id{
+color:#bbb;
+font-size:13px;
+margin-top:4px;
+}
+
+.table-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+}
+
+.table-btn{
+background:white;
+border:2px solid #eee;
+border-radius:15px;
+padding:20px 10px;
+text-align:center;
+font-size:17px;
+font-weight:bold;
+box-shadow:0 3px 10px rgba(0,0,0,.05);
+}
+
+.table-btn.selected{
+background:#111;
+color:white;
+border-color:#111;
+}
+
+.table-number{
+font-size:25px;
+display:block;
+margin-bottom:5px;
+}
+
+.table-status{
+font-size:12px;
+opacity:.7;
+}
+
+#menuScreen{
+display:none;
+}
+
+.top-bar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+margin-bottom:15px;
+}
+
+.back-btn{
+background:#eee;
+}
+
+.selected-table{
+background:#111;
+color:white;
+padding:9px 12px;
+border-radius:9px;
+font-size:13px;
+}
+
+.search{
+width:100%;
+padding:14px;
+border:1px solid #ddd;
+border-radius:12px;
+font-size:16px;
+margin-bottom:14px;
+}
+
+.categories{
+display:flex;
+gap:9px;
+overflow-x:auto;
+padding-bottom:8px;
+margin-bottom:15px;
+}
+
+.categories::-webkit-scrollbar{
+display:none;
+}
+
+.category{
+white-space:nowrap;
+background:white;
+border:1px solid #ddd;
+padding:9px 15px;
+border-radius:22px;
+cursor:pointer;
+font-size:13px;
+}
+
+.category.active{
+background:#111;
+color:white;
+border-color:#111;
+}
+
+.food-card{
+background:white;
+border-radius:16px;
+overflow:hidden;
+margin-bottom:15px;
+box-shadow:0 3px 14px rgba(0,0,0,.07);
+}
+
+.food-image{
+width:100%;
+height:180px;
+object-fit:cover;
+display:block;
+}
+
+.food-content{
+padding:15px;
+}
+
+.food-name{
+font-size:18px;
+font-weight:bold;
+}
+
+.food-description{
+font-size:13px;
+color:#777;
+line-height:1.4;
+margin-top:6px;
+}
+
+.food-bottom{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-top:14px;
+}
+
+.price{
+font-size:18px;
+font-weight:bold;
+}
+
+.add-btn{
+background:#111;
+color:white;
+padding:10px 18px;
+}
+
+.cart-bar{
+position:fixed;
+bottom:15px;
+left:15px;
+right:15px;
+background:#111;
+color:white;
+border-radius:14px;
+padding:16px;
+display:none;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 5px 25px rgba(0,0,0,.3);
+z-index:100;
+cursor:pointer;
+}
+
+.cart-items{
+display:none;
+position:fixed;
+bottom:82px;
+left:15px;
+right:15px;
+max-height:65vh;
+overflow-y:auto;
+background:white;
+border-radius:16px;
+padding:18px;
+box-shadow:0 0 25px rgba(0,0,0,.25);
+z-index:99;
+}
+
+.cart-item{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+padding:12px 0;
+border-bottom:1px solid #eee;
+}
+
+.cart-item-name{
+font-weight:bold;
+}
+
+.cart-item-price{
+font-size:13px;
+color:#777;
+margin-top:4px;
+}
+
+.quantity{
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+.quantity button{
+width:30px;
+height:30px;
+padding:0;
+background:#111;
+color:white;
+font-size:18px;
+}
+
+.place-order{
+width:100%;
+background:#198754;
+color:white;
+margin-top:18px;
+font-size:16px;
+padding:15px;
+}
+
+.empty{
+text-align:center;
+color:#777;
+padding:35px 10px;
+}
+
+.loading{
+text-align:center;
+color:#777;
+padding:30px;
+}
+
+@media(max-width:600px){
+
+.container{
+padding:14px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<!-- LOGIN -->
+
+<div id="loginScreen">
+
+<div class="login-box">
+
+<div class="card">
+
+<div class="logo">
+🧑‍🍳
+</div>
+
+<div class="login-title">
+Waiter Login
+</div>
+
+<div class="login-subtitle">
+Restaurant Waiter Panel
+</div>
+
+<input
+type="text"
+id="waiterId"
+placeholder="Waiter ID e.g. W001"
+autocomplete="username"
+>
+
+<input
+type="password"
+id="waiterPassword"
+placeholder="Password"
+autocomplete="current-password"
+>
+
+<button
+class="primary"
+onclick="loginWaiter()"
+>
+🔐 Login
+</button>
+
+<div
+class="forgot"
+onclick="forgotPassword()"
+>
+Forgot Password?
+</div>
+
+<div
+id="loginMessage"
+class="message"
+></div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- APP -->
+
+<div id="app">
+
+<div class="header">
+
+<div class="header-top">
+
+<div>
+<h1>🧑‍🍳 Waiter Panel</h1>
+<p id="headerWaiterName">Waiter</p>
+</div>
+
+<button
+class="logout"
+onclick="logoutWaiter()"
+>
+Logout
+</button>
+
+</div>
+
+</div>
+
+
+<div class="container">
+
+
+<!-- TABLE SCREEN -->
+
+<div id="tableScreen">
+
+<div class="waiter-info">
+
+<div class="waiter-name" id="waiterName">
+Waiter
+</div>
+
+<div class="waiter-id" id="waiterIdDisplay">
+W001
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>🪑 Select Table</h2>
+
+<p class="subtitle">
+Pehle customer ki table select karo.
+</p>
+
+<div
+class="table-grid"
+id="tableGrid"
+>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- MENU SCREEN -->
+
+<div id="menuScreen">
+
+<div class="top-bar">
+
+<button
+class="back-btn"
+onclick="backToTables()"
+>
+← Tables
+</button>
+
+<div
+class="selected-table"
+id="selectedTableLabel"
+>
+Table -
+</div>
+
+</div>
+
+
+<input
+type="text"
+class="search"
+id="searchInput"
+placeholder="🔍 Search food..."
+>
+
+<div
+class="categories"
+id="categories"
+>
+</div>
+
+
+<div id="foodList">
+
+<div class="loading">
+Loading menu... 🍽️
+</div>
+
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<!-- CART -->
+
+<div
+class="cart-items"
+id="cartItems"
+>
+
+<h2>🛒 Order Cart</h2>
+
+<div
+id="cartList"
+>
+</div>
+
+<button
+class="place-order"
+onclick="placeOrder()"
+>
+✅ Place Order
+</button>
+
+</div>
+
+
+<div
+class="cart-bar"
+id="cartBar"
+onclick="toggleCart()"
+>
+
+<div id="cartCount">
+🛒 Cart (0)
+</div>
+
+<div id="cartTotal">
+₹0
+</div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+
+/* =========================
+SUPABASE
+========================= */
+
+const SUPABASE_URL =
+"https://jxjrcjmrkhknltwvzzvr.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable__Pg5UNoizrSpZB3fRvbARw_fNhHGjvl";
+
+const db =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+
+/* =========================
+STATE
+========================= */
+
+let currentWaiter = null;
+
+let selectedTable = null;
+
+let menuItems = [];
+
+let cart = [];
+
+let selectedCategory = "All";
+
+
+/* =========================
+HELPERS
+========================= */
+
+function showMessage(
+id,
+text,
+type="error"
+){
+
+const box =
+document.getElementById(id);
+
+box.innerText = text;
+
+box.className =
+"message " + type;
+
+box.style.display =
+"block";
+
+}
+
+
+function hideMessage(id){
+
+document.getElementById(id)
+.style.display = "none";
+
+}
+
+
+/* =========================
+LOGIN
+========================= */
+
+async function loginWaiter(){
+
+hideMessage("loginMessage");
+
+const waiterId =
+document.getElementById("waiterId")
+.value
+.trim()
+.toUpperCase();
+
+const password =
+document.getElementById("waiterPassword")
+.value;
+
+
+if(!waiterId){
+
+showMessage(
+"loginMessage",
+"Waiter ID enter karo."
+);
+
+return;
+
+}
+
+
+if(!password){
+
+showMessage(
+"loginMessage",
+"Password enter karo."
+);
+
+return;
+
+}
+
+
+/*
+Get email for this waiter ID.
+The RPC is created in the SQL step below.
+*/
+
+const { data: email, error: emailError } =
+await db.rpc(
+"get_waiter_login_email",
+{
+p_waiter_id: waiterId
+}
+);
+
+
+if(emailError){
+
+console.error(emailError);
+
+showMessage(
+"loginMessage",
+"Waiter ID lookup failed: " +
+emailError.message
+);
+
+return;
+
+}
+
+
+if(!email){
+
+showMessage(
+"loginMessage",
+"❌ Invalid Waiter ID."
+);
+
+return;
+
+}
+
+
+/*
+Supabase Auth login uses email/password
+internally. The waiter only enters
+Waiter ID + Password.
+*/
+
+const { error } =
+await db.auth.signInWithPassword({
+email: email,
+password: password
+});
+
+
+if(error){
+
+console.error(error);
+
+showMessage(
+"loginMessage",
+"❌ Login failed. Waiter ID ya password galat hai."
+);
+
+return;
+
+}
+
+
+await loadWaiterProfile();
+
+}
+
+
+/* =========================
+LOAD PROFILE
+========================= */
+
+async function loadWaiterProfile(){
+
+const {
+data:{
+user
+},
+error:userError
+} =
+await db.auth.getUser();
+
+
+if(userError || !user){
+
+showMessage(
+"loginMessage",
+"User session nahi mili."
+);
+
+return;
+
+}
+
+
+const { data, error } =
+await db
+.from("waiters")
+.select("id,waiter_id,name,active")
+.eq("user_id",user.id)
+.eq("active",true)
+.single();
+
+
+if(error){
+
+console.error(error);
+
+await db.auth.signOut();
+
+showMessage(
+"loginMessage",
+"Waiter profile nahi mila."
+);
+
+return;
+
+}
+
+
+currentWaiter = data;
+
+
+document.getElementById(
+"waiterName"
+).innerText =
+"👋 " + data.name;
+
+
+document.getElementById(
+"waiterIdDisplay"
+).innerText =
+"Waiter ID: " + data.waiter_id;
+
+
+document.getElementById(
+"headerWaiterName"
+).innerText =
+data.name + " • " + data.waiter_id;
+
+
+document.getElementById(
+"loginScreen"
+).style.display =
+"none";
+
+
+document.getElementById(
+"app"
+).style.display =
+"block";
+
+
+showTables();
+
+}
+
+
+/* =========================
+TABLES
+========================= */
+
+function showTables(){
+
+document.getElementById(
+"tableScreen"
+).style.display =
+"block";
+
+document.getElementById(
+"menuScreen"
+).style.display =
+"none";
+
+document.getElementById(
+"cartBar"
+).style.display =
+"none";
+
+document.getElementById(
+"cartItems"
+).style.display =
+"none";
+
+
+const grid =
+document.getElementById("tableGrid");
+
+grid.innerHTML = "";
+
+
+/*
+Currently 10 tables.
+Later admin se dynamic tables
+connect kar denge.
+*/
+
+for(let i=1;i<=10;i++){
+
+const button =
+document.createElement("button");
+
+button.className =
+"table-btn";
+
+button.innerHTML = `
+<span class="table-number">
+🪑 ${i}
+</span>
+<span class="table-status">
+Select Table
+</span>
+`;
+
+button.onclick =
+function(){
+
+selectTable(i);
+
+};
+
+grid.appendChild(button);
+
+}
+
+}
+
+
+/* =========================
+SELECT TABLE
+========================= */
+
+function selectTable(table){
+
+selectedTable = String(table);
+
+document.getElementById(
+"selectedTableLabel"
+).innerText =
+"🪑 Table " + table;
+
+
+document.getElementById(
+"tableScreen"
+).style.display =
+"none";
+
+
+document.getElementById(
+"menuScreen"
+).style.display =
+"block";
+
+
+loadMenu();
+
+}
+
+
+/* =========================
+BACK TABLES
+========================= */
+
+function backToTables(){
+
+selectedTable = null;
+
+cart = [];
+
+updateCart();
+
+showTables();
+
+}
+
+
+/* =========================
+MENU
+========================= */
+
+async function loadMenu(){
+
+const foodList =
+document.getElementById("foodList");
+
+foodList.innerHTML =
+'<div class="loading">Loading menu... 🍽️</div>';
+
+
+const {data,error} =
+await db
+.from("menu_items")
+.select("*")
+.order("id",{ascending:true});
+
+
+if(error){
+
+foodList.innerHTML =
+`
+<div class="error">
+❌ Menu load failed.
+<br><br>
+${error.message}
+</div>
+`;
+
+return;
+
+}
+
+
+menuItems =
+(data || []).map(item => ({
+
+id:item.id,
+
+name:item.name,
+
+price:Number(item.price),
+
+category:item.category || "Other",
+
+description:item.description || "",
+
+image:item.image_url || ""
+
+}));
+
+
+createCategories();
+
+displayMenu(menuItems);
+
+}
+
+
+/* =========================
+CATEGORIES
+========================= */
+
+function createCategories(){
+
+const box =
+document.getElementById("categories");
+
+box.innerHTML = "";
+
+selectedCategory = "All";
+
+
+const all =
+document.createElement("div");
+
+all.className =
+"category active";
+
+all.innerText =
+"All";
+
+all.onclick =
+function(){
+
+filterCategory(
+"All",
+this
+);
+
+};
+
+box.appendChild(all);
+
+
+const categories =
+[
+...new Set(
+menuItems
+.map(item => item.category)
+.filter(Boolean)
+)
+];
+
+
+categories.forEach(category => {
+
+const button =
+document.createElement("div");
+
+button.className =
+"category";
+
+button.innerText =
+category;
+
+button.onclick =
+function(){
+
+filterCategory(
+category,
+this
+);
+
+};
+
+box.appendChild(button);
+
+});
+
+}
+
+
+/* =========================
+DISPLAY MENU
+========================= */
+
+function displayMenu(items){
+
+const foodList =
+document.getElementById("foodList");
+
+foodList.innerHTML = "";
+
+
+if(!items.length){
+
+foodList.innerHTML =
+`
+<div class="empty">
+No food found 😕
+</div>
+`;
+
+return;
+
+}
+
+
+items.forEach(item => {
+
+const card =
+document.createElement("div");
+
+card.className =
+"food-card";
+
+
+card.innerHTML = `
+
+${
+item.image
+?
+`<img
+src="${item.image}"
+class="food-image"
+alt="${item.name}"
+onerror="this.style.display='none'"
+>`
+:
+""
+}
+
+<div class="food-content">
+
+<div class="food-name">
+${item.name}
+</div>
+
+<div class="food-description">
+${item.description}
+</div>
+
+<div class="food-bottom">
+
+<div class="price">
+₹${item.price}
+</div>
+
+<button
+class="add-btn"
+onclick="addToCart(${item.id})"
+>
++ Add
+</button>
+
+</div>
+
+</div>
+
+`;
+
+
+foodList.appendChild(card);
+
+});
+
+}
+
+
+/* =========================
+SEARCH
+========================= */
+
+document.getElementById(
+"searchInput"
+).addEventListener(
+"input",
+function(){
+
+const text =
+this.value
+.toLowerCase()
+.trim();
+
+
+let filtered =
+menuItems.filter(item =>
+item.name
+.toLowerCase()
+.includes(text)
+);
+
+
+if(selectedCategory !== "All"){
+
+filtered =
+filtered.filter(
+item =>
+item.category ===
+selectedCategory
+);
+
+}
+
+
+displayMenu(filtered);
+
+});
+
+
+/* =========================
+FILTER
+========================= */
+
+function filterCategory(
+category,
+button
+){
+
+selectedCategory =
+category;
+
+
+document
+.querySelectorAll(".category")
+.forEach(btn =>
+btn.classList.remove("active")
+);
+
+
+button.classList.add("active");
+
+
+const text =
+document.getElementById(
+"searchInput"
+).value
+.toLowerCase()
+.trim();
+
+
+let filtered =
+menuItems.filter(item =>
+item.name
+.toLowerCase()
+.includes(text)
+);
+
+
+if(category !== "All"){
+
+filtered =
+filtered.filter(
+item =>
+item.category === category
+);
+
+}
+
+
+displayMenu(filtered);
+
+}
+
+
+/* =========================
+CART
+========================= */
+
+function addToCart(id){
+
+const item =
+menuItems.find(
+food => food.id === id
+);
+
+
+if(!item)return;
+
+
+const existing =
+cart.find(
+food => food.id === id
+);
+
+
+if(existing){
+
+existing.quantity++;
+
+}else{
+
+cart.push({
+
+id:item.id,
+
+name:item.name,
+
+price:item.price,
+
+quantity:1
+
+});
+
+}
+
+
+updateCart();
+
+}
+
+
+function increaseQuantity(index){
+
+if(cart[index]){
+
+cart[index].quantity++;
+
+}
+
+updateCart();
+
+}
+
+
+function decreaseQuantity(index){
+
+if(!cart[index])return;
+
+
+cart[index].quantity--;
+
+
+if(cart[index].quantity <= 0){
+
+cart.splice(index,1);
+
+}
+
+
+updateCart();
+
+}
+
+
+/* =========================
+UPDATE CART
+========================= */
+
+function updateCart(){
+
+let totalItems = 0;
+
+let totalPrice = 0;
+
+
+cart.forEach(item => {
+
+totalItems +=
+item.quantity;
+
+totalPrice +=
+item.price *
+item.quantity;
+
+});
+
+
+const bar =
+document.getElementById(
+"cartBar"
+);
+
+
+if(totalItems > 0){
+
+bar.style.display =
+"flex";
+
+}else{
+
+bar.style.display =
+"none";
+
+}
+
+
+document.getElementById(
+"cartCount"
+).innerText =
+"🛒 Cart (" +
+totalItems +
+")";
+
+
+document.getElementById(
+"cartTotal"
+).innerText =
+"₹" +
+totalPrice;
+
+
+const list =
+document.getElementById(
+"cartList"
+);
+
+
+if(!cart.length){
+
+list.innerHTML =
+`
+<div class="empty">
+Cart empty hai.
+</div>
+`;
+
+return;
+
+}
+
+
+list.innerHTML = "";
+
+
+cart.forEach(
+(item,index) => {
+
+const total =
+item.price *
+item.quantity;
+
+
+list.innerHTML += `
+
+<div class="cart-item">
+
+<div>
+
+<div class="cart-item-name">
+${item.name}
+</div>
+
+<div class="cart-item-price">
+₹${item.price} × ${item.quantity}
+= ₹${total}
+</div>
+
+</div>
+
+<div class="quantity">
+
+<button
+onclick="decreaseQuantity(${index})"
+>
+−
+</button>
+
+<span>
+${item.quantity}
+</span>
+
+<button
+onclick="increaseQuantity(${index})"
+>
++
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+
+}
+
+
+/* =========================
+TOGGLE CART
+========================= */
+
+function toggleCart(){
+
+const box =
+document.getElementById(
+"cartItems"
+);
+
+
+box.style.display =
+box.style.display === "block"
+?
+"none"
+:
+"block";
+
+}
+
+
+/* =========================
+PLACE ORDER
+========================= */
+
+async function placeOrder(){
+
+if(!currentWaiter){
+
+alert(
+"Waiter login required."
+);
+
+return;
+
+}
+
+
+if(!selectedTable){
+
+alert(
+"Table select karo."
+);
+
+return;
+
+}
+
+
+if(!cart.length){
+
+alert(
+"Cart empty hai."
+);
+
+return;
+
+}
+
+
+let total = 0;
+
+
+cart.forEach(item => {
+
+total +=
+item.price *
+item.quantity;
+
+});
+
+
+const orderItems =
+cart.map(item => ({
+
+id:item.id,
+
+name:item.name,
+
+price:item.price,
+
+quantity:item.quantity
+
+}));
+
+
+const {data,error} =
+await db
+.from("orders")
+.insert([{
+
+table_number:selectedTable,
+
+items:orderItems,
+
+total_amount:total,
+
+status:"pending",
+
+payment_status:"pending",
+
+waiter_id:currentWaiter.waiter_id
+
+}])
+.select()
+.single();
+
+
+if(error){
+
+console.error(error);
+
+alert(
+"❌ Order place nahi hua:\n\n" +
+error.message
+);
+
+return;
+
+}
+
+
+alert(
+"✅ Order successfully placed!\n\n" +
+"Table: " +
+selectedTable +
+"\n" +
+"Order ID: " +
+data.id
+);
+
+
+cart = [];
+
+updateCart();
+
+
+document.getElementById(
+"cartItems"
+).style.display =
+"none";
+
+
+showTables();
+
+}
+
+
+/* =========================
+FORGOT PASSWORD
+========================= */
+
+async function forgotPassword(){
+
+const waiterId =
+document.getElementById(
+"waiterId"
+).value
+.trim()
+.toUpperCase();
+
+
+if(!waiterId){
+
+showMessage(
+"loginMessage",
+"Pehle Waiter ID enter karo."
+);
+
+return;
+
+}
+
+
+const {data:email,error} =
+await db.rpc(
+"get_waiter_login_email",
+{
+p_waiter_id:waiterId
+}
+);
+
+
+if(error || !email){
+
+showMessage(
+"loginMessage",
+"Waiter ID nahi mila."
+);
+
+return;
+
+}
+
+
+const redirectUrl =
+window.location.origin +
+window.location.pathname;
+
+
+const {error:resetError} =
+await db.auth.resetPasswordForEmail(
+email,
+{
+redirectTo:redirectUrl
+}
+);
+
+
+if(resetError){
+
+showMessage(
+"loginMessage",
+"Reset email nahi bheja gaya: " +
+resetError.message
+);
+
+return;
+
+}
+
+
+showMessage(
+"loginMessage",
+"📧 Password reset link registered email par bhej diya gaya hai.",
+"success"
+);
+
+}
+
+
+/* =========================
+LOGOUT
+========================= */
+
+async function logoutWaiter(){
+
+await db.auth.signOut();
+
+currentWaiter = null;
+
+selectedTable = null;
+
+cart = [];
+
+document.getElementById(
+"app"
+).style.display =
+"none";
+
+document.getElementById(
+"loginScreen"
+).style.display =
+"block";
+
+document.getElementById(
+"waiterPassword"
+).value =
+"";
+
+}
+
+
+/* =========================
+PASSWORD RECOVERY
+========================= */
+
+db.auth.onAuthStateChange(
+async (event,session) => {
+
+if(event ===
+"PASSWORD_RECOVERY"){
+
+const newPassword =
+prompt(
+"New password enter karo:"
+);
+
+
+if(!newPassword){
+
+return;
+
+}
+
+
+if(newPassword.length < 6){
+
+alert(
+"Password minimum 6 characters ka hona chahiye."
+);
+
+return;
+
+}
+
+
+const {error} =
+await db.auth.updateUser({
+
+password:newPassword
+
+});
+
+
+if(error){
+
+alert(
+"Password update failed: " +
+error.message
+);
+
+}else{
+
+alert(
+"✅ Password successfully changed!"
+);
+
+await db.auth.signOut();
+
+}
+
+}
+
+});
+
+
+/* =========================
+CHECK EXISTING SESSION
+========================= */
