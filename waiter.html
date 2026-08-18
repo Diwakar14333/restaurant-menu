@@ -29,7 +29,7 @@ body{
 .login-box{
     width:100%;
     max-width:420px;
-    background:white;
+    background:#fff;
     border-radius:22px;
     padding:30px;
     box-shadow:0 15px 40px rgba(0,0,0,.25);
@@ -44,7 +44,6 @@ body{
 h1{
     text-align:center;
     font-size:26px;
-    color:#111;
 }
 
 .subtitle{
@@ -78,6 +77,10 @@ input:focus{
     border-color:#111;
 }
 
+button{
+    cursor:pointer;
+}
+
 .login-btn{
     width:100%;
     padding:14px;
@@ -87,7 +90,6 @@ input:focus{
     color:white;
     font-size:16px;
     font-weight:bold;
-    cursor:pointer;
 }
 
 .login-btn:disabled{
@@ -105,7 +107,6 @@ input:focus{
     background:none;
     color:#333;
     text-decoration:underline;
-    cursor:pointer;
     font-size:14px;
 }
 
@@ -142,13 +143,11 @@ input:focus{
     border-radius:10px;
     background:#eee;
     color:#222;
-    cursor:pointer;
 }
 
 </style>
 
 </head>
-
 
 <body>
 
@@ -164,36 +163,25 @@ input:focus{
     </p>
 
 
-    <div
-        id="loginError"
-        class="message error"
-    ></div>
+    <div id="message"
+         class="message">
+    </div>
 
 
-    <div
-        id="loginSuccess"
-        class="message success"
-    ></div>
-
-
-    <!-- =========================
-         LOGIN
-    ========================== -->
+    <!-- LOGIN -->
 
     <form id="loginForm">
 
         <div class="form-group">
 
-            <label>
-                Waiter ID
-            </label>
+            <label>Waiter ID</label>
 
             <input
                 type="text"
                 id="waiterId"
-                placeholder="Enter waiter ID"
-                required
+                placeholder="Example: W001"
                 autocomplete="username"
+                required
             >
 
         </div>
@@ -201,16 +189,14 @@ input:focus{
 
         <div class="form-group">
 
-            <label>
-                Password
-            </label>
+            <label>Password</label>
 
             <input
                 type="password"
                 id="password"
                 placeholder="Enter password"
-                required
                 autocomplete="current-password"
+                required
             >
 
         </div>
@@ -239,34 +225,30 @@ input:focus{
     </div>
 
 
-    <!-- =========================
-         FORGOT PASSWORD
-    ========================== -->
+    <!-- FORGOT PASSWORD -->
 
     <div id="forgotBox">
 
-        <h3>
-            🔑 Reset Password
-        </h3>
+        <h3>🔑 Reset Password</h3>
 
-        <p
-            style="color:#777;font-size:13px;margin:8px 0 15px"
-        >
+        <p style="
+            color:#777;
+            font-size:13px;
+            margin:8px 0 15px;
+        ">
             Apna Waiter ID enter karo.
-            Registered email par password reset mail bheja jayega.
+            Registered email par reset link bheja jayega.
         </p>
 
 
         <div class="form-group">
 
-            <label>
-                Waiter ID
-            </label>
+            <label>Waiter ID</label>
 
             <input
                 type="text"
                 id="resetWaiterId"
-                placeholder="Enter waiter ID"
+                placeholder="Example: W001"
             >
 
         </div>
@@ -276,7 +258,7 @@ input:focus{
             type="button"
             class="login-btn"
             id="resetBtn"
-            onclick="sendResetEmail()"
+            onclick="sendReset()"
         >
             📧 Send Reset Email
         </button>
@@ -297,12 +279,12 @@ input:focus{
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
 <script>
 
-/* ==========================================
+
+/* =========================================
    SUPABASE
-========================================== */
+========================================= */
 
 const SUPABASE_URL =
 "https://jxjrcjmrkhknltwvzzvr.supabase.co";
@@ -317,305 +299,309 @@ window.supabase.createClient(
 );
 
 
-/* ==========================================
-   ELEMENTS
-========================================== */
+/* =========================================
+   MESSAGE
+========================================= */
 
-const loginForm =
-document.getElementById("loginForm");
+function showMessage(text,type){
 
-const loginBtn =
-document.getElementById("loginBtn");
+    const box =
+        document.getElementById("message");
 
-const loginError =
-document.getElementById("loginError");
+    box.innerText = text;
 
-const loginSuccess =
-document.getElementById("loginSuccess");
+    box.className =
+        "message " + type;
 
-
-/* ==========================================
-   MESSAGES
-========================================== */
-
-function showError(message){
-
-    loginSuccess.style.display="none";
-
-    loginError.innerText =
-        "❌ " + message;
-
-    loginError.style.display="block";
-}
-
-
-function showSuccess(message){
-
-    loginError.style.display="none";
-
-    loginSuccess.innerText =
-        "✅ " + message;
-
-    loginSuccess.style.display="block";
-}
-
-
-function clearMessages(){
-
-    loginError.style.display="none";
-    loginSuccess.style.display="none";
+    box.style.display = "block";
 
 }
 
 
-/* ==========================================
-   WAITER LOGIN
-========================================== */
+function clearMessage(){
 
-loginForm.addEventListener(
-    "submit",
-    async function(event){
+    const box =
+        document.getElementById("message");
 
-        event.preventDefault();
-
-        clearMessages();
-
-
-        const waiterId =
-            document.getElementById("waiterId")
-            .value
-            .trim();
-
-
-        const password =
-            document.getElementById("password")
-            .value;
-
-
-        if(!waiterId){
-
-            showError(
-                "Waiter ID enter karo."
-            );
-
-            return;
-        }
-
-
-        if(!password){
-
-            showError(
-                "Password enter karo."
-            );
-
-            return;
-        }
-
-
-        loginBtn.disabled=true;
-
-        loginBtn.innerText =
-            "⏳ Checking...";
-
-
-        try{
-
-
-            /*
-            ==========================================
-            WAITER TABLE CHECK
-            ==========================================
-            */
-
-            const {
-                data,
-                error
-            } = await db
-                .from("waiters")
-                .select("*")
-                .eq("waiter_id", waiterId)
-                .maybeSingle();
-
-
-            if(error){
-
-                console.error(error);
-
-                showError(
-                    "Waiter data check nahi ho pa raha: " +
-                    error.message
-                );
-
-                loginBtn.disabled=false;
-
-                loginBtn.innerText =
-                    "🔐 Login";
-
-                return;
-            }
-
-
-            /*
-            ==========================================
-            WAITER NOT FOUND
-            ==========================================
-            */
-
-            if(!data){
-
-                showError(
-                    "Waiter ID ya password galat hai."
-                );
-
-                loginBtn.disabled=false;
-
-                loginBtn.innerText =
-                    "🔐 Login";
-
-                return;
-            }
-
-
-            /*
-            ==========================================
-            PASSWORD CHECK
-            ==========================================
-            */
-
-            if(data.password !== password){
-
-                showError(
-                    "Waiter ID ya password galat hai."
-                );
-
-                loginBtn.disabled=false;
-
-                loginBtn.innerText =
-                    "🔐 Login";
-
-                return;
-            }
-
-
-            /*
-            ==========================================
-            LOGIN SUCCESS
-            ==========================================
-            */
-
-            sessionStorage.setItem(
-                "waiter_id",
-                data.waiter_id
-            );
-
-
-            sessionStorage.setItem(
-                "waiter_name",
-                data.name || data.waiter_id
-            );
-
-
-            showSuccess(
-                "Login successful! Waiter panel opening..."
-            );
-
-
-            setTimeout(function(){
-
-                window.location.href =
-                    "waiter-dashboard.html";
-
-            },700);
-
-
-        }catch(error){
-
-            console.error(error);
-
-            showError(
-                "Login ke time error aaya: " +
-                error.message
-            );
-
-            loginBtn.disabled=false;
-
-            loginBtn.innerText =
-                "🔐 Login";
-
-        }
-
-    }
-);
-
-
-/* ==========================================
-   FORGOT PASSWORD
-========================================== */
-
-function showForgot(){
-
-    clearMessages();
-
-    document.getElementById("loginForm")
-        .style.display="none";
-
-    document.querySelector(".forgot")
-        .style.display="none";
-
-    document.getElementById("forgotBox")
-        .style.display="block";
+    box.style.display = "none";
 
 }
 
 
-function hideForgot(){
+/* =========================================
+   LOGIN
+========================================= */
 
-    clearMessages();
+document
+.getElementById("loginForm")
+.addEventListener("submit", async function(e){
 
-    document.getElementById("forgotBox")
-        .style.display="none";
+    e.preventDefault();
 
-    document.getElementById("loginForm")
-        .style.display="block";
-
-    document.querySelector(".forgot")
-        .style.display="block";
-
-}
-
-
-/* ==========================================
-   SEND RESET EMAIL
-========================================== */
-
-async function sendResetEmail(){
-
-    clearMessages();
+    clearMessage();
 
 
     const waiterId =
-        document.getElementById("resetWaiterId")
+        document
+        .getElementById("waiterId")
         .value
         .trim();
 
 
+    const password =
+        document
+        .getElementById("password")
+        .value;
+
+
     if(!waiterId){
 
-        showError(
-            "Waiter ID enter karo."
+        showMessage(
+            "❌ Waiter ID enter karo.",
+            "error"
         );
 
         return;
     }
 
 
-    const resetBtn =
+    if(!password){
+
+        showMessage(
+            "❌ Password enter karo.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const btn =
+        document.getElementById("loginBtn");
+
+
+    btn.disabled = true;
+
+    btn.innerText =
+        "⏳ Logging in...";
+
+
+    try{
+
+
+        /*
+        =========================================
+        EDGE FUNCTION
+        =========================================
+        */
+
+        const response =
+            await fetch(
+                SUPABASE_URL +
+                "/functions/v1/waiter-login",
+                {
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json",
+
+                        "apikey":
+                            SUPABASE_KEY
+                    },
+
+                    body:JSON.stringify({
+
+                        waiter_id:
+                            waiterId,
+
+                        password:
+                            password
+
+                    })
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        console.log(
+            "Waiter login:",
+            result
+        );
+
+
+        if(
+            !response.ok ||
+            !result.success
+        ){
+
+            showMessage(
+                "❌ " +
+                (
+                    result.message ||
+                    "Waiter ID ya password galat hai."
+                ),
+                "error"
+            );
+
+            btn.disabled = false;
+
+            btn.innerText =
+                "🔐 Login";
+
+            return;
+        }
+
+
+        /*
+        =========================================
+        SAVE WAITER INFORMATION
+        =========================================
+        */
+
+        sessionStorage.setItem(
+            "waiter_id",
+            result.waiter.waiter_id
+        );
+
+
+        sessionStorage.setItem(
+            "waiter_name",
+            result.waiter.name || ""
+        );
+
+
+        /*
+        =========================================
+        SAVE SESSION
+        =========================================
+        */
+
+        if(result.session){
+
+            localStorage.setItem(
+                "waiter_session",
+                JSON.stringify(
+                    result.session
+                )
+            );
+
+        }
+
+
+        showMessage(
+            "✅ Login successful! Opening waiter panel...",
+            "success"
+        );
+
+
+        setTimeout(function(){
+
+            window.location.href =
+                "waiter-dashboard.html";
+
+        },700);
+
+
+    }catch(error){
+
+        console.error(error);
+
+        showMessage(
+            "❌ Server se connection nahi ho raha: " +
+            error.message,
+            "error"
+        );
+
+        btn.disabled = false;
+
+        btn.innerText =
+            "🔐 Login";
+
+    }
+
+});
+
+
+/* =========================================
+   FORGOT PASSWORD
+========================================= */
+
+function showForgot(){
+
+    clearMessage();
+
+    document
+    .getElementById("loginForm")
+    .style.display = "none";
+
+    document
+    .querySelector(".forgot")
+    .style.display = "none";
+
+    document
+    .getElementById("forgotBox")
+    .style.display = "block";
+
+}
+
+
+function hideForgot(){
+
+    clearMessage();
+
+    document
+    .getElementById("forgotBox")
+    .style.display = "none";
+
+    document
+    .getElementById("loginForm")
+    .style.display = "block";
+
+    document
+    .querySelector(".forgot")
+    .style.display = "block";
+
+}
+
+
+/* =========================================
+   FORGOT PASSWORD
+========================================= */
+
+async function sendReset(){
+
+    clearMessage();
+
+
+    const waiterId =
+        document
+        .getElementById("resetWaiterId")
+        .value
+        .trim();
+
+
+    if(!waiterId){
+
+        showMessage(
+            "❌ Waiter ID enter karo.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const btn =
         document.getElementById("resetBtn");
 
 
-    resetBtn.disabled=true;
+    btn.disabled = true;
 
-    resetBtn.innerText =
+    btn.innerText =
         "⏳ Checking...";
 
 
@@ -623,63 +609,56 @@ async function sendResetEmail(){
 
 
         /*
-        ==========================================
+        =========================================
         GET WAITER EMAIL
-        ==========================================
+        =========================================
         */
 
         const {
             data,
             error
         } = await db
-            .from("waiters")
-            .select("email")
-            .eq("waiter_id", waiterId)
-            .maybeSingle();
+        .from("waiters")
+        .select("email")
+        .eq("waiter_id", waiterId)
+        .maybeSingle();
 
+
+        /*
+        IMPORTANT:
+        Agar email column waiters me nahi hai,
+        to yahan error aayega.
+        */
 
         if(error){
 
             console.error(error);
 
-            showError(
-                "Waiter details nahi mil rahe: " +
-                error.message
+            showMessage(
+                "❌ Waiter reset setup me problem hai: " +
+                error.message,
+                "error"
             );
 
-            resetBtn.disabled=false;
+            btn.disabled = false;
 
-            resetBtn.innerText =
+            btn.innerText =
                 "📧 Send Reset Email";
 
             return;
         }
 
 
-        if(!data){
+        if(!data || !data.email){
 
-            showError(
-                "Waiter ID nahi mila."
+            showMessage(
+                "❌ Is Waiter ID ke liye email nahi mila.",
+                "error"
             );
 
-            resetBtn.disabled=false;
+            btn.disabled = false;
 
-            resetBtn.innerText =
-                "📧 Send Reset Email";
-
-            return;
-        }
-
-
-        if(!data.email){
-
-            showError(
-                "Is waiter ke account me email registered nahi hai."
-            );
-
-            resetBtn.disabled=false;
-
-            resetBtn.innerText =
+            btn.innerText =
                 "📧 Send Reset Email";
 
             return;
@@ -687,9 +666,9 @@ async function sendResetEmail(){
 
 
         /*
-        ==========================================
-        RESET REDIRECT
-        ==========================================
+        =========================================
+        REDIRECT URL
+        =========================================
         */
 
         const redirectUrl =
@@ -701,53 +680,52 @@ async function sendResetEmail(){
             );
 
 
-        resetBtn.innerText =
-            "⏳ Sending...";
-
-
         /*
-        ==========================================
-        SUPABASE RESET EMAIL
-        ==========================================
+        =========================================
+        SUPABASE RESET
+        =========================================
         */
 
         const {
             error:resetError
-        } = await db.auth
-            .resetPasswordForEmail(
-                data.email,
-                {
-                    redirectTo:redirectUrl
-                }
-            );
+        } =
+        await db.auth.resetPasswordForEmail(
+            data.email,
+            {
+                redirectTo:
+                    redirectUrl
+            }
+        );
 
 
         if(resetError){
 
             console.error(resetError);
 
-            showError(
-                "Reset email nahi bheja gaya: " +
-                resetError.message
+            showMessage(
+                "❌ Reset email nahi bheja gaya: " +
+                resetError.message,
+                "error"
             );
 
-            resetBtn.disabled=false;
+            btn.disabled = false;
 
-            resetBtn.innerText =
+            btn.innerText =
                 "📧 Send Reset Email";
 
             return;
         }
 
 
-        showSuccess(
-            "Password reset email registered email par bhej diya gaya."
+        showMessage(
+            "✅ Reset email bhej diya gaya. Inbox/spam check karo.",
+            "success"
         );
 
 
-        resetBtn.disabled=false;
+        btn.disabled = false;
 
-        resetBtn.innerText =
+        btn.innerText =
             "📧 Send Reset Email";
 
 
@@ -755,29 +733,22 @@ async function sendResetEmail(){
 
         console.error(error);
 
-        showError(
-            "Reset ke time error aaya: " +
-            error.message
+        showMessage(
+            "❌ Reset error: " +
+            error.message,
+            "error"
         );
 
+        btn.disabled = false;
 
-        resetBtn.disabled=false;
-
-        resetBtn.innerText =
+        btn.innerText =
             "📧 Send Reset Email";
 
     }
 
 }
 
-
-/* ==========================================
-   START
-========================================== */
-
 </script>
 
-
 </body>
-
 </html>
