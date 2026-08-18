@@ -3,232 +3,318 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Restaurant Admin</title>
 
-    <title>Restaurant Admin</title>
+<style>
 
-    <style>
+*{
+box-sizing:border-box;
+margin:0;
+padding:0
+}
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+body{
+font-family:Arial,sans-serif;
+background:#f5f5f5;
+color:#222;
+}
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            color: #222;
-        }
+.header{
+background:#111;
+color:white;
+padding:20px;
+}
 
-        .header {
-            background: #111;
-            color: white;
-            padding: 20px;
-        }
+.header h1{
+font-size:24px;
+}
 
-        .header h1 {
-            font-size: 24px;
-        }
+.header p{
+color:#bbb;
+margin-top:5px;
+}
 
-        .header p {
-            color: #bbb;
-            margin-top: 5px;
-        }
+.container{
+max-width:900px;
+margin:auto;
+padding:20px;
+}
 
-        .container {
-            max-width: 900px;
-            margin: auto;
-            padding: 20px;
-        }
+.dashboard{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:15px;
+margin-bottom:25px;
+}
 
-        .dashboard {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
-        }
+.card{
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 3px 12px rgba(0,0,0,0.08);
+cursor:pointer;
+}
 
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-        }
+.card .icon{
+font-size:30px;
+}
 
-        .card .icon {
-            font-size: 30px;
-        }
+.card h3{
+margin-top:8px;
+}
 
-        .card h3 {
-            margin-top: 8px;
-        }
+.card p{
+color:#777;
+margin-top:5px;
+}
 
-        .card p {
-            color: #777;
-            margin-top: 5px;
-        }
+.section{
+background:white;
+padding:20px;
+border-radius:15px;
+margin-bottom:20px;
+box-shadow:0 3px 12px rgba(0,0,0,0.08);
+}
 
-        .section {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-        }
+.section h2{
+margin-bottom:8px;
+}
 
-        .section h2 {
-            margin-bottom: 8px;
-        }
+.description{
+color:#777;
+font-size:14px;
+margin-bottom:20px;
+}
 
-        .description {
-            color: #777;
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
+button{
+border:none;
+padding:12px 16px;
+border-radius:9px;
+cursor:pointer;
+font-size:14px;
+margin:4px;
+}
 
-        button {
-            border: none;
-            padding: 12px 16px;
-            border-radius: 9px;
-            cursor: pointer;
-            font-size: 14px;
-            margin: 4px;
-        }
+.primary{
+background:#111;
+color:white;
+}
 
-        .primary {
-            background: #111;
-            color: white;
-        }
+.save{
+background:#198754;
+color:white;
+}
 
-        .save {
-            background: #198754;
-            color: white;
-        }
+.edit{
+background:#ffc107;
+color:#111;
+}
 
-        .edit {
-            background: #ffc107;
-            color: #111;
-        }
+.delete{
+background:#dc3545;
+color:white;
+}
 
-        .delete {
-            background: #dc3545;
-            color: white;
-        }
+.cancel{
+background:#ddd;
+color:#222;
+}
 
-        .cancel {
-            background: #ddd;
-            color: #222;
-        }
+#itemForm{
+display:none;
+margin-top:20px;
+border-top:1px solid #eee;
+padding-top:20px;
+}
 
-        #itemForm {
-            display: none;
-            margin-top: 20px;
-            border-top: 1px solid #eee;
-            padding-top: 20px;
-        }
+.form-group{
+margin-bottom:15px;
+}
 
-        .form-group {
-            margin-bottom: 15px;
-        }
+label{
+display:block;
+font-weight:bold;
+margin-bottom:7px;
+}
 
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 7px;
-        }
+input,
+select,
+textarea{
+width:100%;
+padding:13px;
+border:1px solid #ddd;
+border-radius:9px;
+font-size:15px;
+}
 
-        input,
-        select,
-        textarea {
-            width: 100%;
-            padding: 13px;
-            border: 1px solid #ddd;
-            border-radius: 9px;
-            font-size: 15px;
-        }
+textarea{
+min-height:90px;
+resize:vertical;
+}
 
-        textarea {
-            min-height: 90px;
-            resize: vertical;
-        }
+.menu-item{
+display:flex;
+align-items:center;
+gap:12px;
+padding:15px 0;
+border-bottom:1px solid #eee;
+}
 
-        .menu-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 15px 0;
-            border-bottom: 1px solid #eee;
-        }
+.menu-image{
+width:75px;
+height:75px;
+object-fit:cover;
+border-radius:10px;
+}
 
-        .menu-image {
-            width: 75px;
-            height: 75px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
+.menu-info{
+flex:1;
+}
 
-        .menu-info {
-            flex: 1;
-        }
+.menu-name{
+font-weight:bold;
+font-size:17px;
+}
 
-        .menu-name {
-            font-weight: bold;
-            font-size: 17px;
-        }
+.menu-category{
+color:#777;
+font-size:13px;
+margin-top:4px;
+}
 
-        .menu-category {
-            color: #777;
-            font-size: 13px;
-            margin-top: 4px;
-        }
+.menu-price{
+font-weight:bold;
+margin-top:5px;
+}
 
-        .menu-price {
-            font-weight: bold;
-            margin-top: 5px;
-        }
+.message{
+margin-top:15px;
+padding:12px;
+border-radius:8px;
+display:none;
+}
 
-        .message {
-            margin-top: 15px;
-            padding: 12px;
-            border-radius: 8px;
-            display: none;
-        }
+.success-message{
+background:#d1e7dd;
+color:#0f5132;
+}
 
-        .success-message {
-            background: #d1e7dd;
-            color: #0f5132;
-        }
+.error-message{
+background:#f8d7da;
+color:#842029;
+}
 
-        .error-message {
-            background: #f8d7da;
-            color: #842029;
-        }
+/* LIVE ORDERS */
 
-        @media (max-width: 600px) {
+#ordersSection{
+display:none;
+}
 
-            .container {
-                padding: 15px;
-            }
+.refresh{
+width:100%;
+padding:13px;
+background:#111;
+color:white;
+border:0;
+border-radius:10px;
+font-size:15px;
+margin-bottom:15px;
+}
 
-            .dashboard {
-                grid-template-columns: 1fr 1fr;
-            }
+.order{
+background:#fff;
+border-radius:15px;
+padding:18px;
+margin-bottom:15px;
+box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
 
-            .menu-item {
-                align-items: flex-start;
-            }
+.order-top{
+display:flex;
+justify-content:space-between;
+gap:10px;
+margin-bottom:12px;
+}
 
-            .menu-actions {
-                display: flex;
-                flex-direction: column;
-            }
+.table{
+font-size:18px;
+font-weight:bold;
+}
 
-        }
+.status{
+padding:6px 10px;
+border-radius:7px;
+background:#fff3cd;
+color:#856404;
+font-size:12px;
+font-weight:bold;
+}
 
-    </style>
+.items{
+border-top:1px solid #eee;
+border-bottom:1px solid #eee;
+padding:12px 0;
+margin:10px 0;
+}
+
+.item{
+display:flex;
+justify-content:space-between;
+padding:5px 0;
+font-size:14px;
+}
+
+.total{
+display:flex;
+justify-content:space-between;
+font-size:18px;
+font-weight:bold;
+}
+
+.time{
+color:#777;
+font-size:12px;
+margin-top:10px;
+}
+
+.empty{
+text-align:center;
+color:#777;
+padding:40px 10px;
+}
+
+.order-error{
+background:#f8d7da;
+color:#842029;
+padding:15px;
+border-radius:10px;
+}
+
+@media(max-width:600px){
+
+.container{
+padding:15px;
+}
+
+.dashboard{
+grid-template-columns:1fr 1fr;
+}
+
+.menu-item{
+align-items:flex-start;
+}
+
+.menu-actions{
+display:flex;
+flex-direction:column;
+}
+
+}
+
+</style>
 
 </head>
 
@@ -238,9 +324,9 @@
 
 <div class="header">
 
-    <h1>🧑‍💼 Restaurant Admin</h1>
+<h1>🧑‍💼 Restaurant Admin</h1>
 
-    <p>Reception / Management Panel</p>
+<p>Reception / Management Panel</p>
 
 </div>
 
@@ -248,286 +334,325 @@
 <div class="container">
 
 
-    <!-- DASHBOARD -->
+<!-- DASHBOARD -->
 
-    <div class="dashboard">
+<div class="dashboard">
 
-        <div class="card">
 
-            <div class="icon">🍔</div>
+<div class="card">
 
-            <h3>Menu Items</h3>
+<div class="icon">🍔</div>
 
-            <p id="itemCount">0 Items</p>
+<h3>Menu Items</h3>
 
-        </div>
+<p id="itemCount">0 Items</p>
 
+</div>
 
-        <div class="card">
 
-            <div class="icon">🪑</div>
+<div class="card">
 
-            <h3>Tables</h3>
+<div class="icon">🪑</div>
 
-            <p>10 Tables</p>
+<h3>Tables</h3>
 
-        </div>
+<p>10 Tables</p>
 
+</div>
 
-        <div class="card">
 
-            <div class="icon">📋</div>
+<div
+class="card"
+onclick="openOrders()"
+>
 
-            <h3>Orders</h3>
+<div class="icon">📋</div>
 
-            <p>0 Orders</p>
+<h3>Orders</h3>
 
-        </div>
+<p id="dashboardOrderCount">
+0 Orders
+</p>
 
+</div>
 
-        <div class="card">
 
-            <div class="icon">💳</div>
+<div class="card">
 
-            <h3>Payments</h3>
+<div class="icon">💳</div>
 
-            <p>0 Pending</p>
+<h3>Payments</h3>
 
-        </div>
+<p>0 Pending</p>
 
-    </div>
+</div>
 
 
-    <!-- MENU MANAGEMENT -->
+</div>
 
-    <div class="section">
 
-        <h2>🍔 Menu Management</h2>
+<!-- MENU MANAGEMENT -->
 
-        <p class="description">
-            Yahan se restaurant ka complete menu manage hoga.
-        </p>
+<div class="section">
 
+<h2>🍔 Menu Management</h2>
 
-        <button
-            class="primary"
-            onclick="openAddForm()"
-        >
-            ➕ Add New Item
-        </button>
+<p class="description">
+Yahan se restaurant ka complete menu manage hoga.
+</p>
 
 
-        <div id="itemForm">
+<button
+class="primary"
+onclick="openAddForm()"
+>
+➕ Add New Item
+</button>
 
 
-            <h3 id="formTitle">
-                Add New Item
-            </h3>
+<div id="itemForm">
 
-            <br>
 
+<h3 id="formTitle">
+Add New Item
+</h3>
 
-            <div class="form-group">
+<br>
 
-                <label>Food Name</label>
 
-                <input
-                    type="text"
-                    id="itemName"
-                    placeholder="Example: Chicken Biryani"
-                >
+<div class="form-group">
 
-            </div>
+<label>Food Name</label>
 
+<input
+type="text"
+id="itemName"
+placeholder="Example: Chicken Biryani"
+>
 
-            <div class="form-group">
+</div>
 
-                <label>Price (₹)</label>
 
-                <input
-                    type="number"
-                    id="itemPrice"
-                    placeholder="Example: 180"
-                    min="1"
-                >
+<div class="form-group">
 
-            </div>
+<label>Price (₹)</label>
 
+<input
+type="number"
+id="itemPrice"
+placeholder="Example: 180"
+min="1"
+>
 
-            <div class="form-group">
+</div>
 
-                <label>Category</label>
 
-                <select id="itemCategory">
+<div class="form-group">
 
-                    <option value="">
-                        Select Category
-                    </option>
+<label>Category</label>
 
-                    <option value="Biryani">
-                        Biryani
-                    </option>
+<select id="itemCategory">
 
-                    <option value="Pizza">
-                        Pizza
-                    </option>
+<option value="">
+Select Category
+</option>
 
-                    <option value="Drinks">
-                        Drinks
-                    </option>
+<option value="Biryani">
+Biryani
+</option>
 
-                    <option value="Desserts">
-                        Desserts
-                    </option>
+<option value="Pizza">
+Pizza
+</option>
 
-                    <option value="Starters">
-                        Starters
-                    </option>
+<option value="Drinks">
+Drinks
+</option>
 
-                    <option value="Main Course">
-                        Main Course
-                    </option>
+<option value="Desserts">
+Desserts
+</option>
 
-                </select>
+<option value="Starters">
+Starters
+</option>
 
-            </div>
+<option value="Main Course">
+Main Course
+</option>
 
+</select>
 
-            <div class="form-group">
+</div>
 
-                <label>Description</label>
 
-                <textarea
-                    id="itemDescription"
-                    placeholder="Food description"
-                ></textarea>
+<div class="form-group">
 
-            </div>
+<label>Description</label>
 
+<textarea
+id="itemDescription"
+placeholder="Food description"
+></textarea>
 
-            <div class="form-group">
+</div>
 
-                <label>Image URL</label>
 
-                <input
-                    type="url"
-                    id="itemImage"
-                    placeholder="Paste image URL"
-                >
+<div class="form-group">
 
-            </div>
+<label>Image URL</label>
 
+<input
+type="url"
+id="itemImage"
+placeholder="Paste image URL"
+>
 
-            <button
-                class="save"
-                onclick="saveItem()"
-            >
-                💾 Save Item
-            </button>
+</div>
 
 
-            <button
-                class="cancel"
-                onclick="closeForm()"
-            >
-                Cancel
-            </button>
+<button
+class="save"
+onclick="saveItem()"
+>
+💾 Save Item
+</button>
 
 
-        </div>
+<button
+class="cancel"
+onclick="closeForm()"
+>
+Cancel
+</button>
 
 
-        <div
-            id="successMessage"
-            class="message success-message"
-        ></div>
+</div>
 
 
-        <div
-            id="errorMessage"
-            class="message error-message"
-        ></div>
+<div
+id="successMessage"
+class="message success-message"
+></div>
 
 
-    </div>
+<div
+id="errorMessage"
+class="message error-message"
+></div>
 
 
-    <!-- CURRENT MENU -->
+</div>
 
-    <div class="section">
 
-        <h2>📋 Current Menu</h2>
+<!-- CURRENT MENU -->
 
-        <p class="description">
-            Ye items directly database se load ho rahe hain.
-        </p>
+<div class="section">
 
+<h2>📋 Current Menu</h2>
 
-        <div id="menuList">
+<p class="description">
+Ye items directly database se load ho rahe hain.
+</p>
 
-            Loading menu...
 
-        </div>
+<div id="menuList">
+Loading menu...
+</div>
 
-    </div>
+</div>
 
 
-    <!-- TABLES -->
+<!-- TABLES -->
 
-    <div class="section">
+<div class="section">
 
-        <h2>🪑 Table Management</h2>
+<h2>🪑 Table Management</h2>
 
-        <p class="description">
-            Tables aur QR codes yahan manage honge.
-        </p>
+<p class="description">
+Tables aur QR codes yahan manage honge.
+</p>
 
 
-        <button
-            class="primary"
-            onclick="comingSoon('Table Management')"
-        >
-            🪑 Manage Tables
-        </button>
+<button
+class="primary"
+onclick="comingSoon('Table Management')"
+>
+🪑 Manage Tables
+</button>
 
 
-        <button
-            class="primary"
-            onclick="comingSoon('QR Generator')"
-        >
-            📱 Generate QR Codes
-        </button>
+<button
+class="primary"
+onclick="comingSoon('QR Generator')"
+>
+📱 Generate QR Codes
+</button>
 
-    </div>
+</div>
 
 
-    <!-- ORDERS -->
+<!-- ORDERS -->
 
-    <div class="section">
+<div class="section">
 
-        <h2>📋 Orders & Payments</h2>
+<h2>📋 Orders & Payments</h2>
 
-        <p class="description">
-            Customer orders aur payment status yahan manage honge.
-        </p>
+<p class="description">
+Customer orders aur payment status yahan manage honge.
+</p>
 
 
-        <button
-            class="primary"
-            onclick="comingSoon('Orders')"
-        >
-            📋 View Orders
-        </button>
+<button
+class="primary"
+onclick="openOrders()"
+>
+📋 View Orders
+</button>
 
 
-        <button
-            class="primary"
-            onclick="comingSoon('Payments')"
-        >
-            💳 Payment Dashboard
-        </button>
+<button
+class="primary"
+onclick="comingSoon('Payments')"
+>
+💳 Payment Dashboard
+</button>
 
-    </div>
+</div>
+
+
+<!-- LIVE CUSTOMER ORDERS -->
+
+<div
+class="section"
+id="ordersSection"
+>
+
+<h2>🛒 Live Customer Orders</h2>
+
+<p class="description">
+Customer se aaye hue live orders yahan dikhenge.
+</p>
+
+
+<button
+class="refresh"
+onclick="loadOrders()"
+>
+🔄 Refresh Orders
+</button>
+
+
+<div id="orders">
+
+<div class="empty">
+Loading orders... 🍽️
+</div>
+
+</div>
+
+
+</div>
 
 
 </div>
@@ -541,654 +666,706 @@
 <script>
 
 
-/*
-==================================================
-SUPABASE CONNECTION
-==================================================
-*/
-
-
 const SUPABASE_URL =
-    "https://jxjrcjmrkhknltwvzzvr.supabase.co";
+"https://jxjrcjmrkhknltwvzzvr.supabase.co";
 
 
 const SUPABASE_KEY =
-    "sb_publishable__Pg5UNoizrSpZB3fRvbARw_fNhHGjvl";
+"sb_publishable__Pg5UNoizrSpZB3fRvbARw_fNhHGjvl";
 
 
 const db =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
 
 
-/*
-==================================================
-EDITING ITEM ID
-==================================================
-*/
+let editingItemId=null;
 
 
-let editingItemId = null;
+/* MENU */
 
 
-/*
-==================================================
-LOAD MENU FROM DATABASE
-==================================================
-*/
+async function loadMenu(){
+
+const menuList=
+document.getElementById("menuList");
+
+menuList.innerHTML=
+"Loading menu...";
 
 
-async function loadMenu() {
+const {data,error}=await db
+.from("menu_items")
+.select("*")
+.order("id",{ascending:false});
 
 
-    const menuList =
-        document.getElementById("menuList");
+if(error){
 
+showError(
+"Database se menu load nahi ho raha: "+
+error.message
+);
 
-    menuList.innerHTML =
-        "Loading menu...";
+menuList.innerHTML=
+"Menu load failed.";
 
-
-    const { data, error } =
-        await db
-        .from("menu_items")
-        .select("*")
-        .order("id", {
-            ascending: false
-        });
-
-
-    if (error) {
-
-        showError(
-            "Database se menu load nahi ho raha: " +
-            error.message
-        );
-
-        menuList.innerHTML =
-            "Menu load failed.";
-
-        return;
-
-    }
-
-
-    displayMenu(data);
+return;
 
 }
 
 
-/*
-==================================================
-DISPLAY MENU
-==================================================
-*/
-
-
-function displayMenu(items) {
-
-
-    const menuList =
-        document.getElementById("menuList");
-
-
-    menuList.innerHTML = "";
-
-
-    document.getElementById("itemCount")
-        .innerText =
-        items.length + " Items";
-
-
-    if (items.length === 0) {
-
-        menuList.innerHTML =
-            "<p>No menu items available.</p>";
-
-        return;
-
-    }
-
-
-    items.forEach(item => {
-
-
-        const image =
-            item.image_url ||
-            "https://via.placeholder.com/75";
-
-
-        menuList.innerHTML += `
-
-            <div class="menu-item">
-
-                <img
-                    src="${image}"
-                    class="menu-image"
-                    alt="${item.name}"
-                >
-
-
-                <div class="menu-info">
-
-                    <div class="menu-name">
-                        ${item.name}
-                    </div>
-
-
-                    <div class="menu-category">
-                        ${item.category || ""}
-                    </div>
-
-
-                    <div class="menu-price">
-                        ₹${item.price}
-                    </div>
-
-                </div>
-
-
-                <div class="menu-actions">
-
-                    <button
-                        class="edit"
-                        onclick="editItem(${item.id})"
-                    >
-                        ✏️ Edit
-                    </button>
-
-
-                    <button
-                        class="delete"
-                        onclick="deleteItem(${item.id})"
-                    >
-                        🗑️ Delete
-                    </button>
-
-                </div>
-
-            </div>
-
-        `;
-
-    });
+displayMenu(data);
 
 }
 
 
-/*
-==================================================
-OPEN ADD FORM
-==================================================
-*/
+function displayMenu(items){
+
+const menuList=
+document.getElementById("menuList");
+
+menuList.innerHTML="";
+
+document.getElementById("itemCount")
+.innerText=
+items.length+" Items";
 
 
-function openAddForm() {
+if(items.length===0){
 
+menuList.innerHTML=
+"<p>No menu items available.</p>";
 
-    editingItemId = null;
-
-
-    document.getElementById("formTitle")
-        .innerText =
-        "Add New Item";
-
-
-    clearForm();
-
-
-    document.getElementById("itemForm")
-        .style.display =
-        "block";
-
-
-    window.scrollTo({
-        top: 300,
-        behavior: "smooth"
-    });
+return;
 
 }
 
 
-/*
-==================================================
-EDIT ITEM
-==================================================
-*/
+items.forEach(item=>{
+
+const image=
+item.image_url||
+"https://via.placeholder.com/75";
 
 
-async function editItem(id) {
+menuList.innerHTML+=`
 
+<div class="menu-item">
 
-    const { data, error } =
-        await db
-        .from("menu_items")
-        .select("*")
-        .eq("id", id)
-        .single();
+<img
+src="${image}"
+class="menu-image"
+alt="${item.name}"
+>
 
+<div class="menu-info">
 
-    if (error) {
+<div class="menu-name">
+${item.name}
+</div>
 
-        showError(
-            "Item load nahi hua: " +
-            error.message
-        );
+<div class="menu-category">
+${item.category||""}
+</div>
 
-        return;
+<div class="menu-price">
+₹${item.price}
+</div>
 
-    }
+</div>
 
+<div class="menu-actions">
 
-    editingItemId = id;
+<button
+class="edit"
+onclick="editItem(${item.id})"
+>
+✏️ Edit
+</button>
 
+<button
+class="delete"
+onclick="deleteItem(${item.id})"
+>
+🗑️ Delete
+</button>
 
-    document.getElementById("formTitle")
-        .innerText =
-        "Edit Item";
+</div>
 
+</div>
 
-    document.getElementById("itemName")
-        .value =
-        data.name || "";
+`;
 
-
-    document.getElementById("itemPrice")
-        .value =
-        data.price || "";
-
-
-    document.getElementById("itemCategory")
-        .value =
-        data.category || "";
-
-
-    document.getElementById("itemDescription")
-        .value =
-        data.description || "";
-
-
-    document.getElementById("itemImage")
-        .value =
-        data.image_url || "";
-
-
-    document.getElementById("itemForm")
-        .style.display =
-        "block";
-
-
-    window.scrollTo({
-        top: 300,
-        behavior: "smooth"
-    });
+});
 
 }
 
 
-/*
-==================================================
-SAVE ITEM
-==================================================
-*/
+function openAddForm(){
 
+editingItemId=null;
 
-async function saveItem() {
+document.getElementById("formTitle")
+.innerText="Add New Item";
 
+clearForm();
 
-    const name =
-        document.getElementById("itemName")
-        .value
-        .trim();
+document.getElementById("itemForm")
+.style.display="block";
 
-
-    const price =
-        document.getElementById("itemPrice")
-        .value;
-
-
-    const category =
-        document.getElementById("itemCategory")
-        .value;
-
-
-    const description =
-        document.getElementById("itemDescription")
-        .value
-        .trim();
-
-
-    const image =
-        document.getElementById("itemImage")
-        .value
-        .trim();
-
-
-    if (!name) {
-
-        alert("Food name enter karo.");
-
-        return;
-
-    }
-
-
-    if (!price || Number(price) <= 0) {
-
-        alert("Valid price enter karo.");
-
-        return;
-
-    }
-
-
-    if (!category) {
-
-        alert("Category select karo.");
-
-        return;
-
-    }
-
-
-    if (!description) {
-
-        alert("Description enter karo.");
-
-        return;
-
-    }
-
-
-    if (!image) {
-
-        alert("Image URL enter karo.");
-
-        return;
-
-    }
-
-
-    const itemData = {
-
-        name: name,
-
-        price: Number(price),
-
-        category: category,
-
-        description: description,
-
-        image_url: image
-
-    };
-
-
-    /* EDIT */
-
-    if (editingItemId !== null) {
-
-
-        const { error } =
-            await db
-            .from("menu_items")
-            .update(itemData)
-            .eq("id", editingItemId);
-
-
-        if (error) {
-
-            showError(
-                "Update failed: " +
-                error.message
-            );
-
-            return;
-
-        }
-
-
-        showSuccess(
-            "✅ Item successfully updated!"
-        );
-
-    }
-
-
-    /* ADD */
-
-    else {
-
-
-        const { error } =
-            await db
-            .from("menu_items")
-            .insert([itemData]);
-
-
-        if (error) {
-
-            showError(
-                "Item save nahi hua: " +
-                error.message
-            );
-
-            return;
-
-        }
-
-
-        showSuccess(
-            "✅ New item successfully added!"
-        );
-
-    }
-
-
-    closeForm();
-
-
-    loadMenu();
+window.scrollTo({
+top:300,
+behavior:"smooth"
+});
 
 }
 
 
-/*
-==================================================
-DELETE ITEM
-==================================================
-*/
+async function editItem(id){
+
+const {data,error}=await db
+.from("menu_items")
+.select("*")
+.eq("id",id)
+.single();
 
 
-async function deleteItem(id) {
+if(error){
 
+showError(
+"Item load nahi hua: "+
+error.message
+);
 
-    const confirmDelete =
-        confirm(
-            "Kya tum sure ho ki ye item delete karna hai?"
-        );
-
-
-    if (!confirmDelete) {
-
-        return;
-
-    }
-
-
-    const { error } =
-        await db
-        .from("menu_items")
-        .delete()
-        .eq("id", id);
-
-
-    if (error) {
-
-        showError(
-            "Delete failed: " +
-            error.message
-        );
-
-        return;
-
-    }
-
-
-    showSuccess(
-        "🗑️ Item successfully deleted!"
-    );
-
-
-    loadMenu();
+return;
 
 }
 
 
-/*
-==================================================
-CLOSE FORM
-==================================================
-*/
+editingItemId=id;
 
+document.getElementById("formTitle")
+.innerText="Edit Item";
 
-function closeForm() {
+document.getElementById("itemName")
+.value=data.name||"";
 
+document.getElementById("itemPrice")
+.value=data.price||"";
 
-    document.getElementById("itemForm")
-        .style.display =
-        "none";
+document.getElementById("itemCategory")
+.value=data.category||"";
 
+document.getElementById("itemDescription")
+.value=data.description||"";
 
-    editingItemId = null;
+document.getElementById("itemImage")
+.value=data.image_url||"";
 
+document.getElementById("itemForm")
+.style.display="block";
 
-    clearForm();
-
-}
-
-
-/*
-==================================================
-CLEAR FORM
-==================================================
-*/
-
-
-function clearForm() {
-
-
-    document.getElementById("itemName")
-        .value = "";
-
-
-    document.getElementById("itemPrice")
-        .value = "";
-
-
-    document.getElementById("itemCategory")
-        .value = "";
-
-
-    document.getElementById("itemDescription")
-        .value = "";
-
-
-    document.getElementById("itemImage")
-        .value = "";
+window.scrollTo({
+top:300,
+behavior:"smooth"
+});
 
 }
 
 
-/*
-==================================================
-MESSAGES
-==================================================
-*/
+async function saveItem(){
+
+const name=
+document.getElementById("itemName")
+.value.trim();
+
+const price=
+document.getElementById("itemPrice")
+.value;
+
+const category=
+document.getElementById("itemCategory")
+.value;
+
+const description=
+document.getElementById("itemDescription")
+.value.trim();
+
+const image=
+document.getElementById("itemImage")
+.value.trim();
 
 
-function showSuccess(message) {
+if(!name){
+alert("Food name enter karo.");
+return;
+}
+
+if(!price||Number(price)<=0){
+alert("Valid price enter karo.");
+return;
+}
+
+if(!category){
+alert("Category select karo.");
+return;
+}
+
+if(!description){
+alert("Description enter karo.");
+return;
+}
+
+if(!image){
+alert("Image URL enter karo.");
+return;
+}
 
 
-    const box =
-        document.getElementById(
-            "successMessage"
-        );
+const itemData={
+name:name,
+price:Number(price),
+category:category,
+description:description,
+image_url:image
+};
 
 
-    box.innerText =
-        message;
+if(editingItemId!==null){
+
+const {error}=await db
+.from("menu_items")
+.update(itemData)
+.eq("id",editingItemId);
 
 
-    box.style.display =
-        "block";
+if(error){
 
+showError(
+"Update failed: "+
+error.message
+);
 
-    setTimeout(() => {
-
-        box.style.display =
-            "none";
-
-    }, 3000);
+return;
 
 }
 
 
-function showError(message) {
+showSuccess(
+"✅ Item successfully updated!"
+);
+
+}else{
+
+const {error}=await db
+.from("menu_items")
+.insert([itemData]);
 
 
-    const box =
-        document.getElementById(
-            "errorMessage"
-        );
+if(error){
 
+showError(
+"Item save nahi hua: "+
+error.message
+);
 
-    box.innerText =
-        "❌ " + message;
-
-
-    box.style.display =
-        "block";
-
-
-    setTimeout(() => {
-
-        box.style.display =
-            "none";
-
-    }, 6000);
+return;
 
 }
 
 
-/*
-==================================================
-COMING SOON
-==================================================
-*/
-
-
-function comingSoon(name) {
-
-    alert(
-        name +
-        " next step mein banayenge 😙🤟🏻"
-    );
+showSuccess(
+"✅ New item successfully added!"
+);
 
 }
 
 
-/*
-==================================================
-START
-==================================================
-*/
-
+closeForm();
 
 loadMenu();
 
+}
+
+
+async function deleteItem(id){
+
+const confirmDelete=
+confirm(
+"Kya tum sure ho ki ye item delete karna hai?"
+);
+
+
+if(!confirmDelete){
+return;
+}
+
+
+const {error}=await db
+.from("menu_items")
+.delete()
+.eq("id",id);
+
+
+if(error){
+
+showError(
+"Delete failed: "+
+error.message
+);
+
+return;
+
+}
+
+
+showSuccess(
+"🗑️ Item successfully deleted!"
+);
+
+loadMenu();
+
+}
+
+
+function closeForm(){
+
+document.getElementById("itemForm")
+.style.display="none";
+
+editingItemId=null;
+
+clearForm();
+
+}
+
+
+function clearForm(){
+
+document.getElementById("itemName")
+.value="";
+
+document.getElementById("itemPrice")
+.value="";
+
+document.getElementById("itemCategory")
+.value="";
+
+document.getElementById("itemDescription")
+.value="";
+
+document.getElementById("itemImage")
+.value="";
+
+}
+
+
+function showSuccess(message){
+
+const box=
+document.getElementById("successMessage");
+
+box.innerText=message;
+
+box.style.display="block";
+
+setTimeout(()=>{
+box.style.display="none";
+},3000);
+
+}
+
+
+function showError(message){
+
+const box=
+document.getElementById("errorMessage");
+
+box.innerText="❌ "+message;
+
+box.style.display="block";
+
+setTimeout(()=>{
+box.style.display="none";
+},6000);
+
+}
+
+
+/* OPEN ORDERS */
+
+function openOrders(){
+
+const section=
+document.getElementById("ordersSection");
+
+section.style.display="block";
+
+section.scrollIntoView({
+behavior:"smooth",
+block:"start"
+});
+
+loadOrders();
+
+}
+
+
+/* LOAD ORDERS */
+
+async function loadOrders(){
+
+const box=
+document.getElementById("orders");
+
+box.innerHTML=
+'<div class="empty">Loading orders... 🍽️</div>';
+
+
+try{
+
+const result=
+await db
+.from("orders")
+.select("*")
+.order("created_at",{ascending:false});
+
+
+if(result.error){
+
+console.error(result.error);
+
+box.innerHTML=`
+
+<div class="order-error">
+
+❌ Orders load nahi hue.
+
+<br><br>
+
+${result.error.message}
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+const orders=
+result.data||[];
+
+
+document.getElementById(
+"dashboardOrderCount"
+).innerText=
+orders.length+" Orders";
+
+
+if(orders.length===0){
+
+box.innerHTML=`
+
+<div class="empty">
+
+📭 Abhi koi order nahi hai.
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+box.innerHTML="";
+
+
+orders.forEach(order=>{
+
+let items=order.items;
+
+
+if(typeof items==="string"){
+
+try{
+
+items=JSON.parse(items);
+
+}catch(e){
+
+items=[];
+
+}
+
+}
+
+
+let itemsHTML="";
+
+
+if(Array.isArray(items)){
+
+items.forEach(item=>{
+
+const name=
+item.name||"Item";
+
+const quantity=
+item.quantity||1;
+
+const price=
+item.price||0;
+
+
+itemsHTML+=`
+
+<div class="item">
+
+<span>
+${name} × ${quantity}
+</span>
+
+<span>
+₹${price*quantity}
+</span>
+
+</div>
+
+`;
+
+});
+
+}else{
+
+itemsHTML=`
+
+<div class="item">
+
+<span>
+Order items
+</span>
+
+<span>
+—
+</span>
+
+</div>
+
+`;
+
+}
+
+
+const date=
+order.created_at
+?new Date(
+order.created_at
+).toLocaleString("en-IN")
+:"";
+
+
+const status=
+order.status||"pending";
+
+
+box.innerHTML+=`
+
+<div class="order">
+
+<div class="order-top">
+
+<div class="table">
+
+🪑 Table
+${order.table_number||"-"}
+
+</div>
+
+<div class="status">
+
+${status.toUpperCase()}
+
+</div>
+
+</div>
+
+
+<div class="items">
+
+${itemsHTML}
+
+</div>
+
+
+<div class="total">
+
+<span>
+Total
+</span>
+
+<span>
+₹${order.total_amount||0}
+</span>
+
+</div>
+
+
+<div class="time">
+
+🕒 ${date}
+
+</div>
+
+
+</div>
+
+`;
+
+});
+
+}catch(error){
+
+console.error(error);
+
+box.innerHTML=`
+
+<div class="order-error">
+
+❌ Something went wrong.
+
+<br><br>
+
+${error.message}
+
+</div>
+
+`;
+
+}
+
+}
+
+
+function comingSoon(name){
+
+alert(
+name+
+" next step mein banayenge 😙🤟🏻"
+);
+
+}
+
+
+/* START */
+
+loadMenu();
 
 </script>
 
