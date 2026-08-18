@@ -13,17 +13,13 @@
 *{
 box-sizing:border-box;
 margin:0;
-padding:0;
+padding:0
 }
 
 body{
 font-family:Arial,sans-serif;
 background:#f5f5f5;
 color:#222;
-}
-
-body.no-scroll{
-overflow:hidden;
 }
 
 .header{
@@ -39,7 +35,6 @@ font-size:24px;
 .header p{
 color:#bbb;
 margin-top:5px;
-font-size:14px;
 }
 
 .container{
@@ -59,13 +54,8 @@ margin-bottom:25px;
 background:white;
 padding:20px;
 border-radius:15px;
-box-shadow:0 3px 12px rgba(0,0,0,.08);
+box-shadow:0 3px 12px rgba(0,0,0,0.08);
 cursor:pointer;
-transition:.2s;
-}
-
-.card:active{
-transform:scale(.97);
 }
 
 .card .icon{
@@ -86,7 +76,7 @@ background:white;
 padding:20px;
 border-radius:15px;
 margin-bottom:20px;
-box-shadow:0 3px 12px rgba(0,0,0,.08);
+box-shadow:0 3px 12px rgba(0,0,0,0.08);
 }
 
 .section h2{
@@ -200,11 +190,6 @@ font-weight:bold;
 margin-top:5px;
 }
 
-.menu-actions{
-display:flex;
-gap:4px;
-}
-
 .message{
 margin-top:15px;
 padding:12px;
@@ -222,303 +207,91 @@ background:#f8d7da;
 color:#842029;
 }
 
+/* LIVE ORDERS */
 
-/* =========================================
-   FANCY ORDERS OVERLAY
-========================================= */
-
-.orders-overlay{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.45);
-backdrop-filter:blur(4px);
-
-opacity:0;
-visibility:hidden;
-
-transition:.3s;
-
-z-index:1999;
+#ordersSection{
+display:none;
 }
-
-.orders-overlay.show{
-opacity:1;
-visibility:visible;
-}
-
-
-/* =========================================
-   FANCY ORDERS DRAWER
-========================================= */
-
-.orders-drawer{
-position:fixed;
-
-top:0;
-right:0;
-
-width:430px;
-max-width:92%;
-
-height:100vh;
-
-background:#f5f5f5;
-
-transform:translateX(100%);
-
-transition:.35s ease;
-
-z-index:2000;
-
-box-shadow:-8px 0 30px rgba(0,0,0,.25);
-
-display:flex;
-flex-direction:column;
-}
-
-.orders-drawer.show{
-transform:translateX(0);
-}
-
-
-/* HEADER */
-
-.orders-header{
-background:#111;
-color:white;
-
-padding:20px;
-
-display:flex;
-justify-content:space-between;
-align-items:center;
-
-flex-shrink:0;
-}
-
-.orders-header h2{
-font-size:20px;
-}
-
-.close-orders{
-background:rgba(255,255,255,.15);
-color:white;
-
-width:38px;
-height:38px;
-
-padding:0;
-margin:0;
-
-border-radius:50%;
-
-font-size:22px;
-}
-
-
-/* BODY */
-
-.orders-body{
-padding:15px;
-
-overflow-y:auto;
-
-flex:1;
-}
-
-
-/* SUMMARY */
-
-.orders-summary{
-display:grid;
-
-grid-template-columns:1fr 1fr;
-
-gap:10px;
-
-margin-bottom:15px;
-}
-
-.summary-card{
-background:white;
-
-padding:15px;
-
-border-radius:13px;
-
-box-shadow:0 2px 8px rgba(0,0,0,.06);
-}
-
-.summary-icon{
-font-size:22px;
-}
-
-.summary-card h3{
-font-size:22px;
-margin-top:5px;
-}
-
-.summary-card p{
-font-size:12px;
-color:#777;
-margin-top:3px;
-}
-
-.total-orders h3{
-color:#111;
-}
-
-.pending h3{
-color:#d39e00;
-}
-
-.completed h3{
-color:#198754;
-}
-
-.cancelled h3{
-color:#dc3545;
-}
-
-
-/* REFRESH */
 
 .refresh{
 width:100%;
-
 padding:13px;
-
 background:#111;
-
 color:white;
-
 border:0;
-
 border-radius:10px;
-
 font-size:15px;
-
-margin:0 0 15px 0;
+margin-bottom:15px;
 }
 
-
-/* ORDER */
-
 .order{
-background:white;
-
+background:#fff;
 border-radius:15px;
-
-padding:16px;
-
-margin-bottom:13px;
-
+padding:18px;
+margin-bottom:15px;
 box-shadow:0 3px 12px rgba(0,0,0,.08);
 }
 
 .order-top{
 display:flex;
-
 justify-content:space-between;
-
-align-items:center;
-
 gap:10px;
-
-margin-bottom:10px;
+margin-bottom:12px;
 }
 
 .table{
-font-size:17px;
+font-size:18px;
 font-weight:bold;
 }
 
 .status{
 padding:6px 10px;
-
 border-radius:7px;
-
 background:#fff3cd;
-
 color:#856404;
-
-font-size:11px;
-
+font-size:12px;
 font-weight:bold;
-}
-
-.status.completed{
-background:#d1e7dd;
-color:#0f5132;
-}
-
-.status.cancelled{
-background:#f8d7da;
-color:#842029;
 }
 
 .items{
 border-top:1px solid #eee;
-
 border-bottom:1px solid #eee;
-
-padding:10px 0;
-
-margin:8px 0;
+padding:12px 0;
+margin:10px 0;
 }
 
 .item{
 display:flex;
-
 justify-content:space-between;
-
-gap:10px;
-
 padding:5px 0;
-
 font-size:14px;
 }
 
 .total{
 display:flex;
-
 justify-content:space-between;
-
-font-size:17px;
-
+font-size:18px;
 font-weight:bold;
 }
 
 .time{
 color:#777;
-
-font-size:11px;
-
-margin-top:9px;
+font-size:12px;
+margin-top:10px;
 }
 
 .empty{
 text-align:center;
-
 color:#777;
-
 padding:40px 10px;
 }
 
 .order-error{
 background:#f8d7da;
-
 color:#842029;
-
 padding:15px;
-
 border-radius:10px;
 }
-
-
-/* =========================================
-   MOBILE
-========================================= */
 
 @media(max-width:600px){
 
@@ -537,11 +310,6 @@ align-items:flex-start;
 .menu-actions{
 display:flex;
 flex-direction:column;
-}
-
-.orders-drawer{
-width:100%;
-max-width:100%;
 }
 
 }
@@ -566,9 +334,7 @@ max-width:100%;
 <div class="container">
 
 
-<!-- =====================================
-     DASHBOARD
-===================================== -->
+<!-- DASHBOARD -->
 
 <div class="dashboard">
 
@@ -579,9 +345,7 @@ max-width:100%;
 
 <h3>Menu Items</h3>
 
-<p id="itemCount">
-0 Items
-</p>
+<p id="itemCount">0 Items</p>
 
 </div>
 
@@ -592,14 +356,10 @@ max-width:100%;
 
 <h3>Tables</h3>
 
-<p>
-10 Tables
-</p>
+<p>10 Tables</p>
 
 </div>
 
-
-<!-- ORDERS MODULE -->
 
 <div
 class="card"
@@ -623,9 +383,7 @@ onclick="openOrders()"
 
 <h3>Payments</h3>
 
-<p>
-0 Pending
-</p>
+<p>0 Pending</p>
 
 </div>
 
@@ -633,15 +391,11 @@ onclick="openOrders()"
 </div>
 
 
-<!-- =====================================
-     MENU MANAGEMENT
-===================================== -->
+<!-- MENU MANAGEMENT -->
 
 <div class="section">
 
-<h2>
-🍔 Menu Management
-</h2>
+<h2>🍔 Menu Management</h2>
 
 <p class="description">
 Yahan se restaurant ka complete menu manage hoga.
@@ -668,9 +422,7 @@ Add New Item
 
 <div class="form-group">
 
-<label>
-Food Name
-</label>
+<label>Food Name</label>
 
 <input
 type="text"
@@ -683,9 +435,7 @@ placeholder="Example: Chicken Biryani"
 
 <div class="form-group">
 
-<label>
-Price (₹)
-</label>
+<label>Price (₹)</label>
 
 <input
 type="number"
@@ -699,9 +449,7 @@ min="1"
 
 <div class="form-group">
 
-<label>
-Category
-</label>
+<label>Category</label>
 
 <select id="itemCategory">
 
@@ -740,9 +488,7 @@ Main Course
 
 <div class="form-group">
 
-<label>
-Description
-</label>
+<label>Description</label>
 
 <textarea
 id="itemDescription"
@@ -754,9 +500,7 @@ placeholder="Food description"
 
 <div class="form-group">
 
-<label>
-Image URL
-</label>
+<label>Image URL</label>
 
 <input
 type="url"
@@ -801,15 +545,11 @@ class="message error-message"
 </div>
 
 
-<!-- =====================================
-     CURRENT MENU
-===================================== -->
+<!-- CURRENT MENU -->
 
 <div class="section">
 
-<h2>
-📋 Current Menu
-</h2>
+<h2>📋 Current Menu</h2>
 
 <p class="description">
 Ye items directly database se load ho rahe hain.
@@ -817,23 +557,17 @@ Ye items directly database se load ho rahe hain.
 
 
 <div id="menuList">
-
 Loading menu...
-
 </div>
 
 </div>
 
 
-<!-- =====================================
-     TABLE MANAGEMENT
-===================================== -->
+<!-- TABLES -->
 
 <div class="section">
 
-<h2>
-🪑 Table Management
-</h2>
+<h2>🪑 Table Management</h2>
 
 <p class="description">
 Tables aur QR codes yahan manage honge.
@@ -858,15 +592,11 @@ onclick="comingSoon('QR Generator')"
 </div>
 
 
-<!-- =====================================
-     ORDERS & PAYMENTS MODULE
-===================================== -->
+<!-- ORDERS -->
 
 <div class="section">
 
-<h2>
-📋 Orders & Payments
-</h2>
+<h2>📋 Orders & Payments</h2>
 
 <p class="description">
 Customer orders aur payment status yahan manage honge.
@@ -891,125 +621,18 @@ onclick="comingSoon('Payments')"
 </div>
 
 
-</div>
-
-
-<!-- =====================================
-     ORDERS OVERLAY
-===================================== -->
+<!-- LIVE CUSTOMER ORDERS -->
 
 <div
-class="orders-overlay"
-id="ordersOverlay"
-onclick="closeOrders()"
->
-</div>
-
-
-<!-- =====================================
-     ORDERS DRAWER
-===================================== -->
-
-<div
-class="orders-drawer"
-id="ordersDrawer"
+class="section"
+id="ordersSection"
 >
 
+<h2>🛒 Live Customer Orders</h2>
 
-<div class="orders-header">
-
-<h2>
-📋 Live Orders
-</h2>
-
-
-<button
-class="close-orders"
-onclick="closeOrders()"
->
-×
-</button>
-
-</div>
-
-
-<div class="orders-body">
-
-
-<!-- SUMMARY -->
-
-<div class="orders-summary">
-
-
-<div class="summary-card total-orders">
-
-<div class="summary-icon">
-📦
-</div>
-
-<h3 id="totalCount">
-0
-</h3>
-
-<p>
-Total Orders
+<p class="description">
+Customer se aaye hue live orders yahan dikhenge.
 </p>
-
-</div>
-
-
-<div class="summary-card pending">
-
-<div class="summary-icon">
-🟡
-</div>
-
-<h3 id="pendingCount">
-0
-</h3>
-
-<p>
-Pending
-</p>
-
-</div>
-
-
-<div class="summary-card completed">
-
-<div class="summary-icon">
-🟢
-</div>
-
-<h3 id="completedCount">
-0
-</h3>
-
-<p>
-Completed
-</p>
-
-</div>
-
-
-<div class="summary-card cancelled">
-
-<div class="summary-icon">
-🔴
-</div>
-
-<h3 id="cancelledCount">
-0
-</h3>
-
-<p>
-Cancelled
-</p>
-
-</div>
-
-
-</div>
 
 
 <button
@@ -1031,22 +654,17 @@ Loading orders... 🍽️
 
 </div>
 
+
 </div>
 
 
-<!-- =====================================
-     SUPABASE
-===================================== -->
+<!-- SUPABASE -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
 <script>
 
-
-/* =====================================
-   SUPABASE CONNECTION
-===================================== */
 
 const SUPABASE_URL =
 "https://jxjrcjmrkhknltwvzzvr.supabase.co";
@@ -1066,24 +684,19 @@ SUPABASE_KEY
 let editingItemId=null;
 
 
-/* =====================================
-   LOAD MENU
-===================================== */
+/* MENU */
+
 
 async function loadMenu(){
 
-const menuList =
+const menuList=
 document.getElementById("menuList");
 
-
-menuList.innerHTML =
+menuList.innerHTML=
 "Loading menu...";
 
 
-try{
-
-const {data,error} =
-await db
+const {data,error}=await db
 .from("menu_items")
 .select("*")
 .order("id",{ascending:false});
@@ -1096,7 +709,7 @@ showError(
 error.message
 );
 
-menuList.innerHTML =
+menuList.innerHTML=
 "Menu load failed.";
 
 return;
@@ -1104,44 +717,26 @@ return;
 }
 
 
-displayMenu(data || []);
-
-
-}catch(error){
-
-console.error(error);
-
-showError(
-"Menu error: "+
-error.message
-);
+displayMenu(data);
 
 }
 
-}
-
-
-/* =====================================
-   DISPLAY MENU
-===================================== */
 
 function displayMenu(items){
 
-const menuList =
+const menuList=
 document.getElementById("menuList");
-
 
 menuList.innerHTML="";
 
-
 document.getElementById("itemCount")
-.innerText =
+.innerText=
 items.length+" Items";
 
 
 if(items.length===0){
 
-menuList.innerHTML =
+menuList.innerHTML=
 "<p>No menu items available.</p>";
 
 return;
@@ -1151,12 +746,12 @@ return;
 
 items.forEach(item=>{
 
-const image =
-item.image_url ||
+const image=
+item.image_url||
 "https://via.placeholder.com/75";
 
 
-menuList.innerHTML += `
+menuList.innerHTML+=`
 
 <div class="menu-item">
 
@@ -1173,7 +768,7 @@ ${item.name}
 </div>
 
 <div class="menu-category">
-${item.category || ""}
+${item.category||""}
 </div>
 
 <div class="menu-price">
@@ -1209,27 +804,17 @@ onclick="deleteItem(${item.id})"
 }
 
 
-/* =====================================
-   OPEN ADD FORM
-===================================== */
-
 function openAddForm(){
 
 editingItemId=null;
 
-
 document.getElementById("formTitle")
-.innerText =
-"Add New Item";
-
+.innerText="Add New Item";
 
 clearForm();
 
-
 document.getElementById("itemForm")
-.style.display =
-"block";
-
+.style.display="block";
 
 window.scrollTo({
 top:300,
@@ -1239,14 +824,9 @@ behavior:"smooth"
 }
 
 
-/* =====================================
-   EDIT ITEM
-===================================== */
-
 async function editItem(id){
 
-const {data,error} =
-await db
+const {data,error}=await db
 .from("menu_items")
 .select("*")
 .eq("id",id)
@@ -1267,41 +847,26 @@ return;
 
 editingItemId=id;
 
-
 document.getElementById("formTitle")
-.innerText =
-"Edit Item";
-
+.innerText="Edit Item";
 
 document.getElementById("itemName")
-.value =
-data.name || "";
-
+.value=data.name||"";
 
 document.getElementById("itemPrice")
-.value =
-data.price || "";
-
+.value=data.price||"";
 
 document.getElementById("itemCategory")
-.value =
-data.category || "";
-
+.value=data.category||"";
 
 document.getElementById("itemDescription")
-.value =
-data.description || "";
-
+.value=data.description||"";
 
 document.getElementById("itemImage")
-.value =
-data.image_url || "";
-
+.value=data.image_url||"";
 
 document.getElementById("itemForm")
-.style.display =
-"block";
-
+.style.display="block";
 
 window.scrollTo({
 top:300,
@@ -1311,116 +876,67 @@ behavior:"smooth"
 }
 
 
-/* =====================================
-   SAVE ITEM
-===================================== */
-
 async function saveItem(){
 
-const name =
+const name=
 document.getElementById("itemName")
-.value
-.trim();
+.value.trim();
 
-
-const price =
+const price=
 document.getElementById("itemPrice")
 .value;
 
-
-const category =
+const category=
 document.getElementById("itemCategory")
 .value;
 
-
-const description =
+const description=
 document.getElementById("itemDescription")
-.value
-.trim();
+.value.trim();
 
-
-const image =
+const image=
 document.getElementById("itemImage")
-.value
-.trim();
+.value.trim();
 
 
 if(!name){
-
-alert(
-"Food name enter karo."
-);
-
+alert("Food name enter karo.");
 return;
-
 }
 
-
-if(!price || Number(price)<=0){
-
-alert(
-"Valid price enter karo."
-);
-
+if(!price||Number(price)<=0){
+alert("Valid price enter karo.");
 return;
-
 }
-
 
 if(!category){
-
-alert(
-"Category select karo."
-);
-
+alert("Category select karo.");
 return;
-
 }
-
 
 if(!description){
-
-alert(
-"Description enter karo."
-);
-
+alert("Description enter karo.");
 return;
-
 }
-
 
 if(!image){
-
-alert(
-"Image URL enter karo."
-);
-
+alert("Image URL enter karo.");
 return;
-
 }
 
 
-const itemData = {
-
+const itemData={
 name:name,
-
 price:Number(price),
-
 category:category,
-
 description:description,
-
 image_url:image
-
 };
 
 
-/* EDIT */
+if(editingItemId!==null){
 
-if(editingItemId !== null){
-
-const {error} =
-await db
+const {error}=await db
 .from("menu_items")
 .update(itemData)
 .eq("id",editingItemId);
@@ -1442,15 +958,9 @@ showSuccess(
 "✅ Item successfully updated!"
 );
 
-}
+}else{
 
-
-/* ADD */
-
-else{
-
-const {error} =
-await db
+const {error}=await db
 .from("menu_items")
 .insert([itemData]);
 
@@ -1481,27 +991,20 @@ loadMenu();
 }
 
 
-/* =====================================
-   DELETE ITEM
-===================================== */
-
 async function deleteItem(id){
 
-const confirmDelete =
+const confirmDelete=
 confirm(
 "Kya tum sure ho ki ye item delete karna hai?"
 );
 
 
 if(!confirmDelete){
-
 return;
-
 }
 
 
-const {error} =
-await db
+const {error}=await db
 .from("menu_items")
 .delete()
 .eq("id",id);
@@ -1523,52 +1026,36 @@ showSuccess(
 "🗑️ Item successfully deleted!"
 );
 
-
 loadMenu();
 
 }
 
 
-/* =====================================
-   CLOSE FORM
-===================================== */
-
 function closeForm(){
 
 document.getElementById("itemForm")
-.style.display =
-"none";
-
+.style.display="none";
 
 editingItemId=null;
-
 
 clearForm();
 
 }
 
 
-/* =====================================
-   CLEAR FORM
-===================================== */
-
 function clearForm(){
 
 document.getElementById("itemName")
 .value="";
 
-
 document.getElementById("itemPrice")
 .value="";
-
 
 document.getElementById("itemCategory")
 .value="";
 
-
 document.getElementById("itemDescription")
 .value="";
-
 
 document.getElementById("itemImage")
 .value="";
@@ -1576,168 +1063,82 @@ document.getElementById("itemImage")
 }
 
 
-/* =====================================
-   SUCCESS MESSAGE
-===================================== */
-
 function showSuccess(message){
 
-const box =
-document.getElementById(
-"successMessage"
-);
+const box=
+document.getElementById("successMessage");
 
+box.innerText=message;
 
-box.innerText =
-message;
-
-
-box.style.display =
-"block";
-
+box.style.display="block";
 
 setTimeout(()=>{
-
-box.style.display =
-"none";
-
+box.style.display="none";
 },3000);
 
 }
 
 
-/* =====================================
-   ERROR MESSAGE
-===================================== */
-
 function showError(message){
 
-const box =
-document.getElementById(
-"errorMessage"
-);
+const box=
+document.getElementById("errorMessage");
 
+box.innerText="❌ "+message;
 
-box.innerText =
-"❌ "+message;
-
-
-box.style.display =
-"block";
-
+box.style.display="block";
 
 setTimeout(()=>{
-
-box.style.display =
-"none";
-
+box.style.display="none";
 },6000);
 
 }
 
 
-/* =====================================
-   OPEN ORDERS
-===================================== */
+/* OPEN ORDERS */
 
 function openOrders(){
 
-const drawer =
-document.getElementById(
-"ordersDrawer"
-);
+const section=
+document.getElementById("ordersSection");
 
+section.style.display="block";
 
-const overlay =
-document.getElementById(
-"ordersOverlay"
-);
-
-
-overlay.classList.add("show");
-
-drawer.classList.add("show");
-
-
-document.body.classList.add(
-"no-scroll"
-);
-
+section.scrollIntoView({
+behavior:"smooth",
+block:"start"
+});
 
 loadOrders();
 
 }
 
 
-/* =====================================
-   CLOSE ORDERS
-===================================== */
-
-function closeOrders(){
-
-const drawer =
-document.getElementById(
-"ordersDrawer"
-);
-
-
-const overlay =
-document.getElementById(
-"ordersOverlay"
-);
-
-
-drawer.classList.remove("show");
-
-overlay.classList.remove("show");
-
-
-document.body.classList.remove(
-"no-scroll"
-);
-
-}
-
-
-/* =====================================
-   LOAD ORDERS
-===================================== */
+/* LOAD ORDERS */
 
 async function loadOrders(){
 
-const box =
-document.getElementById(
-"orders"
-);
+const box=
+document.getElementById("orders");
 
-
-box.innerHTML =
+box.innerHTML=
 '<div class="empty">Loading orders... 🍽️</div>';
 
 
 try{
 
-
-const result =
+const result=
 await db
 .from("orders")
 .select("*")
-.order(
-"created_at",
-{
-ascending:false
-}
-);
+.order("created_at",{ascending:false});
 
 
 if(result.error){
 
-console.error(
-result.error
-);
+console.error(result.error);
 
-
-box.innerHTML = `
+box.innerHTML=`
 
 <div class="order-error">
 
@@ -1756,101 +1157,19 @@ return;
 }
 
 
-const orders =
-result.data || [];
-
-
-/* =====================================
-   COUNT STATUS
-===================================== */
-
-let pending=0;
-
-let completed=0;
-
-let cancelled=0;
-
-
-orders.forEach(order=>{
-
-const status =
-String(
-order.status || "pending"
-)
-.toLowerCase();
-
-
-if(
-status==="pending" ||
-status==="new"
-){
-
-pending++;
-
-}
-
-else if(
-status==="completed" ||
-status==="complete"
-){
-
-completed++;
-
-}
-
-else if(
-status==="cancelled" ||
-status==="canceled"
-){
-
-cancelled++;
-
-}
-
-});
-
-
-/* =====================================
-   UPDATE DASHBOARD COUNTS
-===================================== */
-
-document.getElementById(
-"totalCount"
-).innerText =
-orders.length;
-
-
-document.getElementById(
-"pendingCount"
-).innerText =
-pending;
-
-
-document.getElementById(
-"completedCount"
-).innerText =
-completed;
-
-
-document.getElementById(
-"cancelledCount"
-).innerText =
-cancelled;
+const orders=
+result.data||[];
 
 
 document.getElementById(
 "dashboardOrderCount"
-).innerText =
+).innerText=
 orders.length+" Orders";
 
 
-/* =====================================
-   NO ORDERS
-===================================== */
-
 if(orders.length===0){
 
-box.innerHTML = `
+box.innerHTML=`
 
 <div class="empty">
 
@@ -1868,27 +1187,18 @@ return;
 box.innerHTML="";
 
 
-/* =====================================
-   DISPLAY ORDERS
-===================================== */
-
 orders.forEach(order=>{
 
+let items=order.items;
 
-let items =
-order.items;
-
-
-/* JSON STRING TO ARRAY */
 
 if(typeof items==="string"){
 
 try{
 
-items =
-JSON.parse(items);
+items=JSON.parse(items);
 
-}catch(error){
+}catch(e){
 
 items=[];
 
@@ -1904,19 +1214,17 @@ if(Array.isArray(items)){
 
 items.forEach(item=>{
 
-const name =
-item.name || "Item";
+const name=
+item.name||"Item";
+
+const quantity=
+item.quantity||1;
+
+const price=
+item.price||0;
 
 
-const quantity =
-Number(item.quantity) || 1;
-
-
-const price =
-Number(item.price) || 0;
-
-
-itemsHTML += `
+itemsHTML+=`
 
 <div class="item">
 
@@ -1925,7 +1233,7 @@ ${name} × ${quantity}
 </span>
 
 <span>
-₹${price * quantity}
+₹${price*quantity}
 </span>
 
 </div>
@@ -1934,10 +1242,134 @@ ${name} × ${quantity}
 
 });
 
-}
+}else{
 
-else{
-
-itemsHTML = `
+itemsHTML=`
 
 <div class="item">
+
+<span>
+Order items
+</span>
+
+<span>
+—
+</span>
+
+</div>
+
+`;
+
+}
+
+
+const date=
+order.created_at
+?new Date(
+order.created_at
+).toLocaleString("en-IN")
+:"";
+
+
+const status=
+order.status||"pending";
+
+
+box.innerHTML+=`
+
+<div class="order">
+
+<div class="order-top">
+
+<div class="table">
+
+🪑 Table
+${order.table_number||"-"}
+
+</div>
+
+<div class="status">
+
+${status.toUpperCase()}
+
+</div>
+
+</div>
+
+
+<div class="items">
+
+${itemsHTML}
+
+</div>
+
+
+<div class="total">
+
+<span>
+Total
+</span>
+
+<span>
+₹${order.total_amount||0}
+</span>
+
+</div>
+
+
+<div class="time">
+
+🕒 ${date}
+
+</div>
+
+
+</div>
+
+`;
+
+});
+
+}catch(error){
+
+console.error(error);
+
+box.innerHTML=`
+
+<div class="order-error">
+
+❌ Something went wrong.
+
+<br><br>
+
+${error.message}
+
+</div>
+
+`;
+
+}
+
+}
+
+
+function comingSoon(name){
+
+alert(
+name+
+" next step mein banayenge 😙🤟🏻"
+);
+
+}
+
+
+/* START */
+
+loadMenu();
+
+</script>
+
+
+</body>
+
+</html>
