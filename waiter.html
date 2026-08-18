@@ -2,719 +2,179 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Waiter Dashboard</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Waiter Panel</title>
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-
-body{
-font-family:Arial,sans-serif;
-background:#f4f5f7;
-color:#222;
-padding-bottom:110px;
-}
-
-body.cart-open{
-overflow:hidden;
-}
-
-.header{
-position:sticky;
-top:0;
-z-index:100;
-background:linear-gradient(135deg,#111,#222);
-color:#fff;
-padding:16px;
-box-shadow:0 4px 18px rgba(0,0,0,.15);
-}
-
-.header-inner{
-max-width:1100px;
-margin:auto;
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:15px;
-}
-
-.header-title{
-display:flex;
-align-items:center;
-gap:11px;
-}
-
-.header-icon{
-width:44px;
-height:44px;
-border-radius:13px;
-background:#fff1;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:23px;
-}
-
-.header h1{
-font-size:20px;
-}
-
-.header p{
-font-size:12px;
-color:#bbb;
-margin-top:4px;
-}
-
-.logout{
-border:0;
-background:#fff;
-color:#111;
-padding:10px 14px;
-border-radius:10px;
-font-weight:bold;
-cursor:pointer;
-}
-
-.container{
-max-width:1100px;
-margin:auto;
-padding:18px;
-}
-
-.welcome{
-background:linear-gradient(135deg,#111,#2a2a2a);
-color:#fff;
-border-radius:20px;
-padding:20px;
-margin-bottom:18px;
-box-shadow:0 8px 25px rgba(0,0,0,.12);
-}
-
-.welcome h2{
-font-size:22px;
-}
-
-.welcome p{
-color:#bbb;
-font-size:13px;
-margin-top:6px;
-}
-
-.quick-row{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:10px;
-margin-top:18px;
-}
-
-.quick-box{
-background:#ffffff12;
-border:1px solid #ffffff16;
-border-radius:14px;
-padding:12px;
-}
-
-.quick-box .small{
-font-size:11px;
-color:#aaa;
-}
-
-.quick-box .big{
-font-size:17px;
-font-weight:bold;
-margin-top:4px;
-}
-
-.section{
-background:#fff;
-border-radius:20px;
-padding:18px;
-margin-bottom:18px;
-box-shadow:0 4px 18px rgba(0,0,0,.07);
-}
-
-.section-title{
-font-size:20px;
-}
-
-.section-subtitle{
-color:#777;
-font-size:13px;
-margin-top:5px;
-margin-bottom:16px;
-}
-
-.tables{
-display:grid;
-grid-template-columns:repeat(5,1fr);
-gap:10px;
-}
-
-.table-btn{
-border:1px solid #e5e5e5;
-background:#fafafa;
-border-radius:16px;
-padding:14px 8px;
-cursor:pointer;
-transition:.2s;
-}
-
-.table-btn:hover{
-transform:translateY(-2px);
-box-shadow:0 7px 18px rgba(0,0,0,.08);
-}
-
-.table-btn.active{
-background:#111;
-color:#fff;
-border-color:#111;
-}
-
-.table-icon{
-font-size:25px;
-}
-
-.table-number{
-font-weight:bold;
-font-size:14px;
-margin-top:5px;
-}
-
-.table-status{
-font-size:10px;
-margin-top:4px;
-opacity:.65;
-}
-
-.toolbar{
-display:flex;
-gap:10px;
-align-items:center;
-margin-bottom:14px;
-}
-
-.search{
-flex:1;
-padding:13px 14px;
-border:1px solid #ddd;
-border-radius:12px;
-font-size:15px;
-outline:none;
-}
-
-.search:focus{
-border-color:#111;
-}
-
-.table-pill{
-background:#111;
-color:#fff;
-padding:10px 13px;
-border-radius:11px;
-font-size:12px;
-white-space:nowrap;
-}
-
-.categories{
-display:flex;
-gap:8px;
-overflow-x:auto;
-padding-bottom:7px;
-margin-bottom:15px;
-}
-
-.categories::-webkit-scrollbar{
-display:none;
-}
-
-.category{
-background:#fff;
-border:1px solid #ddd;
-padding:9px 14px;
-border-radius:20px;
-white-space:nowrap;
-font-size:13px;
-cursor:pointer;
-}
-
-.category.active{
-background:#111;
-color:#fff;
-border-color:#111;
-}
-
-.menu-grid{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:15px;
-}
-
-.menu-card{
-background:#fff;
-border:1px solid #eee;
-border-radius:17px;
-overflow:hidden;
-transition:.2s;
-}
-
-.menu-card:hover{
-transform:translateY(-2px);
-box-shadow:0 8px 20px rgba(0,0,0,.08);
-}
-
-.menu-image{
-width:100%;
-height:180px;
-display:block;
-object-fit:cover;
-background:#eee;
-}
-
-.menu-content{
-padding:14px;
-}
-
-.menu-top{
-display:flex;
-justify-content:space-between;
-align-items:flex-start;
-gap:10px;
-}
-
-.menu-name{
-font-size:17px;
-font-weight:bold;
-}
-
-.menu-category{
-font-size:11px;
-color:#777;
-margin-top:4px;
-}
-
-.menu-description{
-font-size:13px;
-color:#777;
-line-height:1.45;
-margin-top:8px;
-min-height:36px;
-}
-
-.menu-bottom{
-display:flex;
-align-items:center;
-justify-content:space-between;
-margin-top:14px;
-gap:10px;
-}
-
-.price{
-font-size:18px;
-font-weight:bold;
-}
-
-.add-btn{
-border:0;
-background:#111;
-color:#fff;
-padding:10px 14px;
-border-radius:10px;
-font-weight:bold;
-cursor:pointer;
-}
-
-.cart-bar{
-position:fixed;
-left:15px;
-right:15px;
-bottom:15px;
-z-index:1000;
-background:#111;
-color:#fff;
-border-radius:16px;
-padding:15px 17px;
-display:none;
-justify-content:space-between;
-align-items:center;
-box-shadow:0 8px 30px rgba(0,0,0,.25);
-cursor:pointer;
-}
-
-.cart-left{
-font-weight:bold;
-}
-
-.cart-right{
-font-weight:bold;
-font-size:16px;
-}
-
-.overlay{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.45);
-backdrop-filter:blur(3px);
-opacity:0;
-visibility:hidden;
-transition:.25s;
-z-index:1999;
-}
-
-.overlay.open{
-opacity:1;
-visibility:visible;
-}
-
-.cart-drawer{
-position:fixed;
-top:0;
-right:0;
-width:min(500px,94vw);
-height:100vh;
-background:#f5f5f5;
-transform:translateX(100%);
-transition:.3s ease;
-z-index:2000;
-display:flex;
-flex-direction:column;
-box-shadow:-12px 0 30px rgba(0,0,0,.2);
-}
-
-.cart-drawer.open{
-transform:translateX(0);
-}
-
-.drawer-head{
-background:#111;
-color:#fff;
-padding:17px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-
-.drawer-title h2{
-font-size:20px;
-}
-
-.drawer-title p{
-font-size:11px;
-color:#bbb;
-margin-top:4px;
-}
-
-.close-btn{
-width:38px;
-height:38px;
-border:0;
-border-radius:50%;
-background:#fff;
-color:#111;
-font-size:23px;
-cursor:pointer;
-}
-
-.drawer-body{
-flex:1;
-overflow:auto;
-padding:15px;
-}
-
-.cart-item{
-background:#fff;
-border-radius:14px;
-padding:14px;
-margin-bottom:10px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:10px;
-box-shadow:0 3px 10px rgba(0,0,0,.05);
-}
-
-.cart-info{
-flex:1;
-}
-
-.cart-name{
-font-weight:bold;
-font-size:15px;
-}
-
-.cart-price{
-font-size:12px;
-color:#777;
-margin-top:5px;
-}
-
-.qty{
-display:flex;
-align-items:center;
-gap:8px;
-}
-
-.qty button{
-width:31px;
-height:31px;
-border:0;
-border-radius:8px;
-background:#111;
-color:#fff;
-font-size:17px;
-cursor:pointer;
-}
-
-.qty span{
-min-width:18px;
-text-align:center;
-font-weight:bold;
-}
-
-.drawer-footer{
-background:#fff;
-padding:16px;
-border-top:1px solid #eee;
-}
-
-.total-row{
-display:flex;
-justify-content:space-between;
-font-size:19px;
-font-weight:bold;
-}
-
-.place-btn{
-width:100%;
-border:0;
-background:#198754;
-color:#fff;
-padding:15px;
-border-radius:11px;
-margin-top:12px;
-font-size:16px;
-font-weight:bold;
-cursor:pointer;
-}
-
-.place-btn:disabled{
-opacity:.6;
-}
-
-.message{
-display:none;
-padding:13px;
-border-radius:11px;
-margin-bottom:16px;
-font-size:14px;
-}
-
-.message.success{
-display:block;
-background:#d1e7dd;
-color:#0f5132;
-}
-
-.message.error{
-display:block;
-background:#f8d7da;
-color:#842029;
-}
-
-.loading{
-padding:35px 10px;
-text-align:center;
-color:#777;
-}
-
-.empty{
-padding:35px 10px;
-text-align:center;
-color:#777;
-}
-
-.error-box{
-background:#f8d7da;
-color:#842029;
-padding:14px;
-border-radius:11px;
-line-height:1.5;
-}
-
-@media(max-width:800px){
-.tables{
-grid-template-columns:repeat(3,1fr);
-}
-}
-
-@media(max-width:600px){
-.container{
-padding:14px;
-}
-.quick-row{
-grid-template-columns:1fr 1fr 1fr;
-}
-.tables{
-grid-template-columns:repeat(2,1fr);
-}
-.menu-grid{
-grid-template-columns:1fr;
-}
-.menu-image{
-height:195px;
-}
-.toolbar{
-flex-direction:column;
-align-items:stretch;
-}
-.table-pill{
-text-align:center;
-}
-.cart-drawer{
-width:100vw;
-}
-}
+body{font-family:Arial,sans-serif;background:#f5f5f5;color:#222;padding-bottom:90px}
+button,input{font:inherit}
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#111,#333)}
+.login-box{width:100%;max-width:420px;background:#fff;border-radius:22px;padding:30px;box-shadow:0 15px 40px #0004}
+.logo{text-align:center;font-size:55px}
+h1{text-align:center;margin:8px 0}
+.sub{text-align:center;color:#777;font-size:14px;margin-bottom:22px}
+label{display:block;font-weight:bold;margin:12px 0 6px}
+input{width:100%;padding:13px;border:1px solid #ddd;border-radius:10px;outline:none}
+.btn{width:100%;padding:13px;border:0;border-radius:10px;background:#111;color:#fff;cursor:pointer;margin-top:14px}
+.btn:disabled{opacity:.6}
+.msg{display:none;padding:12px;border-radius:10px;margin-bottom:12px;font-size:14px}
+.err{background:#f8d7da;color:#842029}
+.ok{background:#d1e7dd;color:#0f5132}
+.forgot{display:block;text-align:center;margin-top:16px;color:#555;cursor:pointer;font-size:14px}
+#app{display:none}
+.header{background:#111;color:#fff;padding:16px;position:sticky;top:0;z-index:50}
+.head{max-width:1000px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.head p{color:#bbb;font-size:12px;margin-top:3px}
+.logout{background:#fff;color:#111;border:0;padding:9px 12px;border-radius:9px;cursor:pointer}
+.container{max-width:1000px;margin:auto;padding:16px}
+.welcome,.section{background:#fff;border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 4px 15px #0000000d}
+.welcome{background:linear-gradient(135deg,#111,#292929);color:#fff}
+.welcome small{color:#bbb}
+.tables{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.table{background:#fafafa;border:2px solid #eee;border-radius:14px;padding:16px;text-align:center;cursor:pointer}
+.table.active{background:#111;color:#fff;border-color:#111}
+.table b{display:block;font-size:22px;margin-bottom:5px}
+.toolbar{display:flex;gap:10px;margin-bottom:12px}
+.search{flex:1}
+.pill{background:#111;color:#fff;padding:11px 13px;border-radius:10px;white-space:nowrap}
+.cats{display:flex;gap:8px;overflow:auto;margin-bottom:15px}
+.cat{white-space:nowrap;padding:9px 14px;border:1px solid #ddd;border-radius:20px;background:#fff;cursor:pointer}
+.cat.active{background:#111;color:#fff}
+.menu{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.food{background:#fff;border:1px solid #eee;border-radius:16px;overflow:hidden}
+.food img{width:100%;height:180px;object-fit:cover;display:block;background:#eee}
+.food-body{padding:14px}
+.food-name{font-weight:bold;font-size:17px}
+.food-desc{color:#777;font-size:13px;line-height:1.4;margin-top:6px}
+.food-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:13px}
+.add{background:#111;color:#fff;border:0;padding:10px 14px;border-radius:9px;cursor:pointer}
+.cartbar{display:none;position:fixed;bottom:15px;left:15px;right:15px;background:#111;color:#fff;padding:15px;border-radius:14px;z-index:100;justify-content:space-between;cursor:pointer;box-shadow:0 8px 25px #0004}
+.overlay{position:fixed;inset:0;background:#0007;display:none;z-index:200}
+.drawer{position:fixed;right:0;top:0;width:min(500px,94vw);height:100vh;background:#f5f5f5;transform:translateX(100%);transition:.25s;z-index:201;display:flex;flex-direction:column}
+.drawer.open{transform:translateX(0)}
+.drawer.open+.overlay{display:block}
+.drawer-head{background:#111;color:#fff;padding:16px;display:flex;justify-content:space-between}
+.close{background:#fff;border:0;border-radius:50%;width:36px;height:36px;cursor:pointer}
+.drawer-body{flex:1;overflow:auto;padding:14px}
+.cart-item{background:#fff;padding:13px;border-radius:12px;margin-bottom:9px;display:flex;justify-content:space-between;gap:10px}
+.qty{display:flex;align-items:center;gap:8px}
+.qty button{width:30px;height:30px;border:0;background:#111;color:#fff;border-radius:7px}
+.drawer-foot{background:#fff;padding:15px;border-top:1px solid #ddd}
+.total{display:flex;justify-content:space-between;font-weight:bold;font-size:18px}
+.place{width:100%;border:0;background:#198754;color:#fff;padding:14px;border-radius:10px;margin-top:10px;font-weight:bold;cursor:pointer}
+.empty,.loading{text-align:center;color:#777;padding:30px}
+@media(max-width:700px){.tables{grid-template-columns:repeat(2,1fr)}.menu{grid-template-columns:1fr}.toolbar{flex-direction:column}.drawer{width:100vw}}
 </style>
 </head>
 
 <body>
 
+<!-- LOGIN -->
+<div id="loginScreen" class="login-wrap">
+<div class="login-box">
+
+<div class="logo">🧑‍🍳</div>
+<h1>Waiter Login</h1>
+<div class="sub">Restaurant Waiter Panel</div>
+
+<div id="loginMsg" class="msg"></div>
+
+<form id="loginForm">
+
+<label>Waiter ID</label>
+<input id="waiterIdInput" placeholder="Example: W001" required>
+
+<label>Password</label>
+<input id="passwordInput" type="password" placeholder="Password" required>
+
+<button id="loginBtn" class="btn" type="submit">🔐 Login</button>
+
+</form>
+
+<div class="forgot" onclick="forgotPassword()">
+Forgot Password?
+</div>
+
+</div>
+</div>
+
+
+<!-- APP -->
+<div id="app">
+
 <div class="header">
-<div class="header-inner">
-
-<div class="header-title">
-<div class="header-icon">🧑‍🍳</div>
+<div class="head">
 <div>
-<h1>Waiter Panel</h1>
-<p>Restaurant Order Management</p>
+<h2>🧑‍🍳 Waiter Panel</h2>
+<p id="headerInfo">Waiter</p>
 </div>
-</div>
-
 <button class="logout" onclick="logout()">🚪 Logout</button>
-
 </div>
 </div>
 
 <div class="container">
 
 <div class="welcome">
-
 <h2>👋 Hello, <span id="waiterName">Waiter</span></h2>
-
-<p>
-Waiter ID: <strong id="waiterId">-</strong>
-</p>
-
-<div class="quick-row">
-
-<div class="quick-box">
-<div class="small">Selected Table</div>
-<div class="big" id="selectedTableText">None</div>
+<small>Waiter ID: <span id="waiterIdText">-</span></small>
 </div>
 
-<div class="quick-box">
-<div class="small">Cart Items</div>
-<div class="big" id="quickCartCount">0</div>
-</div>
+<div id="appMsg" class="msg"></div>
 
-<div class="quick-box">
-<div class="small">Order Total</div>
-<div class="big" id="quickTotal">₹0</div>
+<div class="section">
+<h2>🪑 Select Table</h2>
+<p style="color:#777;font-size:13px;margin:6px 0 15px">Customer ki table select karo.</p>
+<div id="tables" class="tables"></div>
 </div>
-
-</div>
-
-</div>
-
-<div id="message" class="message"></div>
 
 <div class="section">
 
-<h2 class="section-title">🪑 Select Table</h2>
-
-<p class="section-subtitle">
-Customer ki table select karo.
-</p>
-
-<div id="tables" class="tables"></div>
-
-</div>
-
-<div class="section" id="menuSection">
-
 <div class="toolbar">
-
-<input
-type="text"
-id="search"
-class="search"
-placeholder="🔍 Search food..."
->
-
-<div id="tablePill" class="table-pill">
-Table -
+<input id="search" class="search" placeholder="🔍 Search food...">
+<div id="tablePill" class="pill">Table -</div>
 </div>
 
-</div>
+<div id="categories" class="cats"></div>
 
-<div id="categories" class="categories"></div>
-
-<div id="menuList" class="menu-grid">
+<div id="menu" class="menu">
 <div class="loading">🍽️ Loading menu...</div>
 </div>
 
 </div>
 
 </div>
+</div>
+
+
+<!-- CART DRAWER -->
+<div id="drawer" class="drawer">
+<div class="drawer-head">
+<div>
+<h3>🛒 Current Order</h3>
+<small id="drawerTable">No table</small>
+</div>
+<button class="close" onclick="closeCart()">×</button>
+</div>
+
+<div id="cartList" class="drawer-body"></div>
+
+<div class="drawer-foot">
+<div class="total">
+<span>Total</span>
+<span id="cartTotal">₹0</span>
+</div>
+<button id="placeBtn" class="place" onclick="placeOrder()">✅ Place Order</button>
+</div>
+</div>
 
 <div id="overlay" class="overlay" onclick="closeCart()"></div>
 
-<div id="cartDrawer" class="cart-drawer">
-
-<div class="drawer-head">
-
-<div class="drawer-title">
-<h2>🛒 Current Order</h2>
-<p id="drawerTable">No table selected</p>
+<div id="cartBar" class="cartbar" onclick="openCart()">
+<span id="cartCount">🛒 Cart (0)</span>
+<span id="barTotal">₹0</span>
 </div>
 
-<button class="close-btn" onclick="closeCart()">×</button>
-
-</div>
-
-<div id="drawerBody" class="drawer-body">
-<div class="empty">🛒 Cart empty hai.</div>
-</div>
-
-<div class="drawer-footer">
-
-<div class="total-row">
-<span>Total</span>
-<span id="drawerTotal">₹0</span>
-</div>
-
-<button
-id="placeOrderBtn"
-class="place-btn"
-onclick="placeOrder()"
->
-✅ Place Order
-</button>
-
-</div>
-
-</div>
-
-<div id="cartBar" class="cart-bar" onclick="openCart()">
-
-<div class="cart-left" id="cartCount">
-🛒 Cart (0)
-</div>
-
-<div class="cart-right" id="cartTotal">
-₹0
-</div>
-
-</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -728,33 +188,109 @@ SUPABASE_URL,
 SUPABASE_KEY
 );
 
-let waiterId=sessionStorage.getItem("waiter_id");
-let waiterName=sessionStorage.getItem("waiter_name");
-
+let waiterId="";
+let waiterName="";
 let selectedTable=null;
 let menuItems=[];
 let cart=[];
-let selectedCategory="All";
-let menuLoading=false;
+let category="All";
 
-document.getElementById("waiterId").innerText=waiterId||"-";
-document.getElementById("waiterName").innerText=waiterName||"Waiter";
-
-if(!waiterId){
-window.location.href="waiter.html";
+function msg(id,text,type){
+const el=document.getElementById(id);
+el.innerText=text;
+el.className="msg "+type;
+el.style.display="block";
+setTimeout(()=>el.style.display="none",4000);
 }
 
-function showMessage(text,type){
+async function login(){
 
-const box=document.getElementById("message");
+const id=document.getElementById("waiterIdInput").value.trim();
+const password=document.getElementById("passwordInput").value;
 
-box.innerText=text;
-box.className="message "+type;
-box.style.display="block";
+if(!id || !password){
+msg("loginMsg","❌ Waiter ID aur password required hai.","err");
+return;
+}
 
-setTimeout(()=>{
-box.style.display="none";
-},4000);
+const btn=document.getElementById("loginBtn");
+btn.disabled=true;
+btn.innerText="⏳ Logging in...";
+
+try{
+
+const response=await fetch(
+SUPABASE_URL+"/functions/v1/waiter-login",
+{
+method:"POST",
+headers:{
+"Content-Type":"application/json",
+"apikey":SUPABASE_KEY
+},
+body:JSON.stringify({
+waiter_id:id,
+password:password
+})
+}
+);
+
+const result=await response.json();
+
+if(!response.ok || !result.success){
+throw new Error(result.message||"Waiter ID ya password galat hai.");
+}
+
+/* VERY IMPORTANT: save Auth session */
+const {error:sessionError}=await db.auth.setSession({
+access_token:result.session.access_token,
+refresh_token:result.session.refresh_token
+});
+
+if(sessionError) throw sessionError;
+
+waiterId=result.waiter.waiter_id;
+waiterName=result.waiter.name||"Waiter";
+
+sessionStorage.setItem("waiter_id",waiterId);
+sessionStorage.setItem("waiter_name",waiterName);
+
+showApp();
+
+}catch(error){
+
+console.error(error);
+
+msg(
+"loginMsg",
+"❌ "+error.message,
+"err"
+);
+
+}finally{
+
+btn.disabled=false;
+btn.innerText="🔐 Login";
+
+}
+}
+
+document.getElementById("loginForm").addEventListener("submit",function(e){
+e.preventDefault();
+login();
+});
+
+async function showApp(){
+
+document.getElementById("loginScreen").style.display="none";
+document.getElementById("app").style.display="block";
+
+document.getElementById("waiterName").innerText=waiterName;
+document.getElementById("waiterIdText").innerText=waiterId;
+document.getElementById("headerInfo").innerText=waiterName+" • "+waiterId;
+
+createTables();
+await loadMenu();
+
 }
 
 function createTables(){
@@ -764,20 +300,13 @@ box.innerHTML="";
 
 for(let i=1;i<=10;i++){
 
-const button=document.createElement("button");
-
-button.className="table-btn";
-button.id="table-"+i;
-
-button.innerHTML=`
-<div class="table-icon">🪑</div>
-<div class="table-number">Table ${i}</div>
-<div class="table-status">Select</div>
+box.innerHTML+=`
+<button class="table" id="t${i}" onclick="selectTable(${i})">
+<b>🪑</b>
+Table ${i}
+</button>
 `;
 
-button.onclick=()=>selectTable(i);
-
-box.appendChild(button);
 }
 }
 
@@ -785,34 +314,28 @@ function selectTable(number){
 
 selectedTable=String(number);
 
-document.querySelectorAll(".table-btn").forEach(btn=>{
-btn.classList.remove("active");
-});
+document.querySelectorAll(".table").forEach(x=>x.classList.remove("active"));
 
-document.getElementById("table-"+number).classList.add("active");
+document.getElementById("t"+number).classList.add("active");
 
-document.getElementById("selectedTableText").innerText="Table "+number;
 document.getElementById("tablePill").innerText="🪑 Table "+number;
 document.getElementById("drawerTable").innerText="Order for Table "+number;
 
 cart=[];
 renderCart();
 
-document.getElementById("menuSection").scrollIntoView({
+document.getElementById("menu").scrollIntoView({
 behavior:"smooth",
 block:"start"
 });
+
 }
 
 async function loadMenu(){
 
-if(menuLoading)return;
+const menu=document.getElementById("menu");
 
-menuLoading=true;
-
-const box=document.getElementById("menuList");
-
-box.innerHTML=`<div class="loading">🍽️ Loading menu...</div>`;
+menu.innerHTML='<div class="loading">🍽️ Loading menu...</div>';
 
 try{
 
@@ -821,17 +344,15 @@ const {data,error}=await db
 .select("*")
 .order("id",{ascending:false});
 
-if(error){
-throw error;
-}
+if(error)throw error;
 
-menuItems=(data||[]).map(item=>({
-id:item.id,
-name:item.name,
-price:Number(item.price),
-category:item.category||"Other",
-description:item.description||"",
-image:item.image_url||""
+menuItems=(data||[]).map(x=>({
+id:x.id,
+name:x.name,
+price:Number(x.price),
+category:x.category||"Other",
+description:x.description||"",
+image:x.image_url||""
 }));
 
 createCategories();
@@ -839,21 +360,14 @@ renderMenu(menuItems);
 
 }catch(error){
 
-console.error("MENU ERROR:",error);
+console.error(error);
 
-box.innerHTML=`
-<div class="error-box">
-❌ Menu load nahi hua.
-<br><br>
+menu.innerHTML=`
+<div class="empty">
+❌ Menu load nahi hua.<br><br>
 ${error.message}
-<br><br>
-Page refresh karke dobara try karo.
 </div>
 `;
-
-}finally{
-
-menuLoading=false;
 
 }
 }
@@ -861,356 +375,228 @@ menuLoading=false;
 function createCategories(){
 
 const box=document.getElementById("categories");
-
 box.innerHTML="";
-selectedCategory="All";
+category="All";
 
-const all=document.createElement("div");
-
-all.className="category active";
+const all=document.createElement("button");
+all.className="cat active";
 all.innerText="All";
-
-all.onclick=()=>{
-filterCategory("All",all);
-};
-
+all.onclick=()=>filterCategory("All",all);
 box.appendChild(all);
 
-const categories=[
-...new Set(menuItems.map(item=>item.category).filter(Boolean))
-];
-
-categories.forEach(category=>{
-
-const button=document.createElement("div");
-
-button.className="category";
-button.innerText=category;
-
-button.onclick=()=>{
-filterCategory(category,button);
-};
-
-box.appendChild(button);
-
+[...new Set(menuItems.map(x=>x.category).filter(Boolean))].forEach(c=>{
+const b=document.createElement("button");
+b.className="cat";
+b.innerText=c;
+b.onclick=()=>filterCategory(c,b);
+box.appendChild(b);
 });
+
 }
 
-function filterCategory(category,button){
+function filterCategory(c,button){
 
-selectedCategory=category;
+category=c;
 
-document.querySelectorAll(".category").forEach(btn=>{
-btn.classList.remove("active");
-});
-
+document.querySelectorAll(".cat").forEach(x=>x.classList.remove("active"));
 button.classList.add("active");
 
-applyFilters();
+filterMenu();
+
 }
 
-document.getElementById("search").addEventListener("input",applyFilters);
+document.getElementById("search").addEventListener("input",filterMenu);
 
-function applyFilters(){
+function filterMenu(){
 
 const text=document.getElementById("search").value.toLowerCase().trim();
 
-let filtered=menuItems.filter(item=>
-item.name.toLowerCase().includes(text)
-);
+let list=menuItems.filter(x=>x.name.toLowerCase().includes(text));
 
-if(selectedCategory!=="All"){
-filtered=filtered.filter(item=>
-item.category===selectedCategory
-);
+if(category!=="All")
+list=list.filter(x=>x.category===category);
+
+renderMenu(list);
+
 }
 
-renderMenu(filtered);
-}
+function renderMenu(list){
 
-function renderMenu(items){
-
-const box=document.getElementById("menuList");
-
+const box=document.getElementById("menu");
 box.innerHTML="";
 
-if(items.length===0){
-
-box.innerHTML=`
-<div class="empty">
-😕 No food found.
-</div>
-`;
-
+if(!list.length){
+box.innerHTML='<div class="empty">😕 No food found.</div>';
 return;
 }
 
-items.forEach(item=>{
+list.forEach(item=>{
 
-const card=document.createElement("div");
-
-card.className="menu-card";
-
-card.innerHTML=`
+box.innerHTML+=`
+<div class="food">
 
 <img
-class="menu-image"
-src="${item.image||"https://via.placeholder.com/700x450?text=Food"}"
+src="${item.image||"https://via.placeholder.com/700x400?text=Food"}"
 alt="${item.name}"
-onerror="this.src='https://via.placeholder.com/700x450?text=Food'"
+onerror="this.src='https://via.placeholder.com/700x400?text=Food'"
 >
 
-<div class="menu-content">
+<div class="food-body">
 
-<div class="menu-top">
+<div class="food-name">${item.name}</div>
 
-<div>
+<div class="food-desc">${item.description}</div>
 
-<div class="menu-name">
-${item.name}
-</div>
+<div class="food-bottom">
 
-<div class="menu-category">
-${item.category}
-</div>
+<strong>₹${item.price}</strong>
 
-</div>
-
-</div>
-
-<div class="menu-description">
-${item.description}
-</div>
-
-<div class="menu-bottom">
-
-<div class="price">
-₹${item.price}
-</div>
-
-<button
-class="add-btn"
-onclick="addToCart(${item.id})"
->
+<button class="add" onclick="addToCart(${item.id})">
 + Add
 </button>
 
 </div>
 
 </div>
+</div>
 `;
-
-box.appendChild(card);
-
 });
 }
 
 function addToCart(id){
 
 const item=menuItems.find(x=>x.id===id);
-
 if(!item)return;
 
-const existing=cart.find(x=>x.id===id);
+const old=cart.find(x=>x.id===id);
 
-if(existing){
-existing.quantity++;
-}else{
-cart.push({
+if(old)old.quantity++;
+else cart.push({
 id:item.id,
 name:item.name,
 price:item.price,
 quantity:1
 });
-}
 
 renderCart();
 }
 
 function changeQty(index,change){
 
-if(!cart[index])return;
-
 cart[index].quantity+=change;
 
-if(cart[index].quantity<=0){
+if(cart[index].quantity<=0)
 cart.splice(index,1);
-}
 
 renderCart();
-}
 
-function getCartTotal(){
-
-return cart.reduce(
-(total,item)=>
-total+(item.price*item.quantity),
-0
-);
-}
-
-function getCartCount(){
-
-return cart.reduce(
-(total,item)=>
-total+item.quantity,
-0
-);
 }
 
 function renderCart(){
 
-const body=document.getElementById("drawerBody");
+const box=document.getElementById("cartList");
 
-const count=getCartCount();
-const total=getCartTotal();
+let total=0;
+let count=0;
 
-document.getElementById("cartCount").innerText=
-"🛒 Cart ("+count+")";
+if(!cart.length){
 
-document.getElementById("cartTotal").innerText=
-"₹"+total;
+box.innerHTML='<div class="empty">🛒 Cart empty hai.</div>';
 
-document.getElementById("quickCartCount").innerText=
-count;
+}else{
 
-document.getElementById("quickTotal").innerText=
-"₹"+total;
+box.innerHTML="";
 
-document.getElementById("drawerTotal").innerText=
-"₹"+total;
+cart.forEach((x,i)=>{
 
-document.getElementById("cartBar").style.display=
-count>0?"flex":"none";
+const itemTotal=x.price*x.quantity;
 
-if(cart.length===0){
+total+=itemTotal;
+count+=x.quantity;
 
-body.innerHTML=
-`<div class="empty">🛒 Cart empty hai.</div>`;
-
-return;
-}
-
-body.innerHTML="";
-
-cart.forEach((item,index)=>{
-
-const itemTotal=item.price*item.quantity;
-
-body.innerHTML+=`
-
+box.innerHTML+=`
 <div class="cart-item">
 
-<div class="cart-info">
-
-<div class="cart-name">
-${item.name}
+<div>
+<strong>${x.name}</strong>
+<div style="color:#777;font-size:12px;margin-top:4px">
+₹${x.price} × ${x.quantity} = ₹${itemTotal}
 </div>
-
-<div class="cart-price">
-₹${item.price} × ${item.quantity}
-= ₹${itemTotal}
-</div>
-
 </div>
 
 <div class="qty">
-
-<button
-onclick="changeQty(${index},-1)"
->
-−
-</button>
-
-<span>
-${item.quantity}
-</span>
-
-<button
-onclick="changeQty(${index},1)"
->
-+
-</button>
-
+<button onclick="changeQty(${i},-1)">−</button>
+<span>${x.quantity}</span>
+<button onclick="changeQty(${i},1)">+</button>
 </div>
 
 </div>
 `;
 });
+
+}
+
+document.getElementById("cartTotal").innerText="₹"+total;
+document.getElementById("barTotal").innerText="₹"+total;
+document.getElementById("cartCount").innerText="🛒 Cart ("+count+")";
+
+document.getElementById("cartBar").style.display=
+count?"flex":"none";
 }
 
 function openCart(){
 
-document.getElementById("overlay").classList.add("open");
-document.getElementById("cartDrawer").classList.add("open");
-document.body.classList.add("cart-open");
+document.getElementById("drawer").classList.add("open");
+document.getElementById("overlay").style.display="block";
+document.body.style.overflow="hidden";
 
-renderCart();
 }
 
 function closeCart(){
 
-document.getElementById("overlay").classList.remove("open");
-document.getElementById("cartDrawer").classList.remove("open");
-document.body.classList.remove("cart-open");
+document.getElementById("drawer").classList.remove("open");
+document.getElementById("overlay").style.display="none";
+document.body.style.overflow="";
+
 }
 
 async function placeOrder(){
 
 if(!selectedTable){
-
-showMessage(
-"❌ Pehle table select karo.",
-"error"
-);
-
+msg("appMsg","❌ Pehle table select karo.","err");
 return;
 }
 
-if(cart.length===0){
-
-showMessage(
-"❌ Cart empty hai.",
-"error"
-);
-
+if(!cart.length){
+msg("appMsg","❌ Cart empty hai.","err");
 return;
 }
 
-const sessionResult=
-await db.auth.getSession();
+const {data:sessionData}=await db.auth.getSession();
 
-const session=
-sessionResult.data.session;
+if(!sessionData.session){
 
-if(!session){
-
-showMessage(
-"❌ Waiter session expire ho gaya. Please login again.",
-"error"
-);
+msg("appMsg","❌ Session expire ho gayi. Login dobara karo.","err");
 
 setTimeout(()=>{
-window.location.href="waiter.html";
+location.reload();
 },1200);
 
 return;
 }
 
-const total=getCartTotal();
+const total=cart.reduce((s,x)=>s+(x.price*x.quantity),0);
 
-const orderItems=cart.map(item=>({
-id:item.id,
-name:item.name,
-price:item.price,
-quantity:item.quantity
+const items=cart.map(x=>({
+id:x.id,
+name:x.name,
+price:x.price,
+quantity:x.quantity
 }));
 
-const button=
-document.getElementById("placeOrderBtn");
-
-button.disabled=true;
-button.innerText="⏳ Placing Order...";
+const btn=document.getElementById("placeBtn");
+btn.disabled=true;
+btn.innerText="⏳ Placing...";
 
 try{
 
@@ -1218,7 +604,7 @@ const {data,error}=await db
 .from("orders")
 .insert([{
 table_number:selectedTable,
-items:orderItems,
+items:items,
 total_amount:total,
 status:"pending",
 payment_status:"pending",
@@ -1227,32 +613,32 @@ waiter_id:waiterId
 .select()
 .single();
 
-if(error){
-throw error;
-}
+if(error)throw error;
 
 cart=[];
 renderCart();
 closeCart();
 
-showMessage(
-"✅ Order #"+data.id+" successfully placed for Table "+selectedTable+".",
-"success"
+msg(
+"appMsg",
+"✅ Order #"+data.id+" placed for Table "+selectedTable,
+"ok"
 );
 
 }catch(error){
 
-console.error("ORDER ERROR:",error);
+console.error(error);
 
-showMessage(
+msg(
+"appMsg",
 "❌ Order place nahi hua: "+error.message,
-"error"
+"err"
 );
 
 }finally{
 
-button.disabled=false;
-button.innerText="✅ Place Order";
+btn.disabled=false;
+btn.innerText="✅ Place Order";
 
 }
 }
@@ -1261,78 +647,37 @@ async function logout(){
 
 await db.auth.signOut();
 
-sessionStorage.removeItem("waiter_id");
-sessionStorage.removeItem("waiter_name");
-localStorage.removeItem("waiter_session");
+sessionStorage.clear();
 
-window.location.href="waiter.html";
+location.reload();
+
 }
 
-async function restoreSession(){
+async function restore(){
 
-const saved=localStorage.getItem("waiter_session");
+const {data}=await db.auth.getSession();
 
-if(!saved){
-showMessage(
-"⚠️ Waiter session nahi mili. Please login again.",
-"error"
-);
-return false;
+if(!data.session){
+
+document.getElementById("loginScreen").style.display="flex";
+document.getElementById("app").style.display="none";
+return;
 }
 
-try{
+/* Session exists: recover waiter info */
+waiterId=sessionStorage.getItem("waiter_id");
+waiterName=sessionStorage.getItem("waiter_name");
 
-const sessionData=JSON.parse(saved);
-
-if(
-!sessionData.access_token||
-!sessionData.refresh_token
-){
-throw new Error("Invalid saved session");
+if(!waiterId){
+await db.auth.signOut();
+return;
 }
 
-const {error}=await db.auth.setSession({
-access_token:sessionData.access_token,
-refresh_token:sessionData.refresh_token
-});
+showApp();
 
-if(error){
-throw error;
 }
 
-return true;
-
-}catch(error){
-
-console.error("SESSION ERROR:",error);
-
-localStorage.removeItem("waiter_session");
-
-showMessage(
-"⚠️ Session restore nahi hui. Please login again.",
-"error"
-);
-
-setTimeout(()=>{
-window.location.href="waiter.html";
-},1200);
-
-return false;
-}
-}
-
-async function start(){
-
-const ok=await restoreSession();
-
-if(!ok)return;
-
-await loadMenu();
-}
-
-createTables();
-renderCart();
-start();
+restore();
 
 </script>
 
