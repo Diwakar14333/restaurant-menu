@@ -1,540 +1,294 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Restaurant Admin</title>
 
 <style>
-
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
-}
-
+*{box-sizing:border-box}
 body{
+margin:0;
 font-family:Arial,sans-serif;
 background:#f4f5f7;
-color:#222;
+color:#222
 }
-
-body.drawer-open{
-overflow:hidden;
+button,input,select,textarea{
+font:inherit
 }
-
 .header{
 background:linear-gradient(135deg,#111,#292929);
-color:white;
-padding:20px;
+color:#fff;
+padding:20px
 }
-
-.header h1{
-font-size:24px;
-}
-
-.header p{
-color:#bbb;
-margin-top:5px;
-font-size:13px;
-}
-
 .container{
 max-width:950px;
 margin:auto;
-padding:20px;
+padding:20px
 }
-
-.dashboard{
+.dash{
 display:grid;
 grid-template-columns:repeat(2,1fr);
 gap:14px;
-margin-bottom:22px;
+margin-bottom:20px
 }
-
 .card{
 background:#fff;
 padding:20px;
 border-radius:17px;
-box-shadow:0 4px 16px rgba(0,0,0,.07);
-cursor:pointer;
-transition:.2s;
+box-shadow:0 4px 16px #0000000d;
+cursor:pointer
 }
-
-.card:hover{
-transform:translateY(-2px);
-box-shadow:0 8px 22px rgba(0,0,0,.1);
-}
-
-.card .icon{
-font-size:30px;
-}
-
-.card h3{
-margin-top:8px;
-font-size:17px;
-}
-
+.icon{font-size:30px}
+.card h3{margin:8px 0}
 .card p{
 color:#777;
-margin-top:5px;
-font-size:13px;
+font-size:13px
 }
-
 .section{
 background:#fff;
 padding:20px;
 border-radius:18px;
-margin-bottom:18px;
-box-shadow:0 4px 16px rgba(0,0,0,.06);
+margin-bottom:18px
 }
-
-.section h2{
-margin-bottom:8px;
-}
-
-.description{
-color:#777;
-font-size:14px;
-margin-bottom:18px;
-}
-
-button{
-border:none;
-padding:12px 16px;
+.primary,.save,.edit,.del,.cancel{
+border:0;
+padding:11px 15px;
 border-radius:9px;
-cursor:pointer;
-font-size:14px;
-margin:4px;
+cursor:pointer
 }
-
 .primary{
 background:#111;
-color:white;
+color:#fff
 }
-
 .save{
 background:#198754;
-color:white;
+color:#fff
 }
-
 .edit{
-background:#ffc107;
-color:#111;
+background:#ffc107
 }
-
-.delete{
+.del{
 background:#dc3545;
-color:white;
+color:#fff
 }
-
 .cancel{
-background:#ddd;
-color:#222;
+background:#ddd
 }
-
-/* MENU LIST */
-
-.menu-item{
+.menuitem{
 display:flex;
 align-items:center;
 gap:12px;
 padding:15px 0;
-border-bottom:1px solid #eee;
+border-bottom:1px solid #eee
 }
-
-.menu-image{
+.menuitem img{
 width:75px;
 height:75px;
-object-fit:cover;
 border-radius:10px;
+object-fit:cover
 }
-
-.menu-info{
-flex:1;
+.info{
+flex:1
 }
-
-.menu-name{
-font-weight:bold;
-font-size:17px;
+.name{
+font-weight:800
 }
-
-.menu-category{
+.cat{
+font-size:12px;
 color:#777;
-font-size:13px;
-margin-top:4px;
+margin-top:4px
 }
-
-.menu-price{
-font-weight:bold;
-margin-top:5px;
+.price{
+font-weight:800;
+margin-top:5px
 }
-
-/* MESSAGES */
-
-.message{
-margin-top:15px;
-padding:12px;
-border-radius:8px;
-display:none;
-}
-
-.success-message{
-background:#d1e7dd;
-color:#0f5132;
-}
-
-.error-message{
-background:#f8d7da;
-color:#842029;
-}
-
-/* GENERAL DRAWER OVERLAY */
-
-.drawer-overlay{
+.overlay{
 position:fixed;
 inset:0;
-background:rgba(0,0,0,.48);
-backdrop-filter:blur(3px);
+background:#0007;
 opacity:0;
 visibility:hidden;
-transition:.25s;
-z-index:2000;
+z-index:99;
+transition:.25s
 }
-
-.drawer-overlay.open{
+.overlay.open{
 opacity:1;
-visibility:visible;
+visibility:visible
 }
-
-/* MENU DRAWER */
-
-.menu-drawer{
+.drawer{
 position:fixed;
-top:0;
 right:0;
-width:min(520px,95vw);
-height:100vh;
-background:#f4f5f7;
-transform:translateX(100%);
-transition:transform .3s ease;
-z-index:2001;
-display:flex;
-flex-direction:column;
-box-shadow:-12px 0 35px rgba(0,0,0,.22);
-}
-
-.menu-drawer.open{
-transform:translateX(0);
-}
-
-.menu-drawer-head{
-background:#111;
-color:#fff;
-padding:18px;
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:10px;
-}
-
-.menu-drawer-head h2{
-font-size:20px;
-}
-
-.menu-drawer-head p{
-font-size:11px;
-color:#aaa;
-margin-top:4px;
-}
-
-.close-drawer{
-width:38px;
-height:38px;
-padding:0;
-margin:0;
-border:0;
-border-radius:50%;
-background:#fff;
-color:#111;
-font-size:22px;
-cursor:pointer;
-}
-
-.menu-drawer-body{
-flex:1;
-overflow:auto;
-padding:18px;
-}
-
-.form-group{
-margin-bottom:16px;
-}
-
-label{
-display:block;
-font-weight:bold;
-margin-bottom:7px;
-font-size:14px;
-}
-
-input,
-select,
-textarea{
-width:100%;
-padding:13px;
-border:1px solid #ddd;
-border-radius:10px;
-font-size:15px;
-background:#fff;
-outline:none;
-}
-
-input:focus,
-select:focus,
-textarea:focus{
-border-color:#111;
-}
-
-textarea{
-min-height:110px;
-resize:vertical;
-}
-
-.form-buttons{
-display:flex;
-gap:8px;
-margin-top:18px;
-}
-
-.form-buttons button{
-flex:1;
-margin:0;
-}
-
-.form-note{
-background:#fff;
-border-radius:12px;
-padding:12px;
-color:#777;
-font-size:12px;
-margin-bottom:18px;
-}
-
-.image-preview{
-width:100%;
-height:180px;
-object-fit:cover;
-border-radius:12px;
-margin-top:8px;
-display:none;
-background:#eee;
-}
-
-/* ORDERS / PAYMENTS DRAWERS */
-
-.orders-drawer,
-.payments-drawer{
-position:fixed;
 top:0;
-right:0;
 width:min(650px,96vw);
 height:100vh;
 background:#f4f5f7;
 transform:translateX(100%);
-transition:.3s ease;
-z-index:2001;
+transition:.3s;
+z-index:100;
 display:flex;
-flex-direction:column;
-box-shadow:-12px 0 35px rgba(0,0,0,.22);
+flex-direction:column
 }
-
-.orders-drawer.open,
-.payments-drawer.open{
-transform:translateX(0);
+.drawer.open{
+transform:translateX(0)
 }
-
-.drawer-head{
+.dh{
 background:#111;
 color:#fff;
-padding:18px;
+padding:17px;
 display:flex;
-justify-content:space-between;
-align-items:center;
+justify-content:space-between
 }
-
-.drawer-head h2{
-font-size:21px;
+.close{
+width:36px;
+height:36px;
+border:0;
+border-radius:50%
 }
-
-.drawer-head p{
-font-size:11px;
-color:#aaa;
-margin-top:4px;
+.db{
+flex:1;
+overflow:auto;
+padding:15px
 }
-
 .stats{
 display:grid;
 grid-template-columns:repeat(4,1fr);
 gap:8px;
-padding:12px;
+padding:12px
 }
-
 .stat{
 background:#fff;
-border-radius:12px;
 padding:12px;
-text-align:center;
-box-shadow:0 2px 8px rgba(0,0,0,.05);
+border-radius:12px;
+text-align:center
 }
-
 .stat strong{
-font-size:21px;
 display:block;
+font-size:20px
 }
-
 .stat span{
 font-size:10px;
-color:#777;
+color:#777
 }
-
-.drawer-scroll{
-flex:1;
-overflow:auto;
-padding:0 12px 20px;
-}
-
-.table-card{
+.tablecard{
 background:#fff;
-border-radius:15px;
 padding:15px;
-margin-bottom:12px;
-box-shadow:0 3px 12px rgba(0,0,0,.06);
+border-radius:15px;
+margin-bottom:11px
 }
-
-.table-top{
+.top{
 display:flex;
-justify-content:space-between;
-align-items:center;
-gap:10px;
+justify-content:space-between
 }
-
-.table-title{
-font-size:18px;
+.bigtotal{
+font-size:20px;
 font-weight:800;
+color:#198754
 }
-
-.table-total{
-font-size:21px;
-font-weight:800;
-color:#198754;
-}
-
-.table-sub{
-font-size:11px;
-color:#777;
-margin-top:4px;
-}
-
-.source{
+.badge{
 display:inline-block;
 padding:5px 8px;
-border-radius:20px;
+border-radius:18px;
 font-size:10px;
 font-weight:800;
-margin-top:6px;
+margin-top:5px
 }
-
 .customer{
 background:#d1e7dd;
-color:#0f5132;
+color:#0f5132
 }
-
 .waiter{
 background:#cff4fc;
-color:#055160;
+color:#055160
 }
-
 .line{
 display:flex;
 justify-content:space-between;
-gap:10px;
 font-size:13px;
-padding:4px 0;
+padding:3px 0
 }
-
 .lines{
 border-top:1px solid #eee;
 border-bottom:1px solid #eee;
-margin:10px 0;
-padding:8px 0;
+margin:9px 0;
+padding:8px 0
 }
-
-.pay-btn{
+.pay{
 width:100%;
 border:0;
 background:#198754;
 color:#fff;
 padding:12px;
-border-radius:10px;
-margin-top:10px;
+border-radius:9px;
+margin-top:10px
 }
-
 .empty{
-padding:45px 10px;
+padding:35px;
 text-align:center;
-color:#777;
+color:#777
 }
-
-.error-box{
-background:#f8d7da;
-color:#842029;
-padding:14px;
+.note{
+background:#fff;
+padding:12px;
+border-radius:12px;
+color:#777;
+font-size:12px;
+margin-bottom:15px
+}
+.formrow{
+margin-bottom:15px
+}
+.formrow label{
+display:block;
+font-weight:700;
+margin-bottom:6px
+}
+.formrow input,
+.formrow select,
+.formrow textarea{
+width:100%;
+padding:13px;
+border:1px solid #ddd;
+border-radius:10px
+}
+.actions{
+display:flex;
+gap:8px
+}
+.actions>*{
+flex:1
+}
+.msg{
+display:none;
+padding:12px;
 border-radius:10px;
-line-height:1.5;
+margin:10px 0
+}
+.ok{
+background:#d1e7dd;
+color:#0f5132
+}
+.err{
+background:#f8d7da;
+color:#842029
 }
 
 @media(max-width:600px){
-
-.container{
-padding:15px;
-}
-
-.dashboard{
-grid-template-columns:1fr 1fr;
-}
-
-.stats{
-grid-template-columns:repeat(2,1fr);
-}
-
-.menu-drawer,
-.orders-drawer,
-.payments-drawer{
-width:100vw;
-}
-
-.menu-item{
-align-items:flex-start;
-}
-
+.dash{grid-template-columns:1fr 1fr}
+.stats{grid-template-columns:1fr 1fr}
+.drawer{width:100vw}
+.menuitem{align-items:flex-start}
 .menu-actions{
 display:flex;
-flex-direction:column;
+flex-direction:column
 }
-
 }
-
 </style>
 
 </head>
 
 <body>
-
-
-<!-- HEADER -->
 
 <div class="header">
 
@@ -542,7 +296,9 @@ flex-direction:column;
 🧑‍💼 Restaurant Admin
 </h1>
 
-<p>
+<p
+style="color:#aaa"
+>
 Reception / Management Panel
 </p>
 
@@ -551,22 +307,22 @@ Reception / Management Panel
 
 <div class="container">
 
+<div class="dash">
 
-<!-- DASHBOARD -->
-
-<div class="dashboard">
-
-<div class="card">
+<div
+class="card"
+onclick="openAdd()"
+>
 
 <div class="icon">
 🍔
 </div>
 
 <h3>
-Menu Items
+Menu
 </h3>
 
-<p id="itemCount">
+<p id="ic">
 0 Items
 </p>
 
@@ -603,7 +359,7 @@ onclick="openOrders()"
 Orders
 </h3>
 
-<p id="orderCount">
+<p id="oc">
 0 Open
 </p>
 
@@ -623,7 +379,7 @@ onclick="openPayments()"
 Payments
 </h3>
 
-<p id="paymentCount">
+<p id="pc">
 ₹0 Pending
 </p>
 
@@ -632,30 +388,27 @@ Payments
 </div>
 
 
-<!-- MENU MANAGEMENT -->
-
 <div class="section">
 
 <h2>
 🍔 Menu Management
 </h2>
 
-<p class="description">
-Yahan se restaurant ka complete menu manage hoga.
+<p
+style="color:#777"
+>
+Add, edit and manage your food menu.
 </p>
-
 
 <button
 class="primary"
-onclick="openAddForm()"
+onclick="openAdd()"
 >
 ➕ Add New Item
 </button>
 
 </div>
 
-
-<!-- CURRENT MENU -->
 
 <div class="section">
 
@@ -663,18 +416,12 @@ onclick="openAddForm()"
 📋 Current Menu
 </h2>
 
-<p class="description">
-Ye items directly database se load ho rahe hain.
-</p>
-
-<div id="menuList">
-Loading menu...
+<div id="menu">
+Loading...
 </div>
 
 </div>
 
-
-<!-- TABLES -->
 
 <div class="section">
 
@@ -682,76 +429,56 @@ Loading menu...
 🪑 Table Management
 </h2>
 
-<p class="description">
-Tables aur QR codes yahan manage honge.
-</p>
-
 <button
 class="primary"
-onclick="comingSoon('Table Management')"
+onclick="alert('Table Management next phase me banayenge 😙🤟🏻')"
 >
 🪑 Manage Tables
 </button>
 
 <button
 class="primary"
-onclick="comingSoon('QR Generator')"
+onclick="alert('QR Generator next phase me banayenge 😙🤟🏻')"
 >
-📱 Generate QR Codes
+📱 Generate QR
 </button>
 
 </div>
 
-
 </div>
 
 
-<!-- MESSAGE BOXES -->
-
 <div
-id="successMessage"
-class="message success-message"
+id="overlay"
+class="overlay"
+onclick="closeAll()"
 ></div>
 
-<div
-id="errorMessage"
-class="message error-message"
-></div>
-
-
-<!-- DRAWER OVERLAY -->
-
-<div
-id="drawerOverlay"
-class="drawer-overlay"
-onclick="closeAllDrawers()"
-></div>
-
-
-<!-- ADD / EDIT MENU DRAWER -->
 
 <div
 id="menuDrawer"
-class="menu-drawer"
+class="drawer"
 >
 
-<div class="menu-drawer-head">
+<div class="dh">
 
 <div>
 
-<h2 id="drawerTitle">
-➕ Add New Item
-</h2>
+<b id="dt">
+➕ Add Item
+</b>
 
-<p id="drawerSubtitle">
-Add a new food item to your menu
-</p>
+<div
+style="font-size:11px;color:#aaa"
+>
+Menu item details
+</div>
 
 </div>
 
 <button
-class="close-drawer"
-onclick="closeMenuDrawer()"
+class="close"
+onclick="closeMenu()"
 >
 ×
 </button>
@@ -759,77 +486,71 @@ onclick="closeMenuDrawer()"
 </div>
 
 
-<div class="menu-drawer-body">
+<div class="db">
 
-<div class="form-note">
-🍽️ Food details yahan enter karo. Save karte hi menu database me update ho jayega.
+<div class="note">
+🍽️ Save karte hi item customer aur waiter menu me available ho jayega.
 </div>
 
 
-<div class="form-group">
+<div class="formrow">
 
 <label>
-Food Name
+Name
 </label>
 
-<input
-type="text"
-id="itemName"
-placeholder="Example: Chicken Biryani"
->
+<input id="name">
 
 </div>
 
 
-<div class="form-group">
+<div class="formrow">
 
 <label>
-Price (₹)
+Price
 </label>
 
 <input
+id="price"
 type="number"
-id="itemPrice"
-placeholder="Example: 180"
-min="1"
 >
 
 </div>
 
 
-<div class="form-group">
+<div class="formrow">
 
 <label>
 Category
 </label>
 
-<select id="itemCategory">
+<select id="category">
 
 <option value="">
 Select Category
 </option>
 
-<option value="Biryani">
+<option>
 Biryani
 </option>
 
-<option value="Pizza">
+<option>
 Pizza
 </option>
 
-<option value="Drinks">
+<option>
 Drinks
 </option>
 
-<option value="Desserts">
+<option>
 Desserts
 </option>
 
-<option value="Starters">
+<option>
 Starters
 </option>
 
-<option value="Main Course">
+<option>
 Main Course
 </option>
 
@@ -838,54 +559,46 @@ Main Course
 </div>
 
 
-<div class="form-group">
+<div class="formrow">
 
 <label>
 Description
 </label>
 
-<textarea
-id="itemDescription"
-placeholder="Food description"
-></textarea>
+<textarea id="desc"></textarea>
 
 </div>
 
 
-<div class="form-group">
+<div class="formrow">
 
 <label>
 Image URL
 </label>
 
 <input
+id="image"
 type="url"
-id="itemImage"
-placeholder="Paste image URL"
-oninput="previewImage()"
->
-
-<img
-id="imagePreview"
-class="image-preview"
-alt="Food Preview"
 >
 
 </div>
 
 
-<div class="form-buttons">
+<div class="actions">
 
 <button
 class="save"
-onclick="saveItem()"
+onclick="save()"
 >
-💾 <span id="saveButtonText">Save Item</span>
+💾
+<span id="st">
+Save
+</span>
 </button>
 
 <button
 class="cancel"
-onclick="closeMenuDrawer()"
+onclick="closeMenu()"
 >
 Cancel
 </button>
@@ -897,29 +610,29 @@ Cancel
 </div>
 
 
-<!-- ORDERS DRAWER -->
-
 <div
 id="ordersDrawer"
-class="orders-drawer"
+class="drawer"
 >
 
-<div class="drawer-head">
+<div class="dh">
 
 <div>
 
-<h2>
+<b>
 📋 Orders
-</h2>
+</b>
 
-<p>
-Open customer + waiter orders
-</p>
+<div
+style="font-size:11px;color:#aaa"
+>
+Current-session open orders
+</div>
 
 </div>
 
 <button
-class="close-drawer"
+class="close"
 onclick="closeOrders()"
 >
 ×
@@ -931,22 +644,22 @@ onclick="closeOrders()"
 <div class="stats">
 
 <div class="stat">
-<strong id="totalOrders">0</strong>
-<span>Open Orders</span>
+<strong id="all">0</strong>
+<span>Open</span>
 </div>
 
 <div class="stat">
-<strong id="pendingOrders">0</strong>
+<strong id="pend">0</strong>
 <span>Pending</span>
 </div>
 
 <div class="stat">
-<strong id="completedOrders">0</strong>
+<strong id="comp">0</strong>
 <span>Completed</span>
 </div>
 
 <div class="stat">
-<strong id="cancelledOrders">0</strong>
+<strong id="canc">0</strong>
 <span>Cancelled</span>
 </div>
 
@@ -954,43 +667,37 @@ onclick="closeOrders()"
 
 
 <div
-id="ordersBody"
-class="drawer-scroll"
->
-
-<div class="loading">
-Loading orders...
-</div>
+id="orderBody"
+class="db"
+></div>
 
 </div>
 
-</div>
-
-
-<!-- PAYMENTS DRAWER -->
 
 <div
-id="paymentsDrawer"
-class="payments-drawer"
+id="payDrawer"
+class="drawer"
 >
 
-<div class="drawer-head">
+<div class="dh">
 
 <div>
 
-<h2>
+<b>
 💳 Payments
-</h2>
+</b>
 
-<p>
-Pending & completed collections
-</p>
+<div
+style="font-size:11px;color:#aaa"
+>
+Pending and completed
+</div>
 
 </div>
 
 <button
-class="close-drawer"
-onclick="closePayments()"
+class="close"
+onclick="closePay()"
 >
 ×
 </button>
@@ -1001,30 +708,22 @@ onclick="closePayments()"
 <div class="stats">
 
 <div class="stat">
-<strong id="payPending">
-₹0
-</strong>
+<strong id="pp">₹0</strong>
 <span>Pending</span>
 </div>
 
 <div class="stat">
-<strong id="payPaid">
-₹0
-</strong>
+<strong id="paid">₹0</strong>
 <span>Paid</span>
 </div>
 
 <div class="stat">
-<strong id="payTables">
-0
-</strong>
+<strong id="tables">0</strong>
 <span>Open Tables</span>
 </div>
 
 <div class="stat">
-<strong id="payDoneOrders">
-0
-</strong>
+<strong id="paidOrders">0</strong>
 <span>Paid Orders</span>
 </div>
 
@@ -1032,15 +731,9 @@ onclick="closePayments()"
 
 
 <div
-id="paymentsBody"
-class="drawer-scroll"
->
-
-<div class="loading">
-Loading payments...
-</div>
-
-</div>
+id="payBody"
+class="db"
+></div>
 
 </div>
 
@@ -1049,487 +742,229 @@ Loading payments...
 
 <script>
 
-const SUPABASE_URL=
+const U=
 "https://jxjrcjmrkhknltwvzzvr.supabase.co";
 
-const SUPABASE_KEY=
+const K=
 "sb_publishable__Pg5UNoizrSpZB3fRvbARw_fNhHGjvl";
 
 const db=
-window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
-);
+supabase.createClient(U,K);
 
-let editingItemId=null;
+let editId=null;
 
 
-/* ==============================
-   DRAWERS
-============================== */
+function show(id){
 
-function showDrawer(id){
+overlay.classList.add("open");
 
-document.getElementById(
-"drawerOverlay"
-).classList.add("open");
-
-document.getElementById(
-id
-).classList.add("open");
-
-document.body.classList.add(
-"drawer-open"
-);
+document
+.getElementById(id)
+.classList.add("open");
 
 }
 
-function hideDrawer(id){
 
-document.getElementById(
-id
-).classList.remove("open");
+function hide(id){
+
+document
+.getElementById(id)
+.classList.remove("open");
 
 if(
-!document.getElementById("menuDrawer").classList.contains("open") &&
-!document.getElementById("ordersDrawer").classList.contains("open") &&
-!document.getElementById("paymentsDrawer").classList.contains("open")
+![
+"menuDrawer",
+"ordersDrawer",
+"payDrawer"
+]
+.some(
+x=>
+document
+.getElementById(x)
+.classList.contains("open")
+)
 ){
 
-document.getElementById(
-"drawerOverlay"
-).classList.remove("open");
+overlay.classList.remove("open");
 
-document.body.classList.remove(
-"drawer-open"
+}
+
+}
+
+
+function closeAll(){
+
+document
+.querySelectorAll(".drawer")
+.forEach(
+x=>x.classList.remove("open")
 );
 
-}
-
-}
-
-function closeAllDrawers(){
-
-document.querySelectorAll(
-".menu-drawer,.orders-drawer,.payments-drawer"
-).forEach(drawer=>{
-drawer.classList.remove("open");
-});
-
-document.getElementById(
-"drawerOverlay"
-).classList.remove("open");
-
-document.body.classList.remove(
-"drawer-open"
-);
-
-}
-
-function openOrders(){
-
-closeAllDrawers();
-
-showDrawer("ordersDrawer");
-
-loadOrders();
-
-}
-
-function closeOrders(){
-
-hideDrawer("ordersDrawer");
-
-}
-
-function openPayments(){
-
-closeAllDrawers();
-
-showDrawer("paymentsDrawer");
-
-loadPayments();
-
-}
-
-function closePayments(){
-
-hideDrawer("paymentsDrawer");
+overlay.classList.remove("open");
 
 }
 
 
-/* ==============================
-   MENU DRAWER
-============================== */
+function openAdd(){
 
-function openAddForm(){
+editId=null;
 
-editingItemId=null;
+dt.textContent=
+"➕ Add Item";
 
-document.getElementById(
-"drawerTitle"
-).innerText=
-"➕ Add New Item";
+st.textContent=
+"Save";
 
-document.getElementById(
-"drawerSubtitle"
-).innerText=
-"Add a new food item to your menu";
+clear();
 
-document.getElementById(
-"saveButtonText"
-).innerText=
-"Save Item";
-
-clearForm();
-
-showDrawer("menuDrawer");
+show("menuDrawer");
 
 }
+
 
 async function editItem(id){
 
-const {
-data,
-error
-}=
+let r=
 await db
 .from("menu_items")
 .select("*")
 .eq("id",id)
 .single();
 
-if(error){
+if(r.error){
 
-showError(
-"Item load nahi hua: "+
-error.message
+return alert(
+r.error.message
 );
-
-return;
 
 }
 
-editingItemId=id;
+editId=id;
 
-document.getElementById(
-"drawerTitle"
-).innerText=
+dt.textContent=
 "✏️ Edit Item";
 
-document.getElementById(
-"drawerSubtitle"
-).innerText=
-"Update this food item";
+st.textContent=
+"Update";
 
-document.getElementById(
-"saveButtonText"
-).innerText=
-"Update Item";
+name.value=
+r.data.name||"";
 
-document.getElementById(
-"itemName"
-).value=
-data.name||"";
+price.value=
+r.data.price||"";
 
-document.getElementById(
-"itemPrice"
-).value=
-data.price||"";
+category.value=
+r.data.category||"";
 
-document.getElementById(
-"itemCategory"
-).value=
-data.category||"";
+desc.value=
+r.data.description||"";
 
-document.getElementById(
-"itemDescription"
-).value=
-data.description||"";
+image.value=
+r.data.image_url||"";
 
-document.getElementById(
-"itemImage"
-).value=
-data.image_url||"";
-
-previewImage();
-
-showDrawer("menuDrawer");
+show("menuDrawer");
 
 }
 
 
-function previewImage(){
+function closeMenu(){
 
-const url=
-document.getElementById(
-"itemImage"
-).value.trim();
+hide("menuDrawer");
 
-const img=
-document.getElementById(
-"imagePreview"
-);
+clear();
 
-if(!url){
-
-img.style.display="none";
-img.removeAttribute("src");
-
-return;
+editId=null;
 
 }
 
-img.src=url;
-img.style.display="block";
 
-img.onerror=function(){
-img.style.display="none";
+function clear(){
+
+name.value="";
+price.value="";
+category.value="";
+desc.value="";
+image.value="";
+
+}
+
+
+async function save(){
+
+let x={
+
+name:
+name.value.trim(),
+
+price:
+Number(price.value),
+
+category:
+category.value,
+
+description:
+desc.value.trim(),
+
+image_url:
+image.value.trim()
+
 };
 
-}
-
-
-async function saveItem(){
-
-const name=
-document.getElementById(
-"itemName"
-).value.trim();
-
-const price=
-document.getElementById(
-"itemPrice"
-).value;
-
-const category=
-document.getElementById(
-"itemCategory"
-).value;
-
-const description=
-document.getElementById(
-"itemDescription"
-).value.trim();
-
-const image=
-document.getElementById(
-"itemImage"
-).value.trim();
-
-
-if(!name){
-
-alert(
-"Food name enter karo."
-);
-
-return;
-
-}
-
 if(
-!price||
-Number(price)<=0
+!x.name||
+!x.price||
+!x.category||
+!x.description||
+!x.image_url
 ){
 
-alert(
-"Valid price enter karo."
+return alert(
+"Saare fields bharo."
 );
-
-return;
-
-}
-
-if(!category){
-
-alert(
-"Category select karo."
-);
-
-return;
-
-}
-
-if(!description){
-
-alert(
-"Description enter karo."
-);
-
-return;
-
-}
-
-if(!image){
-
-alert(
-"Image URL enter karo."
-);
-
-return;
 
 }
 
 
-const itemData={
-name:name,
-price:Number(price),
-category:category,
-description:description,
-image_url:image
-};
-
-
-if(
-editingItemId!==null
-){
-
-const {
-error
-}=
+let r=
+editId
+?
 await db
 .from("menu_items")
-.update(itemData)
-.eq(
-"id",
-editingItemId
-);
-
-if(error){
-
-showError(
-"Update failed: "+
-error.message
-);
-
-return;
-
-}
-
-showSuccess(
-"✅ Item successfully updated!"
-);
-
-}else{
-
-const {
-error
-}=
+.update(x)
+.eq("id",editId)
+:
 await db
 .from("menu_items")
-.insert([
-itemData
-]);
+.insert([x]);
 
-if(error){
 
-showError(
-"Item save nahi hua: "+
-error.message
-);
+if(r.error){
 
-return;
-
-}
-
-showSuccess(
-"✅ New item successfully added!"
+return alert(
+r.error.message
 );
 
 }
 
 
-closeMenuDrawer();
+alert(
+editId
+?
+"✅ Item updated"
+:
+"✅ Item added"
+);
+
+closeMenu();
 
 loadMenu();
 
 }
 
 
-function closeMenuDrawer(){
-
-document.getElementById(
-"menuDrawer"
-).classList.remove(
-"open"
-);
-
-if(
-!document.getElementById("ordersDrawer").classList.contains("open") &&
-!document.getElementById("paymentsDrawer").classList.contains("open")
-){
-
-document.getElementById(
-"drawerOverlay"
-).classList.remove("open");
-
-document.body.classList.remove(
-"drawer-open"
-);
-
-}
-
-editingItemId=null;
-
-clearForm();
-
-}
-
-
-function clearForm(){
-
-document.getElementById(
-"itemName"
-).value="";
-
-document.getElementById(
-"itemPrice"
-).value="";
-
-document.getElementById(
-"itemCategory"
-).value="";
-
-document.getElementById(
-"itemDescription"
-).value="";
-
-document.getElementById(
-"itemImage"
-).value="";
-
-document.getElementById(
-"imagePreview"
-).style.display="none";
-
-document.getElementById(
-"imagePreview"
-).removeAttribute("src");
-
-}
-
-
-/* ==============================
-   MENU LOAD
-============================== */
-
 async function loadMenu(){
 
-const box=
-document.getElementById(
-"menuList"
-);
-
-box.innerHTML=
-"Loading menu...";
-
-
-const {
-data,
-error
-}=
+let r=
 await db
 .from("menu_items")
 .select("*")
@@ -1538,85 +973,50 @@ await db
 {ascending:false}
 );
 
+if(r.error){
 
-if(error){
-
-showError(
-"Database se menu load nahi ho raha: "+
-error.message
-);
-
-box.innerHTML=
-"Menu load failed.";
+menu.innerHTML=
+'<div class="err">'+
+r.error.message+
+'</div>';
 
 return;
 
 }
 
-
-displayMenu(
-data||[]
-);
-
-}
-
-
-function displayMenu(items){
-
-const box=
-document.getElementById(
-"menuList"
-);
-
-box.innerHTML="";
-
-
-document.getElementById(
-"itemCount"
-).innerText=
-items.length+
+ic.textContent=
+(r.data||[]).length+
 " Items";
 
-
-if(!items.length){
-
-box.innerHTML=
-"<p>No menu items available.</p>";
-
-return;
-
-}
+menu.innerHTML="";
 
 
-items.forEach(item=>{
+(r.data||[])
+.forEach(x=>{
 
-const image=
-item.image_url||
-"https://via.placeholder.com/75";
+menu.innerHTML+=`
 
-
-box.innerHTML+=`
-
-<div class="menu-item">
+<div class="menuitem">
 
 <img
-src="${image}"
-class="menu-image"
-alt="${item.name}"
+src="${
+x.image_url||
+'https://via.placeholder.com/75'
+}"
 >
 
-<div class="menu-info">
+<div class="info">
 
-<div class="menu-name">
-${item.name}
+<div class="name">
+${x.name}
 </div>
 
-<div class="menu-category">
-${item.category||""}
+<div class="cat">
+${x.category||""}
 </div>
 
-<div class="menu-price">
-₹${item.price}
+<div class="price">
+₹${x.price}
 </div>
 
 </div>
@@ -1625,14 +1025,14 @@ ${item.category||""}
 
 <button
 class="edit"
-onclick="editItem(${item.id})"
+onclick="editItem(${x.id})"
 >
 ✏️ Edit
 </button>
 
 <button
-class="delete"
-onclick="deleteItem(${item.id})"
+class="del"
+onclick="del(${x.id})"
 >
 🗑️ Delete
 </button>
@@ -1640,6 +1040,7 @@ onclick="deleteItem(${item.id})"
 </div>
 
 </div>
+
 `;
 
 });
@@ -1647,11 +1048,11 @@ onclick="deleteItem(${item.id})"
 }
 
 
-async function deleteItem(id){
+async function del(id){
 
 if(
 !confirm(
-"Kya tum sure ho ki ye item delete karna hai?"
+"Delete karna hai?"
 )
 ){
 
@@ -1659,279 +1060,248 @@ return;
 
 }
 
-
-const {
-error
-}=
+let r=
 await db
 .from("menu_items")
 .delete()
-.eq(
-"id",
-id
+.eq("id",id);
+
+if(r.error){
+
+return alert(
+r.error.message
 );
-
-
-if(error){
-
-showError(
-"Delete failed: "+
-error.message
-);
-
-return;
 
 }
-
-
-showSuccess(
-"🗑️ Item successfully deleted!"
-);
 
 loadMenu();
 
 }
 
 
-/* ==============================
-   MESSAGES
-============================== */
+function openOrders(){
 
-function showSuccess(text){
+closeAll();
 
-const box=
-document.getElementById(
-"successMessage"
-);
+show("ordersDrawer");
 
-box.innerText=text;
-
-box.style.display="block";
-
-setTimeout(()=>{
-box.style.display="none";
-},3000);
-
-}
-
-function showError(text){
-
-const box=
-document.getElementById(
-"errorMessage"
-);
-
-box.innerText=
-"❌ "+text;
-
-box.style.display="block";
-
-setTimeout(()=>{
-box.style.display="none";
-},6000);
+loadOrders();
 
 }
 
 
-/* ==============================
-   ORDERS
-============================== */
+function closeOrders(){
+
+hide("ordersDrawer");
+
+}
+
+
+function openPayments(){
+
+closeAll();
+
+show("payDrawer");
+
+loadPayments();
+
+}
+
+
+function closePay(){
+
+hide("payDrawer");
+
+}
+
 
 async function loadOrders(){
 
-const box=
-document.getElementById(
-"ordersBody"
-);
-
-box.innerHTML=
-'<div class="empty">Loading orders...</div>';
-
-try{
-
-const {
-data,
-error
-}=
+let r=
 await db
 .from("orders")
 .select("*")
+.neq(
+"payment_status",
+"paid"
+)
 .order(
 "created_at",
 {ascending:false}
 );
 
-if(error)throw error;
+if(r.error){
 
-const orders=data||[];
+orderBody.innerHTML=
+'<div class="err">'+
+r.error.message+
+'</div>';
 
-let pending=0;
-let completed=0;
-let cancelled=0;
-let open=0;
+return;
 
-orders.forEach(o=>{
-
-const status=
-String(o.status||"pending")
-.toLowerCase();
-
-if(status==="pending")pending++;
-if(status==="completed")completed++;
-if(status==="cancelled")cancelled++;
-
-if(
-String(o.payment_status||"pending")
-!=="paid"
-){
-open++;
 }
+
+let a=
+r.data||[];
+
+let p=0;
+let c=0;
+let ca=0;
+
+
+a.forEach(o=>{
+
+let s=
+String(
+o.status||
+"pending"
+).toLowerCase();
+
+if(s==="pending")p++;
+
+if(s==="completed")c++;
+
+if(s==="cancelled")ca++;
 
 });
 
-document.getElementById(
-"totalOrders"
-).innerText=open;
 
-document.getElementById(
-"pendingOrders"
-).innerText=pending;
+all.textContent=
+a.length;
 
-document.getElementById(
-"completedOrders"
-).innerText=completed;
+pend.textContent=
+p;
 
-document.getElementById(
-"cancelledOrders"
-).innerText=cancelled;
+comp.textContent=
+c;
 
-document.getElementById(
-"orderCount"
-).innerText=
-open+" Open";
+canc.textContent=
+ca;
 
 
-if(!orders.length){
+if(!a.length){
 
-box.innerHTML=
-'<div class="empty">📭 No orders.</div>';
+orderBody.innerHTML=
+'<div class="empty">✅ No open orders</div>';
 
 return;
 
 }
 
 
-const grouped={};
+let g={};
 
-orders
-.filter(o=>
-String(o.payment_status||"pending")
-!=="paid"
-)
-.forEach(o=>{
 
-const table=
-String(o.table_number||"-");
+a.forEach(o=>{
 
-if(!grouped[table]){
-grouped[table]=[];
-}
+let t=
+String(
+o.table_number||"-"
+);
 
-grouped[table].push(o);
+(
+g[t]??=[]
+).push(o);
 
 });
 
 
-box.innerHTML="";
+orderBody.innerHTML="";
 
 
-Object.keys(grouped)
-.sort((a,b)=>Number(a)-Number(b))
-.forEach(table=>{
+Object.keys(g)
+.sort(
+(a,b)=>
+Number(a)-
+Number(b)
+)
+.forEach(t=>{
 
-const list=grouped[table];
-
-const total=
-list.reduce(
+let v=
+g[t].reduce(
 (s,o)=>
 s+
-(Number(o.total_amount)||0),
+Number(
+o.total_amount||0
+),
 0
 );
 
-let html="";
+let h="";
 
 
-list.forEach(order=>{
+g[t].forEach(o=>{
 
-let items=order.items;
-
-if(typeof items==="string"){
-
-try{
-items=JSON.parse(items);
-}catch(e){
-items=[];
-}
-
-}
+let it=
+typeof o.items==="string"
+?
+JSON.parse(o.items)
+:
+o.items;
 
 let lines="";
 
-if(Array.isArray(items)){
 
-items.forEach(item=>{
+(it||[])
+.forEach(i=>{
 
 lines+=`
+
 <div class="line">
 
 <span>
-${item.name}
+${i.name}
 ×
-${item.quantity||1}
+${i.quantity||1}
 </span>
 
 <span>
 ₹${
-Number(item.price)*
-Number(item.quantity||1)
+Number(i.price)*
+Number(i.quantity||1)
 }
 </span>
 
 </div>
+
 `;
 
 });
 
-}
 
-const isWaiter=
-order.order_source==="waiter";
+let w=
+o.order_source==="waiter";
 
-html+=`
 
-<div style="margin-top:10px">
+h+=`
 
-<strong>
-Order #${order.id}
-</strong>
+<div
+style="margin-top:10px"
+>
 
-<div>
+<b>
+Order #${o.id}
+</b>
 
-<span class="source ${
-isWaiter?"waiter":"customer"
-}">
+<br>
+
+<span
+class="
+badge
+${w?"waiter":"customer"}
+"
+>
+
 ${
-isWaiter
+w
 ?
 "🔵 WAITER • "+
-(order.waiter_name||"")
+(o.waiter_name||"")
 :
 "🟢 CUSTOMER"
 }
-</span>
 
-</div>
+</span>
 
 <div class="lines">
 
@@ -1940,82 +1310,55 @@ ${lines}
 </div>
 
 </div>
+
 `;
 
 });
 
 
-box.innerHTML+=`
+orderBody.innerHTML+=`
 
-<div class="table-card">
+<div class="tablecard">
 
-<div class="table-top">
+<div class="top">
 
 <div>
 
-<div class="table-title">
-🪑 Table ${table}
+<b>
+🪑 Table ${t}
+</b>
+
+<div
+style="
+font-size:11px;
+color:#777"
+>
+${g[t].length}
+open order(s)
 </div>
 
-<div class="table-sub">
-${list.length} open order(s)
+</div>
+
+<div class="bigtotal">
+₹${v}
 </div>
 
 </div>
 
-<div class="table-total">
-₹${total}
-</div>
+${h}
 
 </div>
 
-${html}
-
-</div>
 `;
 
 });
 
-}catch(error){
-
-box.innerHTML=`
-
-<div class="error-box">
-
-❌ Orders load nahi hue.
-
-<br><br>
-
-${error.message}
-
-</div>
-`;
-
 }
 
-}
-
-
-/* ==============================
-   PAYMENTS
-============================== */
 
 async function loadPayments(){
 
-const box=
-document.getElementById(
-"paymentsBody"
-);
-
-box.innerHTML=
-'<div class="empty">Loading payments...</div>';
-
-try{
-
-const {
-data,
-error
-}=
+let r=
 await db
 .from("orders")
 .select("*")
@@ -2024,294 +1367,258 @@ await db
 {ascending:false}
 );
 
-if(error)throw error;
+if(r.error){
 
-const orders=data||[];
+payBody.innerHTML=
+'<div class="err">'+
+r.error.message+
+'</div>';
+
+return;
+
+}
+
+
+let a=
+r.data||[];
 
 let pending=0;
-let paid=0;
-let openTables=new Set();
-let paidOrders=0;
+let paidSum=0;
+let pt=new Set();
+let po=0;
 
-orders.forEach(o=>{
 
-const amount=
-Number(o.total_amount)||0;
+a.forEach(o=>{
+
+let v=
+Number(
+o.total_amount||0
+);
+
 
 if(
-String(o.payment_status||"pending")
-==="paid"
+String(
+o.payment_status||
+"pending"
+)==="paid"
 ){
 
-paid+=amount;
-paidOrders++;
+paidSum+=v;
+po++;
 
 }else{
 
-pending+=amount;
+pending+=v;
 
-openTables.add(
-String(o.table_number||"-")
+pt.add(
+String(
+o.table_number||"-"
+)
 );
 
 }
 
 });
 
-document.getElementById(
-"payPending"
-).innerText=
+
+pp.textContent=
 "₹"+pending;
 
-document.getElementById(
-"payPaid"
-).innerText=
-"₹"+paid;
+paid.textContent=
+"₹"+paidSum;
 
-document.getElementById(
-"payTables"
-).innerText=
-openTables.size;
+tables.textContent=
+pt.size;
 
-document.getElementById(
-"payDoneOrders"
-).innerText=
-paidOrders;
-
-if(!orders.length){
-
-box.innerHTML=
-'<div class="empty">💳 No payment records.</div>';
-
-return;
-}
+paidOrders.textContent=
+po;
 
 
-const grouped={};
+let g={};
 
-orders.forEach(o=>{
 
-const t=
-String(o.table_number||"-");
+a.forEach(o=>{
 
-if(!grouped[t]){
-grouped[t]=[];
-}
+let t=
+String(
+o.table_number||"-"
+);
 
-grouped[t].push(o);
+(
+g[t]??=[]
+).push(o);
 
 });
 
 
-box.innerHTML="";
+payBody.innerHTML="";
 
 
-Object.keys(grouped)
-.sort((a,b)=>Number(a)-Number(b))
-.forEach(table=>{
+Object.keys(g)
+.forEach(t=>{
 
-const list=grouped[table];
-
-const pendingAmount=
-list
-.filter(o=>
-String(o.payment_status||"pending")
-!=="paid"
+let p=
+g[t]
+.filter(
+o=>
+String(
+o.payment_status||
+"pending"
+)!=="paid"
 )
 .reduce(
 (s,o)=>
 s+
-(Number(o.total_amount)||0),
+Number(
+o.total_amount||0
+),
 0
 );
 
-const paidAmount=
-list
-.filter(o=>
-String(o.payment_status||"pending")
-==="paid"
+let q=
+g[t]
+.filter(
+o=>
+String(
+o.payment_status||
+"pending"
+)==="paid"
 )
 .reduce(
 (s,o)=>
 s+
-(Number(o.total_amount)||0),
+Number(
+o.total_amount||0
+),
 0
 );
 
-if(
-pendingAmount===0 &&
-paidAmount===0
-){
 
-return;
+if(!p&&!q)return;
 
-}
 
-box.innerHTML+=`
+payBody.innerHTML+=`
 
-<div class="table-card">
+<div class="tablecard">
 
-<div class="table-top">
+<div class="top">
 
 <div>
 
-<div class="table-title">
-🪑 Table ${table}
-</div>
+<b>
+🪑 Table ${t}
+</b>
 
-<div class="table-sub">
-Pending ₹${pendingAmount}
+<div
+style="
+font-size:11px;
+color:#777"
+>
+Pending ₹${p}
 •
-Paid ₹${paidAmount}
+Paid ₹${q}
 </div>
 
 </div>
 
-<div class="table-total">
-₹${pendingAmount}
+<div class="bigtotal">
+₹${p}
 </div>
 
 </div>
 
 <button
-class="pay-btn"
-onclick="adminPay('${table}')"
+class="pay"
+onclick="adminPay('${t}')"
 >
 
-💳 ${
-pendingAmount>0
+${
+p
 ?
-"Clear Pending Bill"
+"💳 Clear Pending Bill"
 :
-"Already Paid"
+"✅ Already Paid"
 }
 
 </button>
 
 </div>
+
 `;
 
 });
 
-
-}catch(error){
-
-box.innerHTML=`
-
-<div class="error-box">
-
-❌ Payments load nahi hue.
-
-<br><br>
-
-${error.message}
-
-</div>
-`;
-
-}
-
 }
 
 
-async function adminPay(table){
+async function adminPay(t){
 
-const method=
+let m=
 prompt(
 "Payment method:\n\ncash\nupi\ncard"
 );
 
-if(!method)return;
-
-const clean=
-method
+let clean=
+(m||"")
 .toLowerCase()
 .trim();
 
 if(
-clean!=="cash" &&
-clean!=="upi" &&
-clean!=="card"
+![
+"cash",
+"upi",
+"card"
+]
+.includes(clean)
 ){
 
-alert(
-"Sirf cash, upi ya card."
+return alert(
+"cash, upi ya card use karo."
 );
-
-return;
 
 }
 
-const ok=
-confirm(
-"Table "+
-table+
-" ka pending bill clear karna hai?"
-);
 
-if(!ok)return;
-
-try{
-
-const {
-data,
-error
-}=
+let r=
 await db.rpc(
 "admin_collect_table_payment",
 {
 p_table_number:
-String(table),
+String(t),
 
 p_payment_method:
 clean
 }
 );
 
-if(error)throw error;
 
-if(
-!data||
-!data.success
-){
+if(r.error){
 
-throw new Error(
-data?.message||
-"Payment clear nahi hua."
+return alert(
+r.error.message
 );
 
 }
 
+
+if(
+!r.data.success
+){
+
+return alert(
+r.data.message
+);
+
+}
+
+
 alert(
-"✅ Payment complete.\n"+
-"Table: "+
-table+
-"\nAmount: ₹"+
-data.amount+
-"\nMethod: "+
-data.payment_method
+"✅ Payment complete\n"+
+"Amount: ₹"+
+r.data.amount
 );
 
 loadPayments();
-
-}catch(error){
-
-alert(
-"❌ Payment failed:\n"+
-error.message
-);
-
-}
-
-}
-
-
-function comingSoon(name){
-
-alert(
-name+
-" next step mein banayenge 😙🤟🏻"
-);
 
 }
 
