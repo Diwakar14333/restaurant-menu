@@ -1,475 +1,174 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>My Restaurant</title>
-
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-font-family:Arial,sans-serif;
-background:#f4f5f7;
-color:#222;
-padding-bottom:95px;
-}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f4f5f7;color:#222;padding-bottom:90px}
 button,input{font:inherit}
-
-.header{
-background:linear-gradient(135deg,#111,#292929);
-color:#fff;
-padding:22px 16px 18px;
-box-shadow:0 5px 20px rgba(0,0,0,.16);
-}
-.header-inner{
-max-width:1000px;
-margin:auto;
-text-align:center;
-}
-.restaurant-name{
-font-size:28px;
-font-weight:800;
-letter-spacing:.2px;
-}
-.table-badge{
-display:inline-flex;
-align-items:center;
-gap:7px;
-margin-top:9px;
-background:#ffffff14;
-border:1px solid #ffffff18;
-padding:8px 13px;
-border-radius:30px;
-font-size:13px;
-color:#ddd;
-}
-.header-actions{
-display:flex;
-justify-content:center;
-gap:8px;
-margin-top:14px;
-}
-.header-btn{
-border:1px solid #ffffff22;
-background:#fff;
-color:#111;
-padding:10px 14px;
-border-radius:10px;
-font-weight:700;
-cursor:pointer;
-}
-
-.container{
-max-width:1000px;
-margin:auto;
-padding:17px;
-}
-
-.status{
-text-align:center;
-font-size:12px;
-color:#777;
-margin-bottom:12px;
-}
-
-.search{
-width:100%;
-padding:15px;
-border:1px solid #ddd;
-border-radius:14px;
-font-size:15px;
-background:#fff;
-outline:none;
-box-shadow:0 2px 10px rgba(0,0,0,.03);
-}
-.search:focus{border-color:#111}
-
-.categories{
-display:flex;
-gap:8px;
-overflow-x:auto;
-padding:13px 0 17px;
-}
-.categories::-webkit-scrollbar{display:none}
-.category{
-white-space:nowrap;
-padding:9px 15px;
-background:#fff;
-border:1px solid #ddd;
-border-radius:22px;
-font-size:13px;
-cursor:pointer;
-}
-.category.active{
-background:#111;
-color:#fff;
-border-color:#111;
-}
-
-.food-card{
-background:#fff;
-border-radius:18px;
-overflow:hidden;
-margin-bottom:16px;
-box-shadow:0 4px 18px rgba(0,0,0,.07);
-}
-.food-image{
-width:100%;
-height:200px;
-object-fit:cover;
-display:block;
-background:#eee;
-}
-.food-content{padding:16px}
-.food-name{
-font-size:19px;
-font-weight:800;
-}
-.food-description{
-font-size:13px;
-color:#777;
-line-height:1.45;
-margin-top:7px;
-min-height:37px;
-}
-.food-bottom{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:10px;
-margin-top:15px;
-}
-.price{
-font-size:19px;
-font-weight:800;
-}
-.add-btn{
-border:0;
-background:#111;
-color:#fff;
-padding:10px 17px;
-border-radius:10px;
-font-weight:700;
-cursor:pointer;
-}
-
-.cart-bar{
-position:fixed;
-left:15px;
-right:15px;
-bottom:15px;
-z-index:1000;
-background:#111;
-color:#fff;
-padding:15px 17px;
-border-radius:16px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-box-shadow:0 8px 30px rgba(0,0,0,.28);
-cursor:pointer;
-}
-.cart-count{font-weight:800}
-.cart-total{font-weight:800}
-
-.overlay{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.48);
-backdrop-filter:blur(3px);
-display:none;
-z-index:2000;
-}
-.drawer{
-position:fixed;
-top:0;
-right:0;
-width:min(520px,95vw);
-height:100vh;
-background:#f5f5f5;
-transform:translateX(100%);
-transition:.3s ease;
-z-index:2001;
-display:flex;
-flex-direction:column;
-box-shadow:-12px 0 35px rgba(0,0,0,.2);
-}
+.header{background:linear-gradient(135deg,#111,#2d2d2d);color:#fff;padding:22px 16px;text-align:center}
+.name{font-size:28px;font-weight:800}
+.table{display:inline-block;margin-top:8px;padding:8px 13px;border-radius:20px;background:#ffffff16;border:1px solid #ffffff20;font-size:13px}
+.actions{margin-top:14px}
+.actions button{border:0;background:#fff;color:#111;padding:10px 14px;border-radius:10px;font-weight:700}
+.wrap{max-width:1000px;margin:auto;padding:16px}
+.status{text-align:center;color:#777;font-size:12px;margin-bottom:12px}
+.search{width:100%;padding:14px;border:1px solid #ddd;border-radius:14px}
+.cats{display:flex;gap:8px;overflow:auto;padding:13px 0}
+.cat{white-space:nowrap;border:1px solid #ddd;background:#fff;border-radius:20px;padding:9px 14px}
+.cat.active{background:#111;color:#fff}
+.food{background:#fff;border-radius:18px;overflow:hidden;margin-bottom:15px;box-shadow:0 4px 16px #0000000c}
+.food img{width:100%;height:200px;object-fit:cover}
+.body{padding:15px}
+.bottom{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+.add,.place,.qty button{border:0;background:#111;color:#fff;border-radius:9px;padding:10px 15px}
+.price{font-weight:800;font-size:18px}
+.cart{position:fixed;left:15px;right:15px;bottom:15px;background:#111;color:#fff;padding:15px;border-radius:15px;display:flex;justify-content:space-between;z-index:50;box-shadow:0 8px 25px #0004}
+.overlay{position:fixed;inset:0;background:#0007;display:none;z-index:99}
+.drawer{position:fixed;right:0;top:0;width:min(520px,95vw);height:100vh;background:#f4f5f7;transform:translateX(100%);transition:.3s;z-index:100;display:flex;flex-direction:column}
 .drawer.open{transform:translateX(0)}
-.drawer-head{
-background:#111;
-color:#fff;
-padding:18px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-.drawer-head h2{font-size:20px}
-.drawer-head p{
-font-size:11px;
-color:#aaa;
-margin-top:4px;
-}
-.close{
-border:0;
-width:38px;
-height:38px;
-border-radius:50%;
-background:#fff;
-color:#111;
-font-size:22px;
-cursor:pointer;
-}
-.drawer-body{
-flex:1;
-overflow:auto;
-padding:15px;
-}
-.cart-item,
-.order-card{
-background:#fff;
-border-radius:14px;
-padding:14px;
-margin-bottom:10px;
-box-shadow:0 2px 10px rgba(0,0,0,.05);
-}
-.cart-item{
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:10px;
-}
-.qty{
-display:flex;
-align-items:center;
-gap:8px;
-}
-.qty button{
-width:30px;
-height:30px;
-border:0;
-border-radius:8px;
-background:#111;
-color:#fff;
-cursor:pointer;
-}
-.cart-line{
-font-size:12px;
-color:#777;
-margin-top:5px;
-}
-.drawer-foot{
-background:#fff;
-padding:16px;
-border-top:1px solid #eee;
-}
-.total-row{
-display:flex;
-justify-content:space-between;
-font-size:19px;
-font-weight:800;
-}
-.place-btn{
-width:100%;
-border:0;
-background:#198754;
-color:#fff;
-padding:14px;
-border-radius:11px;
-margin-top:12px;
-font-weight:800;
-cursor:pointer;
-}
-
-.bill-box{
-background:linear-gradient(135deg,#111,#292929);
-color:#fff;
-padding:16px;
-border-radius:15px;
-margin-bottom:13px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-.bill-box small{
-font-size:10px;
-color:#aaa;
-display:block;
-}
-.bill-box strong{font-size:24px}
-.order-top{
-display:flex;
-justify-content:space-between;
-gap:10px;
-align-items:flex-start;
-}
-.order-id{
-font-size:13px;
-font-weight:800;
-}
-.order-status{
-font-size:11px;
-color:#777;
-margin-top:4px;
-}
-.source{
-padding:6px 9px;
-border-radius:20px;
-font-size:10px;
-font-weight:800;
-white-space:nowrap;
-}
-.customer{
-background:#d1e7dd;
-color:#0f5132;
-}
-.waiter{
-background:#cff4fc;
-color:#055160;
-}
-.order-items{
-border-top:1px solid #eee;
-border-bottom:1px solid #eee;
-padding:9px 0;
-margin:10px 0;
-}
-.order-line{
-display:flex;
-justify-content:space-between;
-gap:10px;
-font-size:13px;
-padding:4px 0;
-}
-.order-total{
-display:flex;
-justify-content:space-between;
-font-weight:800;
-}
-.order-time{
-font-size:10px;
-color:#888;
-margin-top:8px;
-}
-
-.empty,.loading{
-padding:35px 10px;
-text-align:center;
-color:#777;
-}
-.error-box{
-background:#f8d7da;
-color:#842029;
-padding:14px;
-border-radius:10px;
-line-height:1.5;
-}
-
-@media(max-width:600px){
-.food-image{height:190px}
-.drawer{width:100vw}
-}
+.head{background:#111;color:#fff;padding:16px;display:flex;justify-content:space-between}
+.close{border:0;border-radius:50%;width:36px;height:36px}
+.drawerbody{flex:1;overflow:auto;padding:15px}
+.item{background:#fff;padding:13px;border-radius:12px;margin-bottom:10px;display:flex;justify-content:space-between;gap:10px}
+.qty{display:flex;gap:8px;align-items:center}
+.qty button{width:30px;height:30px;padding:0}
+.foot{background:#fff;padding:15px}
+.row{display:flex;justify-content:space-between;font-weight:800}
+.place{width:100%;margin-top:10px;background:#198754}
+.source{display:inline-block;padding:5px 8px;border-radius:18px;font-size:10px;font-weight:800}
+.customer{background:#d1e7dd;color:#0f5132}
+.waiter{background:#cff4fc;color:#055160}
+.line{display:flex;justify-content:space-between;font-size:13px;padding:4px 0}
+.card{background:#fff;padding:14px;border-radius:14px;margin-bottom:10px}
+.empty{padding:30px;text-align:center;color:#777}
+.error{background:#f8d7da;color:#842029;padding:12px;border-radius:10px}
+@media(max-width:600px){.drawer{width:100vw}}
 </style>
 </head>
-
 <body>
 
 <div class="header">
-<div class="header-inner">
-
-<div class="restaurant-name">🍽️ My Restaurant</div>
-
-<div class="table-badge">
-🪑 <span id="tableNumber">Table No. 5</span>
-</div>
-
-<div class="header-actions">
-<button class="header-btn" onclick="openOrders()">📋 My Orders</button>
-</div>
-
+<div class="name">🍽️ My Restaurant</div>
+<div class="table">🪑 <span id="tableNo">Table 5</span></div>
+<div class="actions">
+<button onclick="openOrders()">📋 My Orders</button>
 </div>
 </div>
 
-<div class="container">
-
-<div class="status" id="status">
-🔄 Starting website...
-</div>
+<div class="wrap">
+<div id="status" class="status">Loading...</div>
 
 <input
-id="searchInput"
+id="search"
 class="search"
 placeholder="🔍 Search food..."
 >
 
-<div id="categories" class="categories"></div>
+<div id="cats" class="cats"></div>
 
-<div id="foodList">
-<div class="loading">🍽️ Loading menu...</div>
+<div id="menu"></div>
 </div>
 
+<div id="cartBar" class="cart">
+<b id="cartCount">🛒 Cart (0)</b>
+<b id="cartTotal">₹0</b>
 </div>
 
-
-<!-- CART -->
-
-<div id="cartBar" class="cart-bar" onclick="openCart()">
-<div class="cart-count" id="cartCount">🛒 Cart (0)</div>
-<div class="cart-total" id="cartTotal">₹0</div>
-</div>
-
-<div id="overlay" class="overlay" onclick="closeDrawers()"></div>
-
+<div
+id="overlay"
+class="overlay"
+onclick="closeAll()"
+></div>
 
 <div id="cartDrawer" class="drawer">
 
-<div class="drawer-head">
+<div class="head">
+
 <div>
-<h2>🛒 Your Cart</h2>
-<p>Review your order</p>
-</div>
-<button class="close" onclick="closeCart()">×</button>
+<b>🛒 Your Cart</b>
+<small><br>Current table order</small>
 </div>
 
-<div id="cartList" class="drawer-body"></div>
+<button
+class="close"
+onclick="closeCart()"
+>
+×
+</button>
 
-<div class="drawer-foot">
-<div class="total-row">
+</div>
+
+<div
+id="cartList"
+class="drawerbody"
+></div>
+
+<div class="foot">
+
+<div class="row">
 <span>Total</span>
-<span id="drawerCartTotal">₹0</span>
+<span id="drawerTotal">₹0</span>
 </div>
 
-<button class="place-btn" onclick="placeOrder()">
+<button
+class="place"
+onclick="placeOrder()"
+>
 🍽️ Place Order
 </button>
-</div>
 
 </div>
 
+</div>
 
-<!-- MY ORDERS -->
 
 <div id="ordersDrawer" class="drawer">
 
-<div class="drawer-head">
+<div class="head">
+
 <div>
-<h2>📋 My Orders</h2>
-<p id="ordersSubtitle">Current table session</p>
-</div>
-<button class="close" onclick="closeOrders()">×</button>
+<b>📋 My Orders</b>
+<small id="sub"><br>Current table session</small>
 </div>
 
-<div class="drawer-body">
+<button
+class="close"
+onclick="closeOrders()"
+>
+×
+</button>
 
-<div class="bill-box">
-<div>
-<small>CURRENT TABLE BILL</small>
-<div id="orderCountText">0 active orders</div>
-</div>
-<strong id="currentBill">₹0</strong>
 </div>
 
-<div id="myOrdersList">
-<div class="loading">Loading orders...</div>
+<div class="drawerbody">
+
+<div
+class="card"
+style="background:#111;color:#fff"
+>
+
+<small>
+CURRENT BILL
+</small>
+
+<div class="row">
+
+<span id="ocount">
+0 orders
+</span>
+
+<span id="bill">
+₹0
+</span>
+
 </div>
+
+</div>
+
+<div id="orders"></div>
 
 </div>
 
@@ -480,77 +179,270 @@ placeholder="🔍 Search food..."
 
 <script>
 
-const SUPABASE_URL="https://jxjrcjmrkhknltwvzzvr.supabase.co";
-const SUPABASE_KEY="sb_publishable__Pg5UNoizrSpZB3fRvbARw_fNhHGjvl";
+const U="https://jxjrcjmrkhknltwvzzvr.supabase.co";
+const K="sb_publishable__Pg5UNoizrSpZB3fRvbARw_fNhHGjvl";
 
-const db=window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
+const db=
+supabase.createClient(U,K);
+
+let table=
+new URLSearchParams(
+location.search
+).get("table") || "5";
+
+let sessionId=null;
+let menu=[];
+let cart=[];
+let cat="All";
+let timer=null;
+
+document.getElementById(
+"tableNo"
+).textContent=
+"Table "+table;
+
+
+function status(t){
+document.getElementById("status").textContent=t;
+}
+
+
+function money(n){
+return "₹"+Number(n||0);
+}
+
+
+async function getSession(){
+
+const {
+data,
+error
+}=
+await db.rpc(
+"get_or_create_table_session",
+{
+p_table_number:String(table)
+}
 );
 
-let menuItems=[];
-let cart=[];
-let selectedCategory="All";
-let currentTable="5";
-let orderTimer=null;
+if(error)throw error;
 
-const statusBox=document.getElementById("status");
+sessionId=
+data.id;
 
-function setStatus(text){
-statusBox.innerText=text;
-}
-
-function loadTableNumber(){
-
-const table=new URLSearchParams(
-window.location.search
-).get("table");
-
-if(table){
-currentTable=table;
-document.getElementById("tableNumber").innerText=
-"Table No. "+table;
-}
+return data;
 
 }
 
-function displayMenu(items){
 
-const box=document.getElementById("foodList");
+async function loadMenu(){
 
-box.innerHTML="";
+try{
 
-if(!items.length){
-box.innerHTML='<div class="empty">😕 No food found.</div>';
+await getSession();
+
+const {
+data,
+error
+}=
+await db
+.from("menu_items")
+.select("*")
+.order(
+"id",
+{ascending:true}
+);
+
+if(error)throw error;
+
+menu=
+(data||[]).map(x=>({
+
+id:x.id,
+name:x.name,
+price:Number(x.price),
+category:x.category||"Other",
+desc:x.description||"",
+image:x.image_url||
+"https://via.placeholder.com/800x500?text=Food"
+
+}));
+
+cats();
+
+render(menu);
+
+status("✅ Ready");
+
+}catch(e){
+
+status("❌ Error");
+
+document.getElementById(
+"menu"
+).innerHTML=
+'<div class="error">'+
+e.message+
+'</div>';
+
+}
+
+}
+
+
+function cats(){
+
+const c=
+document.getElementById("cats");
+
+c.innerHTML="";
+
+
+let all=
+document.createElement("button");
+
+all.className=
+"cat active";
+
+all.textContent=
+"All";
+
+all.onclick=
+()=>{
+filter("All",all)
+};
+
+c.appendChild(all);
+
+
+[
+...new Set(
+menu.map(x=>x.category)
+)
+]
+.forEach(x=>{
+
+let b=
+document.createElement("button");
+
+b.className="cat";
+
+b.textContent=x;
+
+b.onclick=
+()=>{
+filter(x,b)
+};
+
+c.appendChild(b);
+
+});
+
+}
+
+
+function filter(
+x,
+b
+){
+
+cat=x;
+
+document
+.querySelectorAll(".cat")
+.forEach(y=>
+y.classList.remove(
+"active"
+)
+);
+
+b.classList.add("active");
+
+search();
+
+}
+
+
+document.getElementById(
+"search"
+).oninput=
+search;
+
+
+function search(){
+
+let q=
+document.getElementById(
+"search"
+).value
+.toLowerCase()
+.trim();
+
+let a=
+menu.filter(x=>
+x.name
+.toLowerCase()
+.includes(q) &&
+(
+cat==="All" ||
+x.category===cat
+)
+);
+
+render(a);
+
+}
+
+
+function render(a){
+
+const m=
+document.getElementById("menu");
+
+m.innerHTML="";
+
+if(!a.length){
+
+m.innerHTML=
+'<div class="empty">😕 No food found.</div>';
+
 return;
+
 }
 
-items.forEach(item=>{
+a.forEach(x=>{
 
-box.innerHTML+=`
+m.innerHTML+=`
 
-<div class="food-card">
+<div class="food">
 
 <img
-class="food-image"
-src="${item.image}"
-alt="${item.name}"
+src="${x.image}"
 onerror="this.src='https://via.placeholder.com/800x500?text=Food'"
 >
 
-<div class="food-content">
+<div class="body">
 
-<div class="food-name">${item.name}</div>
+<b>${x.name}</b>
 
-<div class="food-description">${item.description}</div>
+<div
+style="
+color:#777;
+font-size:13px;
+margin-top:6px"
+>
+${x.desc}
+</div>
 
-<div class="food-bottom">
+<div class="bottom">
 
-<div class="price">₹${item.price}</div>
+<span class="price">
+₹${x.price}
+</span>
 
 <button
-class="add-btn"
-onclick="addToCart(${item.id})"
+class="add"
+onclick="add(${x.id})"
 >
 + Add
 </button>
@@ -563,193 +455,113 @@ onclick="addToCart(${item.id})"
 `;
 
 });
-}
-
-function createCategories(){
-
-const box=document.getElementById("categories");
-
-box.innerHTML="";
-
-const all=document.createElement("div");
-
-all.className="category active";
-all.innerText="All";
-all.onclick=()=>filterCategory("All",all);
-
-box.appendChild(all);
-
-[
-...new Set(
-menuItems.map(x=>x.category).filter(Boolean)
-)
-].forEach(category=>{
-
-const b=document.createElement("div");
-
-b.className="category";
-b.innerText=category;
-b.onclick=()=>filterCategory(category,b);
-
-box.appendChild(b);
-
-});
-}
-
-function filterCategory(category,button){
-
-selectedCategory=category;
-
-document.querySelectorAll(".category")
-.forEach(x=>x.classList.remove("active"));
-
-button.classList.add("active");
-
-searchFood();
 
 }
 
-function searchFood(){
 
-const text=document.getElementById("searchInput")
-.value.toLowerCase().trim();
+function add(id){
 
-let filtered=menuItems.filter(x=>
-x.name.toLowerCase().includes(text)
+let x=
+menu.find(
+y=>y.id===id
 );
 
-if(selectedCategory!=="All"){
-filtered=filtered.filter(x=>
-x.category===selectedCategory
+let e=
+cart.find(
+y=>y.id===id
 );
-}
 
-displayMenu(filtered);
+if(e){
 
-}
+e.q++;
 
-async function loadMenu(){
+}else{
 
-setStatus("🔄 Loading menu...");
+cart.push({
 
-try{
-
-const {data,error}=await db
-.from("menu_items")
-.select("*")
-.order("id",{ascending:true});
-
-if(error)throw error;
-
-menuItems=(data||[]).map(x=>({
 id:x.id,
 name:x.name,
-price:Number(x.price),
-category:x.category||"Other",
-description:x.description||"",
-image:x.image_url||
-"https://via.placeholder.com/800x500?text=Food"
-}));
+price:x.price,
+q:1
 
-createCategories();
-displayMenu(menuItems);
-
-setStatus("✅ Menu ready");
-
-}catch(error){
-
-setStatus("❌ Menu error");
-
-document.getElementById("foodList").innerHTML=`
-<div class="error-box">
-❌ Menu load nahi hua.
-<br><br>
-${error.message}
-</div>`;
-}
-}
-
-function addToCart(id){
-
-const item=menuItems.find(x=>x.id===id);
-
-if(!item)return;
-
-const old=cart.find(x=>x.id===id);
-
-if(old){
-old.quantity++;
-}else{
-cart.push({
-id:item.id,
-name:item.name,
-price:item.price,
-quantity:1
 });
+
 }
 
 renderCart();
 
 }
 
-function changeQty(index,change){
 
-if(!cart[index])return;
+function change(
+i,
+d
+){
 
-cart[index].quantity+=change;
+cart[i].q+=d;
 
-if(cart[index].quantity<=0){
-cart.splice(index,1);
+if(cart[i].q<=0){
+cart.splice(i,1);
 }
 
 renderCart();
 
 }
+
 
 function renderCart(){
 
-const box=document.getElementById("cartList");
+let n=0;
+let t=0;
 
-let total=0;
-let count=0;
+const b=
+document.getElementById(
+"cartList"
+);
 
-if(!cart.length){
+b.innerHTML="";
 
-box.innerHTML=
-'<div class="empty">🛒 Cart empty hai.</div>';
+cart.forEach(
+(x,i)=>{
 
-}else{
+n+=x.q;
+t+=x.price*x.q;
 
-box.innerHTML="";
+b.innerHTML+=`
 
-cart.forEach((item,index)=>{
-
-const itemTotal=
-item.price*item.quantity;
-
-total+=itemTotal;
-count+=item.quantity;
-
-box.innerHTML+=`
-
-<div class="cart-item">
+<div class="item">
 
 <div>
-<strong>${item.name}</strong>
 
-<div class="cart-line">
-₹${item.price} × ${item.quantity}
-= ₹${itemTotal}
+<b>${x.name}</b>
+
+<div
+style="
+color:#777;
+font-size:12px"
+>
+${x.q}
+×
+₹${x.price}
 </div>
+
 </div>
 
 <div class="qty">
 
-<button onclick="changeQty(${index},-1)">−</button>
+<button
+onclick="change(${i},-1)"
+>
+−
+</button>
 
-<span>${item.quantity}</span>
+<span>${x.q}</span>
 
-<button onclick="changeQty(${index},1)">+</button>
+<button
+onclick="change(${i},1)"
+>
++
+</button>
 
 </div>
 
@@ -758,224 +570,407 @@ box.innerHTML+=`
 
 });
 
-}
 
-document.getElementById("cartCount").innerText=
-"🛒 Cart ("+count+")";
+if(!cart.length){
 
-document.getElementById("cartTotal").innerText=
-"₹"+total;
-
-document.getElementById("drawerCartTotal").innerText=
-"₹"+total;
-
-document.getElementById("cartBar").style.display=
-count?"flex":"none";
+b.innerHTML=
+'<div class="empty">🛒 Cart empty</div>';
 
 }
+
+document.getElementById(
+"cartCount"
+).textContent=
+"🛒 Cart ("+n+")";
+
+document.getElementById(
+"cartTotal"
+).textContent=
+money(t);
+
+document.getElementById(
+"drawerTotal"
+).textContent=
+money(t);
+
+document.getElementById(
+"cartBar"
+).style.display=
+n?"flex":"none";
+
+}
+
 
 function openCart(){
 
 closeOrders();
 
-document.getElementById("cartDrawer").classList.add("open");
-document.getElementById("overlay").style.display="block";
+document.getElementById(
+"cartDrawer"
+).classList.add("open");
+
+document.getElementById(
+"overlay"
+).style.display=
+"block";
 
 }
+
 
 function closeCart(){
 
-document.getElementById("cartDrawer").classList.remove("open");
+document.getElementById(
+"cartDrawer"
+).classList.remove("open");
 
 if(
-!document.getElementById("ordersDrawer").classList.contains("open")
+!document
+.getElementById(
+"ordersDrawer"
+)
+.classList.contains("open")
 ){
-document.getElementById("overlay").style.display="none";
+
+document.getElementById(
+"overlay"
+).style.display=
+"none";
+
 }
 
 }
+
 
 async function placeOrder(){
 
 if(!cart.length){
-alert("Cart empty hai bhai 😅");
-return;
+
+return alert(
+"Cart empty hai."
+);
+
 }
-
-let total=0;
-
-cart.forEach(x=>{
-total+=x.price*x.quantity;
-});
-
-const items=cart.map(x=>({
-id:x.id,
-name:x.name,
-price:x.price,
-quantity:x.quantity
-}));
-
-setStatus("🔄 Placing order...");
 
 try{
 
-const {error}=await db.rpc(
+if(!sessionId){
+
+await getSession();
+
+}
+
+let total=
+cart.reduce(
+(s,x)=>
+s+x.price*x.q,
+0
+);
+
+let items=
+cart.map(x=>({
+
+id:x.id,
+name:x.name,
+price:x.price,
+quantity:x.q
+
+}));
+
+const {
+data,
+error
+}=
+await db.rpc(
 "create_customer_order",
 {
-p_table_number:currentTable,
-p_items:items,
-p_total_amount:total
+p_table_number:
+String(table),
+
+p_items:
+items,
+
+p_total_amount:
+total,
+
+p_session_id:
+sessionId
+
 }
 );
 
 if(error)throw error;
 
 cart=[];
+
 renderCart();
+
 closeCart();
 
-alert("✅ Order placed successfully! 🍽️");
-
-setStatus("✅ Order placed");
-
-}catch(error){
-
 alert(
-"❌ Order place nahi hua:\n"+
-error.message
+"✅ Order #"+
+data.id+
+" placed!"
 );
 
-setStatus("❌ Order failed");
+}catch(e){
+
+alert(
+"❌ "+
+e.message
+);
 
 }
 
 }
 
-async function loadMyOrders(){
 
-const box=document.getElementById("myOrdersList");
+async function openOrders(){
 
-box.innerHTML=
-'<div class="loading">Loading orders...</div>';
+closeCart();
+
+document
+.getElementById(
+"ordersDrawer"
+)
+.classList.add("open");
+
+document
+.getElementById(
+"overlay"
+)
+.style.display=
+"block";
+
+await loadOrders();
+
+clearInterval(timer);
+
+timer=
+setInterval(
+loadOrders,
+8000
+);
+
+}
+
+
+function closeOrders(){
+
+document
+.getElementById(
+"ordersDrawer"
+)
+.classList.remove("open");
+
+if(
+!document
+.getElementById(
+"cartDrawer"
+)
+.classList.contains("open")
+){
+
+document.getElementById(
+"overlay"
+).style.display=
+"none";
+
+}
+
+clearInterval(timer);
+
+}
+
+
+function closeAll(){
+
+closeCart();
+
+closeOrders();
+
+document.getElementById(
+"overlay"
+).style.display=
+"none";
+
+}
+
+
+async function loadOrders(){
+
+const b=
+document.getElementById(
+"orders"
+);
 
 try{
 
-const {data,error}=await db
+const {
+data,
+error
+}=
+await db
 .from("orders")
 .select("*")
-.eq("table_number",String(currentTable))
-.neq("payment_status","paid")
-.order("created_at",{ascending:false});
+.eq(
+"session_id",
+sessionId
+)
+.neq(
+"payment_status",
+"paid"
+)
+.order(
+"created_at",
+{ascending:false}
+);
 
 if(error)throw error;
 
-const orders=data||[];
+let a=data||[];
 
-let bill=0;
+let t=
+a.reduce(
+(s,o)=>
+s+
+Number(o.total_amount||0),
+0
+);
 
-orders.forEach(x=>{
-bill+=Number(x.total_amount)||0;
-});
+document.getElementById(
+"bill"
+).textContent=
+money(t);
 
-document.getElementById("currentBill").innerText=
-"₹"+bill;
+document.getElementById(
+"ocount"
+).textContent=
+a.length+
+" active orders";
 
-document.getElementById("orderCountText").innerText=
-orders.length+
-" active order"+
-(orders.length===1?"":"s");
+document.getElementById(
+"sub"
+).innerHTML=
+"<br>Table "+
+table+
+" • Current session";
 
-document.getElementById("ordersSubtitle").innerText=
-"Table "+currentTable+" • Current session";
 
-if(!orders.length){
+if(!a.length){
 
-box.innerHTML=`
+b.innerHTML=
+`
 <div class="empty">
-✅ No active orders.<br><br>
-Payment complete hone ke baad session clear ho gaya.
-</div>`;
+✅ No active orders
+</div>
+`;
+
 return;
+
 }
 
-box.innerHTML="";
+b.innerHTML="";
 
-orders.forEach(order=>{
 
-let items=order.items;
+a.forEach(o=>{
 
-if(typeof items==="string"){
-try{items=JSON.parse(items)}catch(e){items=[]}
-}
+let items=
+typeof o.items==="string"
+?
+JSON.parse(o.items)
+:
+o.items;
 
 let lines="";
 
-if(Array.isArray(items)){
-
-items.forEach(item=>{
+(items||[]).forEach(i=>{
 
 lines+=`
-<div class="order-line">
-<span>${item.name} × ${item.quantity||1}</span>
-<span>₹${Number(item.price)*Number(item.quantity||1)}</span>
-</div>`;
+
+<div class="line">
+
+<span>
+${i.name}
+×
+${i.quantity||1}
+</span>
+
+<span>
+${money(
+Number(i.price)*
+Number(i.quantity||1)
+)}
+</span>
+
+</div>
+
+`;
+
 });
 
+let w=
+o.order_source==="waiter";
+
+b.innerHTML+=`
+
+<div class="card">
+
+<div
+style="
+display:flex;
+justify-content:space-between"
+>
+
+<b>
+Order #${o.id}
+</b>
+
+<span
+class="source ${
+w?"waiter":"customer"
+}"
+>
+
+${
+w
+?
+"🔵 WAITER • "+
+(o.waiter_name||"")
+:
+"🟢 CUSTOMER"
 }
 
-const isWaiter=
-order.order_source==="waiter";
-
-const sourceClass=
-isWaiter?"waiter":"customer";
-
-const sourceText=
-isWaiter
-?
-"🔵 WAITER"+(order.waiter_name?
-" • "+order.waiter_name:"")
-:
-"🟢 CUSTOMER";
-
-box.innerHTML+=`
-
-<div class="order-card">
-
-<div class="order-top">
-
-<div>
-
-<div class="order-id">
-Order #${order.id}
-</div>
-
-<div class="order-status">
-${String(order.status||"pending").toUpperCase()}
-</div>
+</span>
 
 </div>
 
-<div class="source ${sourceClass}">
-${sourceText}
+<div
+style="
+color:#777;
+font-size:11px;
+margin-top:4px"
+>
+${String(
+o.status||"pending"
+).toUpperCase()}
 </div>
 
-</div>
-
-<div class="order-items">
+<div style="margin-top:9px">
 ${lines}
 </div>
 
-<div class="order-total">
-<span>Total</span>
-<span>₹${order.total_amount||0}</span>
-</div>
+<hr>
 
-<div class="order-time">
-🕒 ${
-order.created_at
-?new Date(order.created_at).toLocaleString("en-IN")
-:""
-}
+<div class="row">
+
+<span>
+Total
+</span>
+
+<span>
+${money(o.total_amount)}
+</span>
+
 </div>
 
 </div>
@@ -983,61 +978,21 @@ order.created_at
 
 });
 
-}catch(error){
+}catch(e){
 
-box.innerHTML=`
-<div class="error-box">
-❌ My Orders load nahi hua.
-<br><br>
-${error.message}
-</div>`;
-}
+b.innerHTML=
+'<div class="error">'+
+e.message+
+'</div>';
 
 }
 
-function openOrders(){
-
-closeCart();
-
-document.getElementById("ordersDrawer").classList.add("open");
-document.getElementById("overlay").style.display="block";
-
-loadMyOrders();
-
-clearInterval(orderTimer);
-orderTimer=setInterval(loadMyOrders,8000);
-
 }
 
-function closeOrders(){
 
-document.getElementById("ordersDrawer").classList.remove("open");
-
-if(
-!document.getElementById("cartDrawer").classList.contains("open")
-){
-document.getElementById("overlay").style.display="none";
-}
-
-clearInterval(orderTimer);
-
-}
-
-function closeDrawers(){
-
-closeCart();
-closeOrders();
-
-document.getElementById("overlay").style.display="none";
-
-}
-
-document.getElementById("searchInput")
-.addEventListener("input",searchFood);
-
-loadTableNumber();
-renderCart();
 loadMenu();
+
+renderCart();
 
 </script>
 
