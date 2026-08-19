@@ -1,26 +1,1000 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>My Restaurant</title><style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f5f7;color:#222;padding-bottom:90px}button,input{font:inherit}.header{background:linear-gradient(135deg,#111,#2d2d2d);color:#fff;padding:22px 16px;text-align:center}.name{font-size:28px;font-weight:800}.table{display:inline-block;margin-top:8px;padding:8px 13px;border-radius:20px;background:#ffffff16;border:1px solid #ffffff20;font-size:13px}.actions{margin-top:14px}.actions button{border:0;background:#fff;color:#111;padding:10px 14px;border-radius:10px;font-weight:700}.wrap{max-width:1000px;margin:auto;padding:16px}.status{text-align:center;color:#777;font-size:12px;margin-bottom:12px}.search{width:100%;padding:14px;border:1px solid #ddd;border-radius:14px}.cats{display:flex;gap:8px;overflow:auto;padding:13px 0}.cat{white-space:nowrap;border:1px solid #ddd;background:#fff;border-radius:20px;padding:9px 14px}.cat.active{background:#111;color:#fff}.food{background:#fff;border-radius:18px;overflow:hidden;margin-bottom:15px;box-shadow:0 4px 16px #0000000c}.food img{width:100%;height:200px;object-fit:cover}.body{padding:15px}.bottom{display:flex;justify-content:space-between;align-items:center;margin-top:14px}.add,.place,.qty button{border:0;background:#111;color:#fff;border-radius:9px;padding:10px 15px}.price{font-weight:800;font-size:18px}.cart{position:fixed;left:15px;right:15px;bottom:15px;background:#111;color:#fff;padding:15px;border-radius:15px;display:flex;justify-content:space-between;z-index:50;box-shadow:0 8px 25px #0004}.overlay{position:fixed;inset:0;background:#0007;display:none;z-index:99}.drawer{position:fixed;right:0;top:0;width:min(520px,95vw);height:100vh;background:#f4f5f7;transform:translateX(100%);transition:.3s;z-index:100;display:flex;flex-direction:column}.drawer.open{transform:translateX(0)}.head{background:#111;color:#fff;padding:16px;display:flex;justify-content:space-between}.close{border:0;border-radius:50%;width:36px;height:36px}.drawerbody{flex:1;overflow:auto;padding:15px}.item{background:#fff;padding:13px;border-radius:12px;margin-bottom:10px;display:flex;justify-content:space-between;gap:10px}.qty{display:flex;gap:8px;align-items:center}.qty button{width:30px;height:30px;padding:0}.foot{background:#fff;padding:15px}.row{display:flex;justify-content:space-between;font-weight:800}.place{width:100%;margin-top:10px;background:#198754}.source{display:inline-block;padding:5px 8px;border-radius:18px;font-size:10px;font-weight:800}.customer{background:#d1e7dd;color:#0f5132}.waiter{background:#cff4fc;color:#055160}.line{display:flex;justify-content:space-between;font-size:13px;padding:4px 0}.card{background:#fff;padding:14px;border-radius:14px;margin-bottom:10px}.empty{padding:30px;text-align:center;color:#777}.error{background:#f8d7da;color:#842029;padding:12px;border-radius:10px}@media(max-width:600px){.drawer{width:100vw}}
-</style></head><body>
-<div class="header"><div class="name">🍽️ My Restaurant</div><div class="table">🪑 <span id="tableNo">Table 5</span></div><div class="actions"><button onclick="openOrders()">📋 My Orders</button></div></div>
-<div class="wrap"><div id="status" class="status">Loading...</div><input id="search" class="search" placeholder="🔍 Search food..."><div id="cats" class="cats"></div><div id="menu"></div></div>
-<div id="cartBar" class="cart"><b id="cartCount">🛒 Cart (0)</b><b id="cartTotal">₹0</b></div><div id="overlay" class="overlay" onclick="closeAll()"></div>
-<div id="cartDrawer" class="drawer"><div class="head"><div><b>🛒 Your Cart</b><small><br>Current table order</small></div><button class="close" onclick="closeCart()">×</button></div><div id="cartList" class="drawerbody"></div><div class="foot"><div class="row"><span>Total</span><span id="drawerTotal">₹0</span></div><button class="place" onclick="placeOrder()">🍽️ Place Order</button></div></div>
-<div id="ordersDrawer" class="drawer"><div class="head"><div><b>📋 My Orders</b><small id="sub"><br>Current table session</small></div><button class="close" onclick="closeOrders()">×</button></div><div class="drawerbody"><div class="card" style="background:#111;color:#fff"><small>CURRENT BILL</small><div class="row"><span id="ocount">0 orders</span><span id="bill">₹0</span></div></div><div id="orders"></div></div></div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
-const U='https://jxjrcjmrkhknltwvzzvr.supabase.co',K='sb_publishable__Pg5UNoizrSpZB3fRvbARw_fNhHGjvl';const db=supabase.createClient(U,K);let table=new URLSearchParams(location.search).get('table')||'5',sessionId=null,menu=[],cart=[],cat='All',timer=null;document.getElementById('tableNo').textContent='Table '+table;
-function status(t){document.getElementById('status').textContent=t}function money(n){return'₹'+Number(n||0)}
-async function getSession(){const {data,error}=await db.rpc('get_or_create_table_session',{p_table_number:String(table)});if(error)throw error;sessionId=data.id;return data}
-async function loadMenu(){try{await getSession();const {data,error}=await db.from('menu_items').select('*').order('id',{ascending:true});if(error)throw error;menu=(data||[]).map(x=>({id:x.id,name:x.name,price:Number(x.price),category:x.category||'Other',desc:x.description||'',image:x.image_url||'https://via.placeholder.com/800x500?text=Food'}));cats();render(menu);status('✅ Ready');}catch(e){status('❌ Error');document.getElementById('menu').innerHTML='<div class="error">'+e.message+'</div>'}}
-function cats(){const c=document.getElementById('cats');c.innerHTML='';let all=document.createElement('button');all.className='cat active';all.textContent='All';all.onclick=()=>filter('All',all);c.appendChild(all);[...new Set(menu.map(x=>x.category))].forEach(x=>{let b=document.createElement('button');b.className='cat';b.textContent=x;b.onclick=()=>filter(x,b);c.appendChild(b)})}
-function filter(x,b){cat=x;document.querySelectorAll('.cat').forEach(y=>y.classList.remove('active'));b.classList.add('active');search()}
-document.getElementById('search').oninput=search;function search(){let q=document.getElementById('search').value.toLowerCase().trim();let a=menu.filter(x=>x.name.toLowerCase().includes(q)&&(cat==='All'||x.category===cat));render(a)}
-function render(a){const m=document.getElementById('menu');m.innerHTML='';if(!a.length){m.innerHTML='<div class="empty">😕 No food found.</div>';return}a.forEach(x=>m.innerHTML+=`<div class="food"><img src="${x.image}" onerror="this.src='https://via.placeholder.com/800x500?text=Food'"><div class="body"><b>${x.name}</b><div style="color:#777;font-size:13px;margin-top:6px">${x.desc}</div><div class="bottom"><span class="price">₹${x.price}</span><button class="add" onclick="add(${x.id})">+ Add</button></div></div></div>`)}
-function add(id){let x=menu.find(y=>y.id===id),e=cart.find(y=>y.id===id);e?e.q++:cart.push({id:x.id,name:x.name,price:x.price,q:1});renderCart()}
-function change(i,d){cart[i].q+=d;if(cart[i].q<=0)cart.splice(i,1);renderCart()}
-function renderCart(){let n=0,t=0,b=document.getElementById('cartList');b.innerHTML='';cart.forEach((x,i)=>{n+=x.q;t+=x.price*x.q;b.innerHTML+=`<div class="item"><div><b>${x.name}</b><div style="color:#777;font-size:12px">${x.q} × ₹${x.price}</div></div><div class="qty"><button onclick="change(${i},-1)">−</button><span>${x.q}</span><button onclick="change(${i},1)">+</button></div></div>`});if(!cart.length)b.innerHTML='<div class="empty">🛒 Cart empty</div>';document.getElementById('cartCount').textContent='🛒 Cart ('+n+')';document.getElementById('cartTotal').textContent=money(t);document.getElementById('drawerTotal').textContent=money(t);document.getElementById('cartBar').style.display=n?'flex':'none'}
-function openCart(){closeOrders();document.getElementById('cartDrawer').classList.add('open');document.getElementById('overlay').style.display='block'}function closeCart(){document.getElementById('cartDrawer').classList.remove('open');if(!document.getElementById('ordersDrawer').classList.contains('open'))document.getElementById('overlay').style.display='none'}
-async function placeOrder(){if(!cart.length)return alert('Cart empty hai.');try{if(!sessionId)await getSession();let total=cart.reduce((s,x)=>s+x.price*x.q,0),items=cart.map(x=>({id:x.id,name:x.name,price:x.price,quantity:x.q}));const {data,error}=await db.rpc('create_customer_order',{p_table_number:String(table),p_items:items,p_total_amount:total,p_session_id:sessionId});if(error)throw error;cart=[];renderCart();closeCart();alert('✅ Order #'+data.id+' placed!');}catch(e){alert('❌ '+e.message)}}
-async function openOrders(){closeCart();document.getElementById('ordersDrawer').classList.add('open');document.getElementById('overlay').style.display='block';await loadOrders();clearInterval(timer);timer=setInterval(loadOrders,8000)}function closeOrders(){document.getElementById('ordersDrawer').classList.remove('open');if(!document.getElementById('cartDrawer').classList.contains('open'))document.getElementById('overlay').style.display='none';clearInterval(timer)}function closeAll(){closeCart();closeOrders();document.getElementById('overlay').style.display='none'}
-async function loadOrders(){const b=document.getElementById('orders');try{const {data,error}=await db.from('orders').select('*').eq('session_id',sessionId).neq('payment_status','paid').order('created_at',{ascending:false});if(error)throw error;let a=data||[],t=a.reduce((s,o)=>s+Number(o.total_amount||0),0);document.getElementById('bill').textContent=money(t);document.getElementById('ocount').textContent=a.length+' active orders';document.getElementById('sub').innerHTML='<br>Table '+table+' • Current session';if(!a.length){b.innerHTML='<div class="empty">✅ No active orders</div>';return}b.innerHTML='';a.forEach(o=>{let items=typeof o.items==='string'?JSON.parse(o.items):o.items,lines='';(items||[]).forEach(i=>lines+=`<div class="line"><span>${i.name} × ${i.quantity||1}</span><span>${money(Number(i.price)*Number(i.quantity||1))}</span></div>`);let w=o.order_source==='waiter';b.innerHTML+=`<div class="card"><div style="display:flex;justify-content:space-between"><b>Order #${o.id}</b><span class="source ${w?'waiter':'customer'}">${w?'🔵 WAITER • '+(o.waiter_name||''):'🟢 CUSTOMER'}</span></div><div style="color:#777;font-size:11px;margin-top:4px">${String(o.status||'pending').toUpperCase()}</div><div style="margin-top:9px">${lines}</div><hr><div class="row"><span>Total</span><span>${money(o.total_amount)}</span></div></div>`})}catch(e){b.innerHTML='<div class="error">'+e.message+'</div>'}}
-loadMenu();renderCart();
-</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Restaurant</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f4f5f7;color:#222;padding-bottom:90px}
+button,input{font:inherit}
+.header{background:linear-gradient(135deg,#111,#2d2d2d);color:#fff;padding:22px 16px;text-align:center}
+.name{font-size:28px;font-weight:800}
+.table{display:inline-block;margin-top:8px;padding:8px 13px;border-radius:20px;background:#ffffff16;border:1px solid #ffffff20;font-size:13px}
+.actions{margin-top:14px}
+.actions button{border:0;background:#fff;color:#111;padding:10px 14px;border-radius:10px;font-weight:700}
+.wrap{max-width:1000px;margin:auto;padding:16px}
+.status{text-align:center;color:#777;font-size:12px;margin-bottom:12px}
+.search{width:100%;padding:14px;border:1px solid #ddd;border-radius:14px}
+.cats{display:flex;gap:8px;overflow:auto;padding:13px 0}
+.cat{white-space:nowrap;border:1px solid #ddd;background:#fff;border-radius:20px;padding:9px 14px}
+.cat.active{background:#111;color:#fff}
+.food{background:#fff;border-radius:18px;overflow:hidden;margin-bottom:15px;box-shadow:0 4px 16px #0000000c}
+.food img{width:100%;height:200px;object-fit:cover}
+.body{padding:15px}
+.bottom{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+.add,.place,.qty button{border:0;background:#111;color:#fff;border-radius:9px;padding:10px 15px}
+.price{font-weight:800;font-size:18px}
+.cart{position:fixed;left:15px;right:15px;bottom:15px;background:#111;color:#fff;padding:15px;border-radius:15px;display:flex;justify-content:space-between;z-index:50;box-shadow:0 8px 25px #0004}
+.overlay{position:fixed;inset:0;background:#0007;display:none;z-index:99}
+.drawer{position:fixed;right:0;top:0;width:min(520px,95vw);height:100vh;background:#f4f5f7;transform:translateX(100%);transition:.3s;z-index:100;display:flex;flex-direction:column}
+.drawer.open{transform:translateX(0)}
+.head{background:#111;color:#fff;padding:16px;display:flex;justify-content:space-between}
+.close{border:0;border-radius:50%;width:36px;height:36px}
+.drawerbody{flex:1;overflow:auto;padding:15px}
+.item{background:#fff;padding:13px;border-radius:12px;margin-bottom:10px;display:flex;justify-content:space-between;gap:10px}
+.qty{display:flex;gap:8px;align-items:center}
+.qty button{width:30px;height:30px;padding:0}
+.foot{background:#fff;padding:15px}
+.row{display:flex;justify-content:space-between;font-weight:800}
+.place{width:100%;margin-top:10px;background:#198754}
+.source{display:inline-block;padding:5px 8px;border-radius:18px;font-size:10px;font-weight:800}
+.customer{background:#d1e7dd;color:#0f5132}
+.waiter{background:#cff4fc;color:#055160}
+.line{display:flex;justify-content:space-between;font-size:13px;padding:4px 0}
+.card{background:#fff;padding:14px;border-radius:14px;margin-bottom:10px}
+.empty{padding:30px;text-align:center;color:#777}
+.error{background:#f8d7da;color:#842029;padding:12px;border-radius:10px}
+@media(max-width:600px){.drawer{width:100vw}}
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="name">🍽️ My Restaurant</div>
+<div class="table">🪑 <span id="tableNo">Table 5</span></div>
+<div class="actions">
+<button onclick="openOrders()">📋 My Orders</button>
+</div>
+</div>
+
+<div class="wrap">
+<div id="status" class="status">Loading...</div>
+
+<input
+id="search"
+class="search"
+placeholder="🔍 Search food..."
+>
+
+<div id="cats" class="cats"></div>
+
+<div id="menu"></div>
+</div>
+
+<div id="cartBar" class="cart">
+<b id="cartCount">🛒 Cart (0)</b>
+<b id="cartTotal">₹0</b>
+</div>
+
+<div
+id="overlay"
+class="overlay"
+onclick="closeAll()"
+></div>
+
+<div id="cartDrawer" class="drawer">
+
+<div class="head">
+
+<div>
+<b>🛒 Your Cart</b>
+<small><br>Current table order</small>
+</div>
+
+<button
+class="close"
+onclick="closeCart()"
+>
+×
+</button>
+
+</div>
+
+<div
+id="cartList"
+class="drawerbody"
+></div>
+
+<div class="foot">
+
+<div class="row">
+<span>Total</span>
+<span id="drawerTotal">₹0</span>
+</div>
+
+<button
+class="place"
+onclick="placeOrder()"
+>
+🍽️ Place Order
+</button>
+
+</div>
+
+</div>
+
+
+<div id="ordersDrawer" class="drawer">
+
+<div class="head">
+
+<div>
+<b>📋 My Orders</b>
+<small id="sub"><br>Current table session</small>
+</div>
+
+<button
+class="close"
+onclick="closeOrders()"
+>
+×
+</button>
+
+</div>
+
+<div class="drawerbody">
+
+<div
+class="card"
+style="background:#111;color:#fff"
+>
+
+<small>
+CURRENT BILL
+</small>
+
+<div class="row">
+
+<span id="ocount">
+0 orders
+</span>
+
+<span id="bill">
+₹0
+</span>
+
+</div>
+
+</div>
+
+<div id="orders"></div>
+
+</div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const U="https://jxjrcjmrkhknltwvzzvr.supabase.co";
+const K="sb_publishable__Pg5UNoizrSpZB3fRvbARw_fNhHGjvl";
+
+const db=
+supabase.createClient(U,K);
+
+let table=
+new URLSearchParams(
+location.search
+).get("table") || "5";
+
+let sessionId=null;
+let menu=[];
+let cart=[];
+let cat="All";
+let timer=null;
+
+document.getElementById(
+"tableNo"
+).textContent=
+"Table "+table;
+
+
+function status(t){
+document.getElementById("status").textContent=t;
+}
+
+
+function money(n){
+return "₹"+Number(n||0);
+}
+
+
+async function getSession(){
+
+const {
+data,
+error
+}=
+await db.rpc(
+"get_or_create_table_session",
+{
+p_table_number:String(table)
+}
+);
+
+if(error)throw error;
+
+sessionId=
+data.id;
+
+return data;
+
+}
+
+
+async function loadMenu(){
+
+try{
+
+await getSession();
+
+const {
+data,
+error
+}=
+await db
+.from("menu_items")
+.select("*")
+.order(
+"id",
+{ascending:true}
+);
+
+if(error)throw error;
+
+menu=
+(data||[]).map(x=>({
+
+id:x.id,
+name:x.name,
+price:Number(x.price),
+category:x.category||"Other",
+desc:x.description||"",
+image:x.image_url||
+"https://via.placeholder.com/800x500?text=Food"
+
+}));
+
+cats();
+
+render(menu);
+
+status("✅ Ready");
+
+}catch(e){
+
+status("❌ Error");
+
+document.getElementById(
+"menu"
+).innerHTML=
+'<div class="error">'+
+e.message+
+'</div>';
+
+}
+
+}
+
+
+function cats(){
+
+const c=
+document.getElementById("cats");
+
+c.innerHTML="";
+
+
+let all=
+document.createElement("button");
+
+all.className=
+"cat active";
+
+all.textContent=
+"All";
+
+all.onclick=
+()=>{
+filter("All",all)
+};
+
+c.appendChild(all);
+
+
+[
+...new Set(
+menu.map(x=>x.category)
+)
+]
+.forEach(x=>{
+
+let b=
+document.createElement("button");
+
+b.className="cat";
+
+b.textContent=x;
+
+b.onclick=
+()=>{
+filter(x,b)
+};
+
+c.appendChild(b);
+
+});
+
+}
+
+
+function filter(
+x,
+b
+){
+
+cat=x;
+
+document
+.querySelectorAll(".cat")
+.forEach(y=>
+y.classList.remove(
+"active"
+)
+);
+
+b.classList.add("active");
+
+search();
+
+}
+
+
+document.getElementById(
+"search"
+).oninput=
+search;
+
+
+function search(){
+
+let q=
+document.getElementById(
+"search"
+).value
+.toLowerCase()
+.trim();
+
+let a=
+menu.filter(x=>
+x.name
+.toLowerCase()
+.includes(q) &&
+(
+cat==="All" ||
+x.category===cat
+)
+);
+
+render(a);
+
+}
+
+
+function render(a){
+
+const m=
+document.getElementById("menu");
+
+m.innerHTML="";
+
+if(!a.length){
+
+m.innerHTML=
+'<div class="empty">😕 No food found.</div>';
+
+return;
+
+}
+
+a.forEach(x=>{
+
+m.innerHTML+=`
+
+<div class="food">
+
+<img
+src="${x.image}"
+onerror="this.src='https://via.placeholder.com/800x500?text=Food'"
+>
+
+<div class="body">
+
+<b>${x.name}</b>
+
+<div
+style="
+color:#777;
+font-size:13px;
+margin-top:6px"
+>
+${x.desc}
+</div>
+
+<div class="bottom">
+
+<span class="price">
+₹${x.price}
+</span>
+
+<button
+class="add"
+onclick="add(${x.id})"
+>
++ Add
+</button>
+
+</div>
+
+</div>
+
+</div>
+`;
+
+});
+
+}
+
+
+function add(id){
+
+let x=
+menu.find(
+y=>y.id===id
+);
+
+let e=
+cart.find(
+y=>y.id===id
+);
+
+if(e){
+
+e.q++;
+
+}else{
+
+cart.push({
+
+id:x.id,
+name:x.name,
+price:x.price,
+q:1
+
+});
+
+}
+
+renderCart();
+
+}
+
+
+function change(
+i,
+d
+){
+
+cart[i].q+=d;
+
+if(cart[i].q<=0){
+cart.splice(i,1);
+}
+
+renderCart();
+
+}
+
+
+function renderCart(){
+
+let n=0;
+let t=0;
+
+const b=
+document.getElementById(
+"cartList"
+);
+
+b.innerHTML="";
+
+cart.forEach(
+(x,i)=>{
+
+n+=x.q;
+t+=x.price*x.q;
+
+b.innerHTML+=`
+
+<div class="item">
+
+<div>
+
+<b>${x.name}</b>
+
+<div
+style="
+color:#777;
+font-size:12px"
+>
+${x.q}
+×
+₹${x.price}
+</div>
+
+</div>
+
+<div class="qty">
+
+<button
+onclick="change(${i},-1)"
+>
+−
+</button>
+
+<span>${x.q}</span>
+
+<button
+onclick="change(${i},1)"
+>
++
+</button>
+
+</div>
+
+</div>
+`;
+
+});
+
+
+if(!cart.length){
+
+b.innerHTML=
+'<div class="empty">🛒 Cart empty</div>';
+
+}
+
+document.getElementById(
+"cartCount"
+).textContent=
+"🛒 Cart ("+n+")";
+
+document.getElementById(
+"cartTotal"
+).textContent=
+money(t);
+
+document.getElementById(
+"drawerTotal"
+).textContent=
+money(t);
+
+document.getElementById(
+"cartBar"
+).style.display=
+n?"flex":"none";
+
+}
+
+
+function openCart(){
+
+closeOrders();
+
+document.getElementById(
+"cartDrawer"
+).classList.add("open");
+
+document.getElementById(
+"overlay"
+).style.display=
+"block";
+
+}
+
+
+function closeCart(){
+
+document.getElementById(
+"cartDrawer"
+).classList.remove("open");
+
+if(
+!document
+.getElementById(
+"ordersDrawer"
+)
+.classList.contains("open")
+){
+
+document.getElementById(
+"overlay"
+).style.display=
+"none";
+
+}
+
+}
+
+
+async function placeOrder(){
+
+if(!cart.length){
+
+return alert(
+"Cart empty hai."
+);
+
+}
+
+try{
+
+if(!sessionId){
+
+await getSession();
+
+}
+
+let total=
+cart.reduce(
+(s,x)=>
+s+x.price*x.q,
+0
+);
+
+let items=
+cart.map(x=>({
+
+id:x.id,
+name:x.name,
+price:x.price,
+quantity:x.q
+
+}));
+
+const {
+data,
+error
+}=
+await db.rpc(
+"create_customer_order",
+{
+p_table_number:
+String(table),
+
+p_items:
+items,
+
+p_total_amount:
+total,
+
+p_session_id:
+sessionId
+
+}
+);
+
+if(error)throw error;
+
+cart=[];
+
+renderCart();
+
+closeCart();
+
+alert(
+"✅ Order #"+
+data.id+
+" placed!"
+);
+
+}catch(e){
+
+alert(
+"❌ "+
+e.message
+);
+
+}
+
+}
+
+
+async function openOrders(){
+
+closeCart();
+
+document
+.getElementById(
+"ordersDrawer"
+)
+.classList.add("open");
+
+document
+.getElementById(
+"overlay"
+)
+.style.display=
+"block";
+
+await loadOrders();
+
+clearInterval(timer);
+
+timer=
+setInterval(
+loadOrders,
+8000
+);
+
+}
+
+
+function closeOrders(){
+
+document
+.getElementById(
+"ordersDrawer"
+)
+.classList.remove("open");
+
+if(
+!document
+.getElementById(
+"cartDrawer"
+)
+.classList.contains("open")
+){
+
+document.getElementById(
+"overlay"
+).style.display=
+"none";
+
+}
+
+clearInterval(timer);
+
+}
+
+
+function closeAll(){
+
+closeCart();
+
+closeOrders();
+
+document.getElementById(
+"overlay"
+).style.display=
+"none";
+
+}
+
+
+async function loadOrders(){
+
+const b=
+document.getElementById(
+"orders"
+);
+
+try{
+
+const {
+data,
+error
+}=
+await db
+.from("orders")
+.select("*")
+.eq(
+"session_id",
+sessionId
+)
+.neq(
+"payment_status",
+"paid"
+)
+.order(
+"created_at",
+{ascending:false}
+);
+
+if(error)throw error;
+
+let a=data||[];
+
+let t=
+a.reduce(
+(s,o)=>
+s+
+Number(o.total_amount||0),
+0
+);
+
+document.getElementById(
+"bill"
+).textContent=
+money(t);
+
+document.getElementById(
+"ocount"
+).textContent=
+a.length+
+" active orders";
+
+document.getElementById(
+"sub"
+).innerHTML=
+"<br>Table "+
+table+
+" • Current session";
+
+
+if(!a.length){
+
+b.innerHTML=
+`
+<div class="empty">
+✅ No active orders
+</div>
+`;
+
+return;
+
+}
+
+b.innerHTML="";
+
+
+a.forEach(o=>{
+
+let items=
+typeof o.items==="string"
+?
+JSON.parse(o.items)
+:
+o.items;
+
+let lines="";
+
+(items||[]).forEach(i=>{
+
+lines+=`
+
+<div class="line">
+
+<span>
+${i.name}
+×
+${i.quantity||1}
+</span>
+
+<span>
+${money(
+Number(i.price)*
+Number(i.quantity||1)
+)}
+</span>
+
+</div>
+
+`;
+
+});
+
+let w=
+o.order_source==="waiter";
+
+b.innerHTML+=`
+
+<div class="card">
+
+<div
+style="
+display:flex;
+justify-content:space-between"
+>
+
+<b>
+Order #${o.id}
+</b>
+
+<span
+class="source ${
+w?"waiter":"customer"
+}"
+>
+
+${
+w
+?
+"🔵 WAITER • "+
+(o.waiter_name||"")
+:
+"🟢 CUSTOMER"
+}
+
+</span>
+
+</div>
+
+<div
+style="
+color:#777;
+font-size:11px;
+margin-top:4px"
+>
+${String(
+o.status||"pending"
+).toUpperCase()}
+</div>
+
+<div style="margin-top:9px">
+${lines}
+</div>
+
+<hr>
+
+<div class="row">
+
+<span>
+Total
+</span>
+
+<span>
+${money(o.total_amount)}
+</span>
+
+</div>
+
+</div>
+`;
+
+});
+
+}catch(e){
+
+b.innerHTML=
+'<div class="error">'+
+e.message+
+'</div>';
+
+}
+
+}
+
+
+loadMenu();
+
+renderCart();
+
+</script>
+
+</body>
+</html>
