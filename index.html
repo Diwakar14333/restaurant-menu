@@ -1,99 +1,722 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>My Restaurant</title>
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f4f5f7;color:#222;padding-bottom:90px}
-button,input{font:inherit}
-.header{background:linear-gradient(135deg,#111,#2d2d2d);color:#fff;padding:22px 16px;text-align:center}
-.name{font-size:28px;font-weight:800}
-.table{display:inline-block;margin-top:8px;padding:8px 13px;border-radius:20px;background:#ffffff16;border:1px solid #ffffff20;font-size:13px}
-.actions{margin-top:14px}
-.actions button{border:0;background:#fff;color:#111;padding:10px 14px;border-radius:10px;font-weight:700}
-.wrap{max-width:1000px;margin:auto;padding:16px}
-.status{text-align:center;color:#777;font-size:12px;margin-bottom:12px}
-.search{width:100%;padding:14px;border:1px solid #ddd;border-radius:14px}
-.cats{display:flex;gap:8px;overflow:auto;padding:13px 0}
-.cat{white-space:nowrap;border:1px solid #ddd;background:#fff;border-radius:20px;padding:9px 14px}
-.cat.active{background:#111;color:#fff}
-.food{background:#fff;border-radius:18px;overflow:hidden;margin-bottom:15px;box-shadow:0 4px 16px #0000000c}
-.food img{width:100%;height:200px;object-fit:cover}
-.body{padding:15px}
-.bottom{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
-.add,.place,.qty button{border:0;background:#111;color:#fff;border-radius:9px;padding:10px 15px}
-.price{font-weight:800;font-size:18px}
-.cart{position:fixed;left:15px;right:15px;bottom:15px;background:#111;color:#fff;padding:15px;border-radius:15px;display:flex;justify-content:space-between;z-index:50;box-shadow:0 8px 25px #0004}
-.overlay{position:fixed;inset:0;background:#0007;display:none;z-index:99}
-.drawer{position:fixed;right:0;top:0;width:min(520px,95vw);height:100vh;background:#f4f5f7;transform:translateX(100%);transition:.3s;z-index:100;display:flex;flex-direction:column}
-.drawer.open{transform:translateX(0)}
-.head{background:#111;color:#fff;padding:16px;display:flex;justify-content:space-between}
-.close{border:0;border-radius:50%;width:36px;height:36px}
-.drawerbody{flex:1;overflow:auto;padding:15px}
-.item{background:#fff;padding:13px;border-radius:12px;margin-bottom:10px;display:flex;justify-content:space-between;gap:10px}
-.qty{display:flex;gap:8px;align-items:center}
-.qty button{width:30px;height:30px;padding:0}
-.foot{background:#fff;padding:15px}
-.row{display:flex;justify-content:space-between;font-weight:800}
-.place{width:100%;margin-top:10px;background:#198754}
-.source{display:inline-block;padding:5px 8px;border-radius:18px;font-size:10px;font-weight:800}
-.customer{background:#d1e7dd;color:#0f5132}
-.waiter{background:#cff4fc;color:#055160}
-.line{display:flex;justify-content:space-between;font-size:13px;padding:4px 0}
-.card{background:#fff;padding:14px;border-radius:14px;margin-bottom:10px}
-.empty{padding:30px;text-align:center;color:#777}
-.error{background:#f8d7da;color:#842029;padding:12px;border-radius:10px}
-@media(max-width:600px){.drawer{width:100vw}}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f5f7;
+    color:#222;
+    padding-bottom:95px;
+}
+
+button,
+input{
+    font:inherit;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+    background:linear-gradient(135deg,#111,#292929);
+    color:#fff;
+    padding:22px 16px 18px;
+    box-shadow:0 5px 20px rgba(0,0,0,.16);
+}
+
+.header-inner{
+    max-width:1000px;
+    margin:auto;
+    text-align:center;
+}
+
+.restaurant-name{
+    font-size:28px;
+    font-weight:800;
+}
+
+.table-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    margin-top:9px;
+    background:#ffffff14;
+    border:1px solid #ffffff18;
+    padding:8px 13px;
+    border-radius:30px;
+    font-size:13px;
+    color:#ddd;
+}
+
+.header-actions{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    margin-top:14px;
+}
+
+.header-btn{
+    border:1px solid #ffffff22;
+    background:#fff;
+    color:#111;
+    padding:10px 14px;
+    border-radius:10px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.container{
+    max-width:1000px;
+    margin:auto;
+    padding:17px;
+}
+
+.status{
+    text-align:center;
+    font-size:12px;
+    color:#777;
+    margin-bottom:12px;
+}
+
+.search{
+    width:100%;
+    padding:15px;
+    border:1px solid #ddd;
+    border-radius:14px;
+    font-size:15px;
+    background:#fff;
+    outline:none;
+}
+
+.search:focus{
+    border-color:#111;
+}
+
+.categories{
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    padding:13px 0 17px;
+}
+
+.categories::-webkit-scrollbar{
+    display:none;
+}
+
+.category{
+    white-space:nowrap;
+    padding:9px 15px;
+    background:#fff;
+    border:1px solid #ddd;
+    border-radius:22px;
+    font-size:13px;
+    cursor:pointer;
+}
+
+.category.active{
+    background:#111;
+    color:#fff;
+    border-color:#111;
+}
+
+/* =========================
+   FOOD
+========================= */
+
+.food-card{
+    background:#fff;
+    border-radius:18px;
+    overflow:hidden;
+    margin-bottom:16px;
+    box-shadow:0 4px 18px rgba(0,0,0,.07);
+}
+
+.food-image{
+    width:100%;
+    height:200px;
+    object-fit:cover;
+    display:block;
+    background:#eee;
+}
+
+.food-content{
+    padding:16px;
+}
+
+.food-name{
+    font-size:19px;
+    font-weight:800;
+}
+
+.food-description{
+    font-size:13px;
+    color:#777;
+    line-height:1.45;
+    margin-top:7px;
+    min-height:37px;
+}
+
+.food-bottom{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:15px;
+}
+
+.price{
+    font-size:19px;
+    font-weight:800;
+}
+
+.add-btn{
+    border:0;
+    background:#111;
+    color:#fff;
+    padding:10px 17px;
+    border-radius:10px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+/* =========================
+   FLOATING CART
+========================= */
+
+.cart-bar{
+    position:fixed;
+    left:15px;
+    right:15px;
+    bottom:15px;
+    z-index:1000;
+    background:#111;
+    color:#fff;
+    padding:15px 17px;
+    border-radius:16px;
+    display:none;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 8px 30px rgba(0,0,0,.28);
+    cursor:pointer;
+}
+
+.cart-count{
+    font-weight:800;
+}
+
+.cart-total{
+    font-weight:800;
+}
+
+/* =========================
+   DRAWER SYSTEM
+========================= */
+
+.drawer-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.48);
+    backdrop-filter:blur(3px);
+    opacity:0;
+    visibility:hidden;
+    transition:.25s;
+    z-index:2000;
+}
+
+.drawer-overlay.open{
+    opacity:1;
+    visibility:visible;
+}
+
+.drawer{
+    position:fixed;
+    top:0;
+    right:0;
+    width:min(540px,95vw);
+    height:100vh;
+    background:#f4f5f7;
+    transform:translateX(100%);
+    transition:.3s ease;
+    z-index:2001;
+    display:flex;
+    flex-direction:column;
+    box-shadow:-12px 0 35px rgba(0,0,0,.2);
+}
+
+.drawer.open{
+    transform:translateX(0);
+}
+
+.drawer-head{
+    background:#111;
+    color:#fff;
+    padding:18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.drawer-head h2{
+    font-size:20px;
+}
+
+.drawer-head p{
+    font-size:11px;
+    color:#aaa;
+    margin-top:4px;
+}
+
+.close-drawer{
+    width:38px;
+    height:38px;
+    border:0;
+    border-radius:50%;
+    background:#fff;
+    color:#111;
+    font-size:22px;
+    cursor:pointer;
+}
+
+.drawer-body{
+    flex:1;
+    overflow:auto;
+    padding:15px;
+}
+
+.drawer-footer{
+    background:#fff;
+    padding:16px;
+    border-top:1px solid #eee;
+}
+
+/* =========================
+   CART ITEMS
+========================= */
+
+.cart-item{
+    background:#fff;
+    border-radius:14px;
+    padding:14px;
+    margin-bottom:10px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,.05);
+}
+
+.cart-line{
+    color:#777;
+    font-size:12px;
+    margin-top:5px;
+}
+
+.qty{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.qty button{
+    width:30px;
+    height:30px;
+    border:0;
+    border-radius:8px;
+    background:#111;
+    color:#fff;
+    cursor:pointer;
+}
+
+.total-row{
+    display:flex;
+    justify-content:space-between;
+    font-size:19px;
+    font-weight:800;
+}
+
+.place-btn{
+    width:100%;
+    border:0;
+    background:#198754;
+    color:#fff;
+    padding:14px;
+    border-radius:11px;
+    margin-top:12px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+/* =========================
+   MY ORDERS
+========================= */
+
+.bill-box{
+    background:linear-gradient(135deg,#111,#292929);
+    color:#fff;
+    padding:16px;
+    border-radius:15px;
+    margin-bottom:13px;
+}
+
+.bill-small{
+    color:#aaa;
+    font-size:10px;
+}
+
+.bill-main{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:5px;
+}
+
+.bill-main strong{
+    font-size:24px;
+}
+
+.order-card{
+    background:#fff;
+    border-radius:14px;
+    padding:15px;
+    margin-bottom:11px;
+    box-shadow:0 3px 12px rgba(0,0,0,.06);
+}
+
+.order-top{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    align-items:flex-start;
+}
+
+.order-id{
+    font-weight:800;
+    font-size:14px;
+}
+
+.order-status{
+    font-size:11px;
+    color:#777;
+    margin-top:4px;
+}
+
+.source-badge{
+    display:inline-block;
+    padding:6px 9px;
+    border-radius:20px;
+    font-size:10px;
+    font-weight:800;
+    white-space:nowrap;
+}
+
+.customer-source{
+    background:#d1e7dd;
+    color:#0f5132;
+}
+
+.waiter-source{
+    background:#cff4fc;
+    color:#055160;
+}
+
+.order-items{
+    border-top:1px solid #eee;
+    border-bottom:1px solid #eee;
+    padding:9px 0;
+    margin:10px 0;
+}
+
+.order-line{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    font-size:13px;
+    padding:4px 0;
+}
+
+.order-total{
+    display:flex;
+    justify-content:space-between;
+    font-weight:800;
+}
+
+.order-time{
+    font-size:10px;
+    color:#888;
+    margin-top:8px;
+}
+
+/* =========================
+   EDIT / CANCEL
+========================= */
+
+.edit-info{
+    background:#f8f9fa;
+    border-radius:11px;
+    padding:10px;
+    margin-top:11px;
+    font-size:11px;
+    color:#777;
+}
+
+.edit-actions{
+    display:flex;
+    gap:8px;
+    margin-top:10px;
+}
+
+.edit-order-btn,
+.cancel-order-btn{
+    flex:1;
+    border:0;
+    padding:11px;
+    border-radius:9px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.edit-order-btn{
+    background:#ffc107;
+    color:#111;
+}
+
+.cancel-order-btn{
+    background:#dc3545;
+    color:#fff;
+}
+
+/* =========================
+   EDIT ORDER DRAWER
+========================= */
+
+.edit-order-item{
+    background:#fff;
+    border-radius:13px;
+    padding:13px;
+    margin-bottom:9px;
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.edit-order-actions{
+    display:flex;
+    align-items:center;
+    gap:7px;
+}
+
+.edit-order-actions button{
+    width:30px;
+    height:30px;
+    border:0;
+    border-radius:8px;
+    background:#111;
+    color:#fff;
+    cursor:pointer;
+}
+
+.save-edit-btn{
+    width:100%;
+    border:0;
+    background:#198754;
+    color:#fff;
+    padding:14px;
+    border-radius:11px;
+    margin-top:12px;
+    font-weight:800;
+}
+
+/* =========================
+   EMPTY / ERROR
+========================= */
+
+.empty,
+.loading{
+    padding:35px 10px;
+    text-align:center;
+    color:#777;
+}
+
+.error-box{
+    background:#f8d7da;
+    color:#842029;
+    padding:14px;
+    border-radius:10px;
+    line-height:1.5;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px){
+
+    .drawer{
+        width:100vw;
+    }
+
+    .food-image{
+        height:190px;
+    }
+}
+
 </style>
+
 </head>
+
+
 <body>
 
+
+<!-- ==============================
+     HEADER
+============================== -->
+
 <div class="header">
-<div class="name">🍽️ My Restaurant</div>
-<div class="table">🪑 <span id="tableNo">Table 5</span></div>
-<div class="actions">
-<button onclick="openOrders()">📋 My Orders</button>
-</div>
+
+<div class="header-inner">
+
+<div class="restaurant-name">
+🍽️ My Restaurant
 </div>
 
-<div class="wrap">
-<div id="status" class="status">Loading...</div>
+<div class="table-badge">
+🪑 <span id="tableNumber">Table No. 5</span>
+</div>
+
+<div class="header-actions">
+
+<button
+class="header-btn"
+onclick="openOrders()"
+>
+📋 My Orders
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="container">
+
+
+<div
+class="status"
+id="status"
+>
+🔄 Starting...
+</div>
+
 
 <input
-id="search"
+type="text"
 class="search"
+id="searchInput"
 placeholder="🔍 Search food..."
 >
 
-<div id="cats" class="cats"></div>
 
-<div id="menu"></div>
+<div
+class="categories"
+id="categories"
+></div>
+
+
+<div
+id="foodList"
+>
+<div class="loading">
+🍽️ Loading menu...
+</div>
 </div>
 
-<div id="cartBar" class="cart">
-<b id="cartCount">🛒 Cart (0)</b>
-<b id="cartTotal">₹0</b>
+
+</div>
+
+
+<!-- ==============================
+     FLOATING CART
+============================== -->
+
+<div
+id="cartBar"
+class="cart-bar"
+onclick="openCart()"
+>
+
+<div
+class="cart-count"
+id="cartCount"
+>
+🛒 Cart (0)
 </div>
 
 <div
-id="overlay"
-class="overlay"
-onclick="closeAll()"
+class="cart-total"
+id="cartTotal"
+>
+₹0
+</div>
+
+</div>
+
+
+<!-- OVERLAY -->
+
+<div
+id="drawerOverlay"
+class="drawer-overlay"
+onclick="closeAllDrawers()"
 ></div>
 
-<div id="cartDrawer" class="drawer">
 
-<div class="head">
+<!-- ==============================
+     CART DRAWER
+============================== -->
+
+<div
+id="cartDrawer"
+class="drawer"
+>
+
+<div class="drawer-head">
 
 <div>
-<b>🛒 Your Cart</b>
-<small><br>Current table order</small>
+
+<h2>
+🛒 Your Cart
+</h2>
+
+<p>
+Review your order before placing it
+</p>
+
 </div>
 
 <button
-class="close"
+class="close-drawer"
 onclick="closeCart()"
 >
 ×
@@ -101,20 +724,32 @@ onclick="closeCart()"
 
 </div>
 
+
 <div
 id="cartList"
-class="drawerbody"
+class="drawer-body"
 ></div>
 
-<div class="foot">
 
-<div class="row">
-<span>Total</span>
-<span id="drawerTotal">₹0</span>
+<div class="drawer-footer">
+
+<div class="total-row">
+
+<span>
+Total
+</span>
+
+<span
+id="drawerCartTotal"
+>
+₹0
+</span>
+
 </div>
 
+
 <button
-class="place"
+class="place-btn"
 onclick="placeOrder()"
 >
 🍽️ Place Order
@@ -125,17 +760,31 @@ onclick="placeOrder()"
 </div>
 
 
-<div id="ordersDrawer" class="drawer">
+<!-- ==============================
+     MY ORDERS DRAWER
+============================== -->
 
-<div class="head">
+<div
+id="ordersDrawer"
+class="drawer"
+>
+
+<div class="drawer-head">
 
 <div>
-<b>📋 My Orders</b>
-<small id="sub"><br>Current table session</small>
+
+<h2>
+📋 My Orders
+</h2>
+
+<p id="ordersSubtitle">
+Current table session
+</p>
+
 </div>
 
 <button
-class="close"
+class="close-drawer"
 onclick="closeOrders()"
 >
 ×
@@ -143,32 +792,103 @@ onclick="closeOrders()"
 
 </div>
 
-<div class="drawerbody">
 
-<div
-class="card"
-style="background:#111;color:#fff"
->
+<div class="drawer-body">
 
-<small>
-CURRENT BILL
-</small>
+<div class="bill-box">
 
-<div class="row">
+<div class="bill-small">
+CURRENT TABLE BILL
+</div>
 
-<span id="ocount">
-0 orders
+<div class="bill-main">
+
+<span id="orderCountText">
+0 active orders
 </span>
 
-<span id="bill">
+<strong id="currentBill">
+₹0
+</strong>
+
+</div>
+
+</div>
+
+
+<div id="myOrdersList">
+
+<div class="loading">
+Loading orders...
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ==============================
+     EDIT ORDER DRAWER
+============================== -->
+
+<div
+id="editOrderDrawer"
+class="drawer"
+>
+
+<div class="drawer-head">
+
+<div>
+
+<h2>
+✏️ Edit Order
+</h2>
+
+<p id="editOrderSubtitle">
+You can edit for 5 minutes
+</p>
+
+</div>
+
+<button
+class="close-drawer"
+onclick="closeEditOrder()"
+>
+×
+</button>
+
+</div>
+
+
+<div
+id="editOrderBody"
+class="drawer-body"
+></div>
+
+
+<div class="drawer-footer">
+
+<div class="total-row">
+
+<span>
+New Total
+</span>
+
+<span id="editOrderTotal">
 ₹0
 </span>
 
 </div>
 
-</div>
 
-<div id="orders"></div>
+<button
+class="save-edit-btn"
+onclick="saveEditedOrder()"
+>
+💾 Save Changes
+</button>
 
 </div>
 
@@ -177,42 +897,76 @@ CURRENT BILL
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
 <script>
 
-const U="https://jxjrcjmrkhknltwvzzvr.supabase.co";
-const K="sb_publishable__Pg5UNoizrSpZB3fRvbARw_fNhHGjvl";
+/* =========================================
+   SUPABASE
+========================================= */
+
+const SUPABASE_URL=
+"https://jxjrcjmrkhknltwvzzvr.supabase.co";
+
+const SUPABASE_KEY=
+"sb_publishable__Pg5UNoizrSpZB3fRvbARw_fNhHGjvl";
 
 const db=
-supabase.createClient(U,K);
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
 
-let table=
-new URLSearchParams(
-location.search
-).get("table") || "5";
 
+/* =========================================
+   STATE
+========================================= */
+
+let currentTable="5";
 let sessionId=null;
-let menu=[];
+
+let menuItems=[];
 let cart=[];
-let cat="All";
-let timer=null;
+
+let selectedCategory="All";
+
+let myOrdersTimer=null;
+
+let editingOrder=null;
+let editingCart=[];
+
+
+/* =========================================
+   TABLE
+========================================= */
+
+function loadTableNumber(){
+
+const table=
+new URLSearchParams(
+window.location.search
+).get("table");
+
+if(table){
+
+currentTable=
+String(table);
+
+}
 
 document.getElementById(
-"tableNo"
-).textContent=
-"Table "+table;
+"tableNumber"
+).innerText=
+"Table No. "+
+currentTable;
 
-
-function status(t){
-document.getElementById("status").textContent=t;
 }
 
 
-function money(n){
-return "₹"+Number(n||0);
-}
+/* =========================================
+   SESSION
+========================================= */
 
-
-async function getSession(){
+async function getCurrentSession(){
 
 const {
 data,
@@ -221,11 +975,14 @@ error
 await db.rpc(
 "get_or_create_table_session",
 {
-p_table_number:String(table)
+p_table_number:
+currentTable
 }
 );
 
-if(error)throw error;
+if(error){
+throw error;
+}
 
 sessionId=
 data.id;
@@ -235,11 +992,33 @@ return data;
 }
 
 
+/* =========================================
+   STATUS
+========================================= */
+
+function setStatus(text){
+
+document.getElementById(
+"status"
+).innerText=
+text;
+
+}
+
+
+/* =========================================
+   MENU
+========================================= */
+
 async function loadMenu(){
+
+setStatus(
+"🔄 Loading menu..."
+);
 
 try{
 
-await getSession();
+await getCurrentSession();
 
 const {
 data,
@@ -250,199 +1029,264 @@ await db
 .select("*")
 .order(
 "id",
-{ascending:true}
+{
+ascending:true
+}
 );
 
 if(error)throw error;
 
-menu=
-(data||[]).map(x=>({
+menuItems=
+(data||[]).map(item=>({
 
-id:x.id,
-name:x.name,
-price:Number(x.price),
-category:x.category||"Other",
-desc:x.description||"",
-image:x.image_url||
+id:item.id,
+name:item.name,
+price:Number(item.price),
+category:item.category||"Other",
+description:item.description||"",
+image:item.image_url||
 "https://via.placeholder.com/800x500?text=Food"
 
 }));
 
-cats();
 
-render(menu);
+createCategories();
 
-status("✅ Ready");
+renderMenu(
+menuItems
+);
 
-}catch(e){
+setStatus(
+"✅ Menu ready"
+);
 
-status("❌ Error");
+}catch(error){
+
+console.error(error);
+
+setStatus(
+"❌ Error"
+);
 
 document.getElementById(
-"menu"
+"foodList"
 ).innerHTML=
-'<div class="error">'+
-e.message+
-'</div>';
+`
+<div class="error-box">
+❌ Menu load nahi hua.
+<br><br>
+${error.message}
+</div>
+`;
 
 }
 
 }
 
 
-function cats(){
+/* =========================================
+   CATEGORIES
+========================================= */
 
-const c=
-document.getElementById("cats");
+function createCategories(){
 
-c.innerHTML="";
+const box=
+document.getElementById(
+"categories"
+);
+
+box.innerHTML="";
 
 
-let all=
-document.createElement("button");
+const all=
+document.createElement("div");
 
 all.className=
-"cat active";
+"category active";
 
-all.textContent=
+all.innerText=
 "All";
 
 all.onclick=
-()=>{
-filter("All",all)
+function(){
+
+filterCategory(
+"All",
+all
+);
+
 };
 
-c.appendChild(all);
+box.appendChild(all);
 
 
-[
+const categories=[
 ...new Set(
-menu.map(x=>x.category)
+menuItems
+.map(item=>item.category)
+.filter(Boolean)
 )
-]
-.forEach(x=>{
+];
 
-let b=
-document.createElement("button");
 
-b.className="cat";
+categories.forEach(category=>{
 
-b.textContent=x;
+const button=
+document.createElement("div");
 
-b.onclick=
-()=>{
-filter(x,b)
+button.className=
+"category";
+
+button.innerText=
+category;
+
+button.onclick=
+function(){
+
+filterCategory(
+category,
+button
+);
+
 };
 
-c.appendChild(b);
+box.appendChild(button);
 
 });
 
 }
 
 
-function filter(
-x,
-b
+function filterCategory(
+category,
+button
 ){
 
-cat=x;
+selectedCategory=
+category;
 
 document
-.querySelectorAll(".cat")
-.forEach(y=>
-y.classList.remove(
-"active"
-)
-);
+.querySelectorAll(".category")
+.forEach(item=>{
+item.classList.remove("active");
+});
 
-b.classList.add("active");
+button.classList.add("active");
 
-search();
+searchFood();
 
 }
 
 
+function searchFood(){
+
+const text=
 document.getElementById(
-"search"
-).oninput=
-search;
-
-
-function search(){
-
-let q=
-document.getElementById(
-"search"
-).value
+"searchInput"
+)
+.value
 .toLowerCase()
 .trim();
 
-let a=
-menu.filter(x=>
-x.name
+
+let filtered=
+menuItems.filter(item=>
+item.name
 .toLowerCase()
-.includes(q) &&
-(
-cat==="All" ||
-x.category===cat
-)
+.includes(text)
 );
 
-render(a);
+
+if(selectedCategory!=="All"){
+
+filtered=
+filtered.filter(item=>
+item.category===
+selectedCategory
+);
 
 }
 
 
-function render(a){
+renderMenu(filtered);
 
-const m=
-document.getElementById("menu");
+}
 
-m.innerHTML="";
 
-if(!a.length){
+document.getElementById(
+"searchInput"
+)
+.addEventListener(
+"input",
+searchFood
+);
 
-m.innerHTML=
-'<div class="empty">😕 No food found.</div>';
+
+/* =========================================
+   RENDER MENU
+========================================= */
+
+function renderMenu(items){
+
+const box=
+document.getElementById(
+"foodList"
+);
+
+box.innerHTML="";
+
+
+if(items.length===0){
+
+box.innerHTML=
+`
+<div class="empty">
+😕 No food found.
+</div>
+`;
 
 return;
 
 }
 
-a.forEach(x=>{
 
-m.innerHTML+=`
+items.forEach(item=>{
 
-<div class="food">
+box.innerHTML+=`
+
+<div class="food-card">
 
 <img
-src="${x.image}"
-onerror="this.src='https://via.placeholder.com/800x500?text=Food'"
+class="food-image"
+src="${item.image}"
+alt="${item.name}"
+onerror="
+this.src=
+'https://via.placeholder.com/800x500?text=Food'
+"
 >
 
-<div class="body">
+<div class="food-content">
 
-<b>${x.name}</b>
-
-<div
-style="
-color:#777;
-font-size:13px;
-margin-top:6px"
->
-${x.desc}
+<div class="food-name">
+${item.name}
 </div>
 
-<div class="bottom">
+<div class="food-description">
+${item.description}
+</div>
 
-<span class="price">
-₹${x.price}
-</span>
+<div class="food-bottom">
+
+<div class="price">
+₹${item.price}
+</div>
 
 <button
-class="add"
-onclick="add(${x.id})"
+class="add-btn"
+onclick="
+addToCart(${item.id})
+"
 >
 + Add
 </button>
@@ -459,106 +1303,218 @@ onclick="add(${x.id})"
 }
 
 
-function add(id){
+/* =========================================
+   CART
+========================================= */
 
-let x=
-menu.find(
-y=>y.id===id
+function addToCart(id){
+
+const item=
+menuItems.find(
+item=>item.id===id
 );
 
-let e=
+if(!item)return;
+
+
+const existing=
 cart.find(
-y=>y.id===id
+item=>item.id===id
 );
 
-if(e){
 
-e.q++;
+if(existing){
+
+existing.quantity++;
 
 }else{
 
 cart.push({
 
-id:x.id,
-name:x.name,
-price:x.price,
-q:1
+id:item.id,
+name:item.name,
+price:item.price,
+quantity:1
 
 });
 
 }
 
+
 renderCart();
 
 }
 
 
-function change(
-i,
-d
+function changeCartQuantity(
+index,
+change
 ){
 
-cart[i].q+=d;
+if(!cart[index])return;
 
-if(cart[i].q<=0){
-cart.splice(i,1);
+cart[index].quantity+=
+change;
+
+
+if(cart[index].quantity<=0){
+
+cart.splice(
+index,
+1
+);
+
 }
 
+
 renderCart();
+
+}
+
+
+function getCartTotal(){
+
+return cart.reduce(
+(total,item)=>
+total+
+(
+item.price*
+item.quantity
+),
+0
+);
+
+}
+
+
+function getCartCount(){
+
+return cart.reduce(
+(total,item)=>
+total+
+item.quantity,
+0
+);
 
 }
 
 
 function renderCart(){
 
-let n=0;
-let t=0;
-
-const b=
+const box=
 document.getElementById(
 "cartList"
 );
 
-b.innerHTML="";
+const count=
+getCartCount();
+
+const total=
+getCartTotal();
+
+
+document.getElementById(
+"cartCount"
+).innerText=
+"🛒 Cart ("+
+count+
+")";
+
+document.getElementById(
+"cartTotal"
+).innerText=
+"₹"+
+total;
+
+document.getElementById(
+"drawerCartTotal"
+).innerText=
+"₹"+
+total;
+
+
+document.getElementById(
+"cartBar"
+).style.display=
+count>0
+?
+"flex"
+:
+"none";
+
+
+if(cart.length===0){
+
+box.innerHTML=
+`
+<div class="empty">
+🛒 Cart empty hai.
+</div>
+`;
+
+return;
+
+}
+
+
+box.innerHTML="";
+
 
 cart.forEach(
-(x,i)=>{
+(item,index)=>{
 
-n+=x.q;
-t+=x.price*x.q;
+const itemTotal=
+item.price*
+item.quantity;
 
-b.innerHTML+=`
 
-<div class="item">
+box.innerHTML+=`
+
+<div class="cart-item">
 
 <div>
 
-<b>${x.name}</b>
+<strong>
+${item.name}
+</strong>
 
-<div
-style="
-color:#777;
-font-size:12px"
->
-${x.q}
+<div class="cart-line">
+
+₹${item.price}
 ×
-₹${x.price}
+${item.quantity}
+=
+₹${itemTotal}
+
 </div>
 
 </div>
+
 
 <div class="qty">
 
 <button
-onclick="change(${i},-1)"
+onclick="
+changeCartQuantity(
+${index},
+-1
+)
+"
 >
 −
 </button>
 
-<span>${x.q}</span>
+<span>
+${item.quantity}
+</span>
 
 <button
-onclick="change(${i},1)"
+onclick="
+changeCartQuantity(
+${index},
+1
+)
+"
 >
 +
 </button>
@@ -570,49 +1526,25 @@ onclick="change(${i},1)"
 
 });
 
-
-if(!cart.length){
-
-b.innerHTML=
-'<div class="empty">🛒 Cart empty</div>';
-
 }
 
-document.getElementById(
-"cartCount"
-).textContent=
-"🛒 Cart ("+n+")";
 
-document.getElementById(
-"cartTotal"
-).textContent=
-money(t);
-
-document.getElementById(
-"drawerTotal"
-).textContent=
-money(t);
-
-document.getElementById(
-"cartBar"
-).style.display=
-n?"flex":"none";
-
-}
-
+/* =========================================
+   OPEN CART
+========================================= */
 
 function openCart(){
 
 closeOrders();
+closeEditOrder();
 
 document.getElementById(
 "cartDrawer"
 ).classList.add("open");
 
 document.getElementById(
-"overlay"
-).style.display=
-"block";
+"drawerOverlay"
+).classList.add("open");
 
 }
 
@@ -624,57 +1556,63 @@ document.getElementById(
 ).classList.remove("open");
 
 if(
-!document
-.getElementById(
+!document.getElementById(
 "ordersDrawer"
-)
-.classList.contains("open")
+).classList.contains("open") &&
+!document.getElementById(
+"editOrderDrawer"
+).classList.contains("open")
 ){
 
 document.getElementById(
-"overlay"
-).style.display=
-"none";
+"drawerOverlay"
+).classList.remove("open");
 
 }
 
 }
 
+
+/* =========================================
+   PLACE ORDER
+========================================= */
 
 async function placeOrder(){
 
-if(!cart.length){
+if(cart.length===0){
 
-return alert(
+alert(
 "Cart empty hai."
 );
 
+return;
+
 }
+
 
 try{
 
 if(!sessionId){
 
-await getSession();
+await getCurrentSession();
 
 }
 
-let total=
-cart.reduce(
-(s,x)=>
-s+x.price*x.q,
-0
-);
 
-let items=
-cart.map(x=>({
+const items=
+cart.map(item=>({
 
-id:x.id,
-name:x.name,
-price:x.price,
-quantity:x.q
+id:item.id,
+name:item.name,
+price:item.price,
+quantity:item.quantity
 
 }));
+
+
+const total=
+getCartTotal();
+
 
 const {
 data,
@@ -684,7 +1622,7 @@ await db.rpc(
 "create_customer_order",
 {
 p_table_number:
-String(table),
+currentTable,
 
 p_items:
 items,
@@ -694,11 +1632,12 @@ total,
 
 p_session_id:
 sessionId
-
 }
 );
 
+
 if(error)throw error;
+
 
 cart=[];
 
@@ -706,17 +1645,29 @@ renderCart();
 
 closeCart();
 
+
 alert(
 "✅ Order #"+
 data.id+
-" placed!"
+" placed successfully!"
 );
 
-}catch(e){
+
+await loadMyOrders();
+
+
+setStatus(
+"✅ Order placed"
+);
+
+
+}catch(error){
+
+console.error(error);
 
 alert(
-"❌ "+
-e.message
+"❌ Order place nahi hua:\n"+
+error.message
 );
 
 }
@@ -724,86 +1675,33 @@ e.message
 }
 
 
-async function openOrders(){
+/* =========================================
+   MY ORDERS
+========================================= */
 
-closeCart();
+async function loadMyOrders(){
 
-document
-.getElementById(
-"ordersDrawer"
-)
-.classList.add("open");
-
-document
-.getElementById(
-"overlay"
-)
-.style.display=
-"block";
-
-await loadOrders();
-
-clearInterval(timer);
-
-timer=
-setInterval(
-loadOrders,
-8000
+const box=
+document.getElementById(
+"myOrdersList"
 );
 
-}
+box.innerHTML=
+`
+<div class="loading">
+Loading orders...
+</div>
+`;
 
-
-function closeOrders(){
-
-document
-.getElementById(
-"ordersDrawer"
-)
-.classList.remove("open");
-
-if(
-!document
-.getElementById(
-"cartDrawer"
-)
-.classList.contains("open")
-){
-
-document.getElementById(
-"overlay"
-).style.display=
-"none";
-
-}
-
-clearInterval(timer);
-
-}
-
-
-function closeAll(){
-
-closeCart();
-
-closeOrders();
-
-document.getElementById(
-"overlay"
-).style.display=
-"none";
-
-}
-
-
-async function loadOrders(){
-
-const b=
-document.getElementById(
-"orders"
-);
 
 try{
+
+if(!sessionId){
+
+await getCurrentSession();
+
+}
+
 
 const {
 data,
@@ -820,48 +1718,75 @@ sessionId
 "payment_status",
 "paid"
 )
+.neq(
+"status",
+"cancelled"
+)
 .order(
 "created_at",
-{ascending:false}
+{
+ascending:false
+}
 );
+
 
 if(error)throw error;
 
-let a=data||[];
 
-let t=
-a.reduce(
-(s,o)=>
-s+
-Number(o.total_amount||0),
+const orders=
+data||[];
+
+
+const total=
+orders.reduce(
+(sum,order)=>
+sum+
+(
+Number(order.total_amount)||0
+),
 0
 );
 
-document.getElementById(
-"bill"
-).textContent=
-money(t);
 
 document.getElementById(
-"ocount"
-).textContent=
-a.length+
-" active orders";
+"currentBill"
+).innerText=
+"₹"+
+total;
 
 document.getElementById(
-"sub"
-).innerHTML=
-"<br>Table "+
-table+
+"orderCountText"
+).innerText=
+orders.length+
+" active order"+
+(
+orders.length===1
+?
+""
+:
+"s"
+);
+
+document.getElementById(
+"ordersSubtitle"
+).innerText=
+"Table "+
+currentTable+
 " • Current session";
 
 
-if(!a.length){
+if(orders.length===0){
 
-b.innerHTML=
+box.innerHTML=
 `
 <div class="empty">
-✅ No active orders
+
+✅ No active orders.
+
+<br><br>
+
+New order karne ke liye menu se food add karo.
+
 </div>
 `;
 
@@ -869,107 +1794,549 @@ return;
 
 }
 
-b.innerHTML="";
+
+box.innerHTML="";
 
 
-a.forEach(o=>{
+orders.forEach(order=>{
 
 let items=
-typeof o.items==="string"
-?
-JSON.parse(o.items)
-:
-o.items;
+order.items;
+
+
+if(typeof items==="string"){
+
+try{
+
+items=
+JSON.parse(items);
+
+}catch(e){
+
+items=[];
+
+}
+
+}
+
 
 let lines="";
 
-(items||[]).forEach(i=>{
+
+if(Array.isArray(items)){
+
+items.forEach(item=>{
 
 lines+=`
 
-<div class="line">
+<div class="order-line">
 
 <span>
-${i.name}
+
+${item.name}
 ×
-${i.quantity||1}
+${item.quantity||1}
+
 </span>
 
 <span>
-${money(
-Number(i.price)*
-Number(i.quantity||1)
-)}
-</span>
 
-</div>
-
-`;
-
-});
-
-let w=
-o.order_source==="waiter";
-
-b.innerHTML+=`
-
-<div class="card">
-
-<div
-style="
-display:flex;
-justify-content:space-between"
->
-
-<b>
-Order #${o.id}
-</b>
-
-<span
-class="source ${
-w?"waiter":"customer"
-}"
->
-
-${
-w
-?
-"🔵 WAITER • "+
-(o.waiter_name||"")
-:
-"🟢 CUSTOMER"
+₹${
+Number(item.price)*
+Number(item.quantity||1)
 }
 
 </span>
 
 </div>
+`;
+
+});
+
+}
+
+
+const isWaiter=
+order.order_source===
+"waiter";
+
+
+const sourceClass=
+isWaiter
+?
+"waiter-source"
+:
+"customer-source";
+
+
+const sourceText=
+isWaiter
+?
+"🔵 WAITER"+
+(
+order.waiter_name
+?
+" • "+
+order.waiter_name
+:
+""
+)
+:
+"🟢 CUSTOMER";
+
+
+/*
+5 MINUTE WINDOW
+*/
+
+const createdAt=
+new Date(
+order.created_at
+);
+
+const now=
+new Date();
+
+const ageMinutes=
+(
+now-createdAt
+)/
+60000;
+
+const canEdit=
+ageMinutes<=5 &&
+String(order.status||"pending")
+==="pending";
+
+
+const remainingSeconds=
+Math.max(
+0,
+Math.floor(
+(
+5*60
+)-
+(
+now-createdAt
+)/1000
+)
+);
+
+
+const remainingMinutes=
+Math.floor(
+remainingSeconds/60
+);
+
+const remainingRemainder=
+remainingSeconds%60;
+
+const timeText=
+canEdit
+?
+"⏱️ Edit/Cancel available for "+
+remainingMinutes+
+":"+
+String(
+remainingRemainder
+).padStart(2,"0")
+:
+"🔒 Edit/Cancel window closed";
+
+
+box.innerHTML+=`
 
 <div
-style="
-color:#777;
-font-size:11px;
-margin-top:4px"
+class="order-card"
 >
+
+<div class="order-top">
+
+<div>
+
+<div class="order-id">
+Order #${order.id}
+</div>
+
+<div class="order-status">
 ${String(
-o.status||"pending"
+order.status||"pending"
 ).toUpperCase()}
 </div>
 
-<div style="margin-top:9px">
+</div>
+
+<div
+class="source-badge ${sourceClass}"
+>
+${sourceText}
+</div>
+
+</div>
+
+
+<div class="order-items">
 ${lines}
 </div>
 
-<hr>
 
-<div class="row">
+<div class="order-total">
 
 <span>
 Total
 </span>
 
 <span>
-${money(o.total_amount)}
+₹${order.total_amount||0}
 </span>
+
+</div>
+
+
+<div class="order-time">
+🕒 ${
+order.created_at
+?
+createdAt.toLocaleString("en-IN")
+:
+""
+}
+</div>
+
+
+${
+canEdit
+?
+`
+<div class="edit-info">
+${timeText}
+</div>
+
+<div class="edit-actions">
+
+<button
+class="edit-order-btn"
+onclick="
+openEditOrder(${order.id})
+"
+>
+✏️ Edit
+</button>
+
+<button
+class="cancel-order-btn"
+onclick="
+cancelOrder(${order.id})
+"
+>
+❌ Cancel
+</button>
+
+</div>
+`
+:
+`
+<div class="edit-info">
+${timeText}
+</div>
+`
+}
+
+</div>
+`;
+
+});
+
+
+}catch(error){
+
+console.error(error);
+
+box.innerHTML=
+`
+<div class="error-box">
+
+❌ My Orders load nahi hua.
+
+<br><br>
+
+${error.message}
+
+</div>
+`;
+
+}
+
+}
+
+
+/* =========================================
+   OPEN MY ORDERS
+========================================= */
+
+function openOrders(){
+
+closeCart();
+closeEditOrder();
+
+document.getElementById(
+"ordersDrawer"
+).classList.add("open");
+
+document.getElementById(
+"drawerOverlay"
+).classList.add("open");
+
+loadMyOrders();
+
+clearInterval(
+myOrdersTimer
+);
+
+myOrdersTimer=
+setInterval(
+loadMyOrders,
+5000
+);
+
+}
+
+
+function closeOrders(){
+
+document.getElementById(
+"ordersDrawer"
+).classList.remove("open");
+
+if(
+!document.getElementById(
+"cartDrawer"
+).classList.contains("open") &&
+!document.getElementById(
+"editOrderDrawer"
+).classList.contains("open")
+){
+
+document.getElementById(
+"drawerOverlay"
+).classList.remove("open");
+
+}
+
+clearInterval(
+myOrdersTimer
+);
+
+}
+
+
+/* =========================================
+   EDIT ORDER
+========================================= */
+
+async function openEditOrder(
+orderId
+){
+
+closeOrders();
+
+try{
+
+const {
+data,
+error
+}=
+await db
+.from("orders")
+.select("*")
+.eq("id",orderId)
+.single();
+
+
+if(error)throw error;
+
+
+if(
+String(data.status||"pending")
+!=="pending"
+){
+
+alert(
+"Ye order ab edit nahi ho sakta."
+);
+
+return;
+
+}
+
+
+const age=
+(
+new Date()-
+new Date(data.created_at)
+)/
+60000;
+
+
+if(age>5){
+
+alert(
+"5-minute edit window khatam ho gaya."
+);
+
+return;
+
+}
+
+
+editingOrder=
+data;
+
+
+let items=
+data.items;
+
+
+if(typeof items==="string"){
+
+items=
+JSON.parse(items);
+
+}
+
+
+editingCart=
+(
+items||[]
+).map(item=>({
+
+id:item.id,
+name:item.name,
+price:Number(item.price),
+quantity:Number(item.quantity||1)
+
+}));
+
+
+document.getElementById(
+"editOrderSubtitle"
+).innerText=
+"Order #"+
+data.id+
+" • 5-minute edit window";
+
+
+renderEditOrder();
+
+
+document.getElementById(
+"editOrderDrawer"
+).classList.add("open");
+
+document.getElementById(
+"drawerOverlay"
+).classList.add("open");
+
+
+}catch(error){
+
+alert(
+"❌ "+error.message
+);
+
+}
+
+}
+
+
+function renderEditOrder(){
+
+const box=
+document.getElementById(
+"editOrderBody"
+);
+
+box.innerHTML="";
+
+
+let total=0;
+
+
+if(!editingCart.length){
+
+box.innerHTML=
+`
+<div class="empty">
+Order me koi item nahi hai.
+</div>
+`;
+
+}
+
+
+editingCart.forEach(
+(item,index)=>{
+
+const itemTotal=
+item.price*
+item.quantity;
+
+total+=itemTotal;
+
+
+box.innerHTML+=`
+
+<div class="edit-order-item">
+
+<div>
+
+<strong>
+${item.name}
+</strong>
+
+<div
+style="
+font-size:12px;
+color:#777;
+margin-top:5px"
+>
+₹${item.price}
+×
+${item.quantity}
+=
+₹${itemTotal}
+</div>
+
+</div>
+
+
+<div class="edit-order-actions">
+
+<button
+onclick="
+changeEditQty(
+${index},
+-1
+)
+"
+>
+−
+</button>
+
+<span>
+${item.quantity}
+</span>
+
+<button
+onclick="
+changeEditQty(
+${index},
+1
+)
+"
+>
++
+</button>
 
 </div>
 
@@ -978,23 +2345,286 @@ ${money(o.total_amount)}
 
 });
 
-}catch(e){
 
-b.innerHTML=
-'<div class="error">'+
-e.message+
-'</div>';
+document.getElementById(
+"editOrderTotal"
+).innerText=
+"₹"+
+total;
+
+}
+
+
+function changeEditQty(
+index,
+change
+){
+
+if(!editingCart[index])return;
+
+editingCart[index].quantity+=
+change;
+
+
+if(
+editingCart[index].quantity<=0
+){
+
+editingCart.splice(
+index,
+1
+);
+
+}
+
+renderEditOrder();
+
+}
+
+
+/* =========================================
+   SAVE EDITED ORDER
+========================================= */
+
+async function saveEditedOrder(){
+
+if(!editingOrder){
+
+return;
+
+}
+
+
+if(!editingCart.length){
+
+const confirmCancel=
+confirm(
+"Cart empty ho jayega. Order cancel karna hai?"
+);
+
+if(confirmCancel){
+
+await cancelOrder(
+editingOrder.id
+);
+
+}
+
+return;
+
+}
+
+
+const age=
+(
+new Date()-
+new Date(editingOrder.created_at)
+)/
+60000;
+
+
+if(age>5){
+
+alert(
+"5-minute edit window khatam ho gaya."
+);
+
+return;
+
+}
+
+
+const items=
+editingCart.map(item=>({
+
+id:item.id,
+name:item.name,
+price:item.price,
+quantity:item.quantity
+
+}));
+
+
+const total=
+editingCart.reduce(
+(sum,item)=>
+sum+
+(
+item.price*
+item.quantity
+),
+0
+);
+
+
+try{
+
+const {
+data,
+error
+}=
+await db.rpc(
+"edit_customer_order",
+{
+p_order_id:
+editingOrder.id,
+
+p_items:
+items,
+
+p_total_amount:
+total
+}
+);
+
+
+if(error)throw error;
+
+
+alert(
+"✅ Order updated successfully!"
+);
+
+
+editingOrder=null;
+
+editingCart=[];
+
+closeEditOrder();
+
+openOrders();
+
+
+}catch(error){
+
+alert(
+"❌ Order update nahi hua:\n"+
+error.message
+);
 
 }
 
 }
 
 
-loadMenu();
+/* =========================================
+   CANCEL ORDER
+========================================= */
+
+async function cancelOrder(
+orderId
+){
+
+const yes=
+confirm(
+"Order #"+
+orderId+
+" cancel karna hai?"
+);
+
+if(!yes)return;
+
+
+try{
+
+const {
+error
+}=
+await db.rpc(
+"cancel_customer_order",
+{
+p_order_id:
+orderId
+}
+);
+
+
+if(error)throw error;
+
+
+alert(
+"✅ Order cancel ho gaya."
+);
+
+
+await loadMyOrders();
+
+
+}catch(error){
+
+alert(
+"❌ Order cancel nahi hua:\n"+
+error.message
+);
+
+}
+
+}
+
+
+/* =========================================
+   CLOSE EDIT
+========================================= */
+
+function closeEditOrder(){
+
+document.getElementById(
+"editOrderDrawer"
+).classList.remove("open");
+
+editingOrder=null;
+editingCart=[];
+
+
+if(
+!document.getElementById(
+"cartDrawer"
+).classList.contains("open") &&
+!document.getElementById(
+"ordersDrawer"
+).classList.contains("open")
+){
+
+document.getElementById(
+"drawerOverlay"
+).classList.remove("open");
+
+}
+
+}
+
+
+/* =========================================
+   CLOSE ALL
+========================================= */
+
+function closeAllDrawers(){
+
+closeCart();
+closeOrders();
+closeEditOrder();
+
+document.getElementById(
+"drawerOverlay"
+).classList.remove("open");
+
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+let myOrdersTimer=null;
+
+loadTableNumber();
 
 renderCart();
+
+loadMenu();
 
 </script>
 
 </body>
+
 </html>
